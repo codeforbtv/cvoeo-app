@@ -65,6 +65,7 @@ function loginWithEmailPassword(_email: string, password: string): Promise {
         .signInWithEmailAndPassword(_email, password)
         .then((user) => {
             const {uid, email, displayName, photoURL} = user;
+            // Retrieve the user's profile, If there is none, create it.
             firebase.database().ref(`profiles/${uid}`).once('value').then(snapshot => {
                 if (!snapshot.val()) {
                     const newProfile = User.create({uid, email, displayName, photoURL});

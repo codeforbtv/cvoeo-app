@@ -8,7 +8,7 @@ import * as actions from './actions';
 import {StyleSheet, View, Text} from 'react-native';
 import {connect} from 'react-redux';
 import Login from '../login';
-
+import MainTabNavigator from '../../navigation/MainTabNavigator'
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -80,7 +80,7 @@ class LoadingScreen extends Component<Props> {
             default :
                 return (
                     <View style={[styles.container, {padding: 0, margin: 0}]}>
-                        <MainTabNavigation/>
+                        <MainTabNavigator/>
                     </View>
                 );
         }

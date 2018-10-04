@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cda875ef-9d63-47fb-9723-9f8135850258" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/login-form.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/login-form.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants/colors.js" beforeDir="false" afterPath="$PROJECT_DIR$/constants/colors.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data-sources/firebase-data.js" beforeDir="false" afterPath="$PROJECT_DIR$/data-sources/firebase-data.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/loading/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/loading/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/login/login-screen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/login/login-screen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/common.js" beforeDir="false" afterPath="$PROJECT_DIR$/styles/common.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/login/actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/login/actions.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -37,7 +33,7 @@
           <entry key="eslintrc" value="1" />
           <entry key="flowconfig" value="1" />
           <entry key="gitignore" value="1" />
-          <entry key="js" value="57" />
+          <entry key="js" value="59" />
           <entry key="json" value="5" />
           <entry key="md" value="4" />
           <entry key="yml" value="1" />
@@ -47,7 +43,7 @@
         <counts>
           <entry key="Ini" value="1" />
           <entry key="JSON" value="7" />
-          <entry key="JavaScript" value="57" />
+          <entry key="JavaScript" value="59" />
           <entry key="Markdown" value="5" />
           <entry key="PLAIN_TEXT" value="1" />
           <entry key="YAML" value="1" />
@@ -59,7 +55,7 @@
           <entry key="dummy" value="28" />
           <entry key="flowconfig" value="23" />
           <entry key="gitignore" value="2" />
-          <entry key="js" value="2638" />
+          <entry key="js" value="2941" />
           <entry key="json" value="126" />
           <entry key="md" value="292" />
         </counts>
@@ -68,7 +64,7 @@
         <counts>
           <entry key="Ini" value="23" />
           <entry key="JSON" value="126" />
-          <entry key="JavaScript" value="2638" />
+          <entry key="JavaScript" value="2941" />
           <entry key="Markdown" value="332" />
           <entry key="PLAIN_TEXT" value="30" />
         </counts>
@@ -77,11 +73,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/screens/loading/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="46" column="29" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
+            <state relative-caret-position="436">
+              <caret line="82" column="41" selection-start-line="82" selection-start-column="41" selection-end-line="82" selection-end-column="41" />
               <folding>
                 <element signature="e#11#50#0" expanded="true" />
               </folding>
@@ -101,11 +97,35 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/screens/login/login-screen.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-119">
-              <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+            <state relative-caret-position="232">
+              <caret line="75" column="41" lean-forward="true" selection-start-line="75" selection-start-column="41" selection-end-line="75" selection-end-column="41" />
               <folding>
                 <element signature="e#10#49#0" expanded="true" />
                 <element signature="e#326#363#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/user.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="561">
+              <caret line="33" column="30" lean-forward="true" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
+              <folding>
+                <element signature="e#10#72#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data-sources/firebase-data.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1184">
+              <caret line="114" column="18" lean-forward="true" selection-start-line="114" selection-start-column="18" selection-end-line="114" selection-end-column="18" />
+              <folding>
+                <element signature="e#10#42#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -123,11 +143,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/styles/common.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="32" selection-start-line="1" selection-start-column="32" selection-end-line="1" selection-end-column="32" />
+            <state relative-caret-position="218">
+              <caret line="33" column="25" lean-forward="true" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -142,30 +162,12 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data-sources/actions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" selection-start-line="18" selection-end-line="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/constants/action-types.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="31" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="45" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/screens/login/actions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" selection-start-line="21" selection-end-line="21" />
+            <state relative-caret-position="510">
+              <caret line="30" column="34" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
               <folding>
-                <element signature="e#0#62#0" expanded="true" />
+                <element signature="e#9#71#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -189,7 +191,6 @@
       <find>constants.</find>
       <find>variables</find>
       <find>MainTabNavigator</find>
-      <find>firebaseDataLayer</find>
       <find>AppLoading</find>
       <find>dataLayerActions</find>
       <find>userFailedA</find>
@@ -201,16 +202,19 @@
       <find>Login</find>
       <find>.jpg</find>
       <find>constants</find>
+      <find>firebaseDataLayer</find>
+      <find>MainTab</find>
     </findStrings>
     <replaceStrings>
       <replace>variables.</replace>
       <replace>Main</replace>
       <replace>actions</replace>
       <replace>color</replace>
+      <replace>firebaseData</replace>
     </replaceStrings>
     <dirStrings>
-      <dir>C:\Users\jneed\projects\cvoeo-app</dir>
       <dir>C:\Users\jneed\projects\cvoeo-app\screens</dir>
+      <dir>C:\Users\jneed\projects\cvoeo-app</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -236,20 +240,20 @@
         <option value="$PROJECT_DIR$/reducers/initial-state.js" />
         <option value="$PROJECT_DIR$/libs/validators.js" />
         <option value="$PROJECT_DIR$/screens/login/forgot-password.js" />
-        <option value="$PROJECT_DIR$/models/user.js" />
         <option value="$PROJECT_DIR$/App.js" />
         <option value="$PROJECT_DIR$/data-sources/actions.js" />
         <option value="$PROJECT_DIR$/constants/action-types.js" />
         <option value="$PROJECT_DIR$/screens/loading/actions.js" />
         <option value="$PROJECT_DIR$/screens/loading/reducers.js" />
-        <option value="$PROJECT_DIR$/data-sources/firebase-data.js" />
-        <option value="$PROJECT_DIR$/screens/login/actions.js" />
-        <option value="$PROJECT_DIR$/screens/loading/index.js" />
         <option value="$PROJECT_DIR$/app.json" />
         <option value="$PROJECT_DIR$/components/login-form.js" />
         <option value="$PROJECT_DIR$/screens/login/login-screen.js" />
         <option value="$PROJECT_DIR$/constants/colors.js" />
         <option value="$PROJECT_DIR$/styles/common.js" />
+        <option value="$PROJECT_DIR$/screens/login/actions.js" />
+        <option value="$PROJECT_DIR$/data-sources/firebase-data.js" />
+        <option value="$PROJECT_DIR$/models/user.js" />
+        <option value="$PROJECT_DIR$/screens/loading/index.js" />
       </list>
     </option>
   </component>
@@ -293,12 +297,18 @@
             <path>
               <item name="cvoeo-app" type="b2602c69:ProjectViewProjectNode" />
               <item name="cvoeo-app" type="462c0819:PsiDirectoryNode" />
-              <item name="constants" type="462c0819:PsiDirectoryNode" />
+              <item name="navigation" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="cvoeo-app" type="b2602c69:ProjectViewProjectNode" />
               <item name="cvoeo-app" type="462c0819:PsiDirectoryNode" />
-              <item name="styles" type="462c0819:PsiDirectoryNode" />
+              <item name="screens" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cvoeo-app" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cvoeo-app" type="462c0819:PsiDirectoryNode" />
+              <item name="screens" type="462c0819:PsiDirectoryNode" />
+              <item name="loading" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -355,12 +365,12 @@
       <workItem from="1538016686758" duration="747000" />
       <workItem from="1538575948978" duration="18197000" />
       <workItem from="1538597288297" duration="263000" />
-      <workItem from="1538659578347" duration="3695000" />
+      <workItem from="1538659578347" duration="6203000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22902000" />
+    <option name="totallyTimeSpent" value="25410000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="2560" height="1440" extended-state="0" />
@@ -543,29 +553,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/user.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="24" lean-forward="true" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/screens/loading/actions.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
           <caret line="23" selection-start-line="23" selection-end-line="23" />
           <folding>
             <element signature="e#0#62#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data-sources/firebase-data.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="41" column="57" selection-start-line="41" selection-start-column="57" selection-end-line="41" selection-end-column="57" />
-          <folding>
-            <element signature="e#10#42#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -591,16 +584,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/screens/login/actions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-          <folding>
-            <element signature="e#0#62#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/App.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -612,27 +595,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="21" column="28" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/screens/loading/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="46" column="29" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
-          <folding>
-            <element signature="e#11#50#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/screens/login/login-screen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-119">
-          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="e#10#49#0" expanded="true" />
-            <element signature="e#326#363#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -655,8 +617,59 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/styles/common.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="32" selection-start-line="1" selection-start-column="32" selection-end-line="1" selection-end-column="32" />
+        <state relative-caret-position="218">
+          <caret line="33" column="25" lean-forward="true" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/screens/login/actions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="30" column="34" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
+          <folding>
+            <element signature="e#9#71#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data-sources/firebase-data.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1184">
+          <caret line="114" column="18" lean-forward="true" selection-start-line="114" selection-start-column="18" selection-end-line="114" selection-end-column="18" />
+          <folding>
+            <element signature="e#10#42#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/screens/login/login-screen.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="75" column="41" lean-forward="true" selection-start-line="75" selection-start-column="41" selection-end-line="75" selection-end-column="41" />
+          <folding>
+            <element signature="e#10#49#0" expanded="true" />
+            <element signature="e#326#363#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/user.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="33" column="30" lean-forward="true" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
+          <folding>
+            <element signature="e#10#72#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/screens/loading/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="436">
+          <caret line="82" column="41" selection-start-line="82" selection-start-column="41" selection-end-line="82" selection-end-column="41" />
+          <folding>
+            <element signature="e#11#50#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
