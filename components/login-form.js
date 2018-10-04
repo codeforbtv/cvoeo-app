@@ -1,7 +1,6 @@
 // @flow
 import React, {Component} from 'react';
 
-;
 import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {isValidEmail} from '../libs/validators';
 import commonStyles from '../styles/common'
@@ -14,7 +13,7 @@ type Props = {
     onButtonPress: any => any
 };
 
-export default class LoginForm extends Component {
+export default class LoginForm extends Component<Props> {
     static navigationOptions = {
         title: 'Money on My Mind'
     };

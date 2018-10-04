@@ -40,7 +40,7 @@ class LoadingScreen extends Component<Props> {
     _loadResourcesAsync = async () => Promise.all([
         this.props.actions.initialize(),
         Asset.loadAsync([
-            require('../../assets/images/cvoeo-logo.jpg')
+            require('../../assets/images/cvoeo-logo.png')
         ]),
         Font.loadAsync({
             // This is the font that we are using for our tab bar

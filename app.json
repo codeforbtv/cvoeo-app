@@ -4,7 +4,7 @@
     "description": "A Code For America App to help CVOEO's Reach-Up clients stay on track with their personal finance coaching.",
     "slug": "CVOEO",
     "privacy": "public",
-    "sdkVersion": "29.0.0",
+    "sdkVersion": "30.0.0",
     "primaryColor": "#FFFFFF",
     "platforms": ["ios", "android"],
     "githubUrl": "https://github.com/codeforbtv/cvoeo-app",

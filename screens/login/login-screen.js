@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 // import * as constants from '../../styles/constants';
 import * as actions from './actions';
-import logo from '../../assets/images/cvoeo-logo.jpg';
+import logo from '../../assets/images/cvoeo-logo.png';
 import LoginForm from '../../components/login-form';
 import commonStyles from '../../styles/common';
 
@@ -20,43 +20,12 @@ const myStyles = {
         paddingBottom: 15
     },
     logoText: {
-        fontSize: 24,
-        color: 'white',
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.6,
-        shadowRadius: 1
-    },
-    socialLoginButton: {
-        width: '100%',
-        height: 44,
-        marginTop: 10,
-        marginBottom: 10,
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.6,
-        shadowRadius: 2, flex: 1, flexDirection: 'row'
-    },
-    socialLoginLogo: {
-        padding: 12,
-        width: 44,
-        alignSelf: 'flex-start'
-    },
-    socialLogin: {flex: 1},
-
-    socialLoginText: {
-        fontSize: 16,
-        fontWeight: '700',
-        height: 40,
-        paddingRight: 10,
-        paddingLeft: 10,
-        paddingTop: 12,
-        color: 'white'
-    },
-
-    logos: {
-        width: 20,
-        height: 20
+        fontSize: 32,
+        color: '#999',
+        shadowColor: '#666',
+        shadowOffset: {width: 1, height: 0},
+        shadowOpacity: 1,
+        shadowRadius: 0
     }
 };
 const combinedStyles = Object.assign({}, commonStyles, myStyles);
@@ -107,11 +76,9 @@ class LoginScreen extends Component<Props> {
                     <ScrollView style={styles.scroll}>
                         <View style={{paddingLeft: 20, paddingRight: 20}}>
                             <View style={styles.logo}>
-                                <Image source={logo} style={{height: 120, width: 120}}/>
+                                <Image source={logo} style={{height: 60, width: '100%'}}/>
                                 <Text style={styles.logoText}>Money on My Mind</Text>
                             </View>
-
-                            <Text style={[styles.text, {textAlign: 'center', marginTop: 20}]}> - OR - </Text>
                             <View style={{width: '100%'}}>
                                 <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
                                 <TouchableHighlight
