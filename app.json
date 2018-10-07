@@ -1,11 +1,13 @@
 {
   "expo": {
     "name": "CVOEO",
-    "description": "A very interesting project.",
+    "description": "A Code For America App to help CVOEO's Reach-Up clients stay on track with their personal finance coaching.",
     "slug": "CVOEO",
     "privacy": "public",
     "sdkVersion": "30.0.0",
+    "primaryColor": "#FFFFFF",
     "platforms": ["ios", "android"],
+    "githubUrl": "https://github.com/codeforbtv/cvoeo-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -21,7 +23,20 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "org.cvoeo.app",
+      "config": {},
+      "infoPlist": {}
+    },
+    "android": {
+      "package": "org.cvoeo.app",
+      "versionCode": 3,
+      "permissions": [],
+      "config": {}
+    },
+    "androidStatusBar": {
+      "barStyle": "dark-content",
+      "backgroundColor": "#EEEEEE"
     }
   }
 }
