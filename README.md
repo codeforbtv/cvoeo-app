@@ -32,7 +32,11 @@ By using the expo mobile app, you will be able to test the app in both iOS & And
 
 #### View in Android Emulator
 - Download and install [genymotion](https://www.genymotion.com/desktop/)
-- TODO: DO THIS & COMPLETE DOCUMENTATION
+- Open the emulator (order is important here)
+- Next run expo `$ expo start`
+- On the expo webpage that comes up, click "Run on Android Device/Emulator"
+
+Expo should be able to detect Genymotion and open an emulator for you.
 
 #### View in iOS Emulator
 Sadly, you must have a mac to run the iOS emulator.  If you're on a Windows machine, try using the expo mobile app to 
