@@ -32,7 +32,8 @@ By using the expo mobile app, you will be able to test the app in both iOS & And
 
 #### View in Android Emulator
 - Download and install [genymotion](https://www.genymotion.com/fun-zone/)
-- Open the emulator (order is important here)
+- Genymotion requires a virtualization tool so download [Virtualbox too](https://www.virtualbox.org/wiki/Downloads)
+- Open genymotion (order is important here)
 - Next run expo `$ expo start`
 - On the expo webpage that comes up, click "Run on Android Device/Emulator"
 
