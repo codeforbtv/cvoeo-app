@@ -47,3 +47,8 @@ Sadly, you must have a mac to run the iOS emulator.  If you're on a Windows mach
 - Set the simulator on the commandline `$ sudo xcode-select -s /Applications/Xcode.app` (you only need to do this once)
 - Run expo `$ expo start`
 - In the browser window that expo opens, choose "Run on iOS Simulator" from the left sidebar
+
+## Running Tests
+There is a script defined in package.json that allows you to run the tests as follows from the project root:
+
+`$ npm tests`
