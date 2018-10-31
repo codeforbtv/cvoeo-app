@@ -2,10 +2,9 @@
 
 import Login from './login-screen';
 import ForgotPassword from './forgot-password';
+import { createStackNavigator } from 'react-navigation';
 
-import {StackNavigator} from 'react-navigation';
-
-export default StackNavigator({
+export default createStackNavigator({
     Login: {
         screen: Login
     },
