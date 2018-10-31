@@ -21,6 +21,6 @@ export function profileFetchSuccessful(profile: Object) {
     return {type: types.FETCH_PROFILE_SUCCESS, profile};
 }
 
-export function initilizationSuccessful(){
+export function initilizationSuccessful() {
     return {type: types.INITIAL, profile};
 }

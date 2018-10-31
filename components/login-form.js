@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 
 import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {isValidEmail} from '../libs/validators';
-import commonStyles from '../styles/common'
+import commonStyles from '../styles/common';
 
 const styles = StyleSheet.create(commonStyles);
 

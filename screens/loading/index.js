@@ -8,7 +8,7 @@ import * as actions from './actions';
 import {StyleSheet, View, Text} from 'react-native';
 import {connect} from 'react-redux';
 import Login from '../login';
-import MainTabNavigator from '../../navigation/MainTabNavigator'
+import MainTabNavigator from '../../navigation/MainTabNavigator';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -72,7 +72,7 @@ class LoadingScreen extends Component<Props> {
                         onFinish={this._handleFinishLoading}
                     />
                 );
-              case (!this.props.userIsLoggedIn) :
+            case (!this.props.userIsLoggedIn) :
                 return (
                     <Login/>
                 );

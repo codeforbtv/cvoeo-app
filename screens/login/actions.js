@@ -25,7 +25,6 @@ export function logout() {
 }
 
 
-
 export function loginWithEmailPassword(email: string, password: string) {
     return (dispatch: Object => *) => {
         firebaseData.loginWithEmailPassword(email, password).catch(error => {
@@ -33,7 +32,6 @@ export function loginWithEmailPassword(email: string, password: string) {
         });
     };
 }
-
 
 
 export function resetPassword(emailAddress: string) {

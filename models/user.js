@@ -1,6 +1,6 @@
 // @flow
 
-import {isValidEmail, isValidPhone} from "../libs/validators";
+import {isValidEmail, isValidPhone} from '../libs/validators';
 import {type} from 'ramda';
 
 const nonDigit = /[^\d]/g;

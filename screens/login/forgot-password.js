@@ -76,7 +76,7 @@ class ForgotPassword extends Component<Props> {
                                     underlineColorAndroid={'transparent'}
                                 />
                                 <TouchableOpacity style={styles.button}
-                                                  onPress={this.onButtonPress}>
+                                    onPress={this.onButtonPress}>
                                     <Text style={styles.buttonText}>{'Reset Password'}</Text>
                                 </TouchableOpacity>
                             </View>
