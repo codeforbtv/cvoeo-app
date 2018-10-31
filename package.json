@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "license": "SEE LICENSE IN LICENSE.MD",
-  "name": "my-new-project",
+  "name": "moneyOnMyMind",
   "main": "node_modules/expo/AppEntry.js",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
+    "test": "node ./node_modules/$npm_package_jest_preset/bin/jest.js --watchAll"
   },
   "jest": {
     "preset": "jest-expo"
