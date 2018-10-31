@@ -18,7 +18,7 @@ export default class Reminder {
         this.name = typeof args.name === 'string'
             ? args.name.trim()
             : null;
-        this.description = typeof args.description=== 'string'
+        this.description = typeof args.description === 'string'
             ? args.displayName.trim()
             : null;
         this.phone = isValidPhone(args.phone)
