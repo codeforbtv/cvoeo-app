@@ -13,9 +13,13 @@ const HomeStack = createStackNavigator({
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
+
+    // TODO: figure out how to specify the property type for `focused`
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
+
+      // I haven't found an exhaustive list of available icon names, but most of the ones on this site work: https://infinitered.github.io/ionicons-version-3-search/
       name={
         Platform.OS === 'ios'
           ? `ios-information-circle${focused ? '' : '-outline'}`
