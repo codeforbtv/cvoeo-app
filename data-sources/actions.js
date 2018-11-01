@@ -7,13 +7,11 @@ export const userLoggedIn = curry((dispatch, user) => dispatch({type: types.LOGI
 
 export const userLoggedOut = (dispatch) => dispatch({type: types.LOGOUT_SUCCESSFUL});
 
-export const userFailedLogIn = curry((dispatch, error) => dispatch({type: types.LOGIN_FAIL, error}));
-
 export const profileFetchSuccessful = curry((dispatch, profile: Object) => dispatch({type: types.FETCH_PROFILE_SUCCESS, profile}));
 
-export const initilizationSuccessful = curry((dispatch, profile) => dispatch({
+export const initializationSuccessful = curry((dispatch, profile) => dispatch({
     type: types.INITIALIZATION_COMPLETED,
     profile
 }));
 
-export const initializaionFailed = curry((dispatch, error) => dispatch({type: types.INTIALIZATION_FAIL, error}));
+export const initializationFailed = curry((dispatch, error) => dispatch({type: types.INITIALIZATION_FAIL, error}));
