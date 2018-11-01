@@ -2,29 +2,53 @@
 import firebase from 'firebase';
 import * as actions from './actions';
 import User from '../models/user';
+import config from './firebase-config';
+import 'firebase/firestore';
+
+firebase.initializeApp(config);
+
+// Initialize Cloud Firestore through Firebase
+const db = firebase.firestore();
+
+// Disable deprecated features
+db.settings({
+    timestampsInSnapshots: true
+});
+
 
 /**
- *
- * @param userId
- * @param dispatch
+ * Firestore cannot serialize objects created with the new keyword
+ * This function removes all custom constructors
+ * @param {object} obj - object with custom constructor
+ * @returns {object} - POJO
  */
-function setupProfileListener(userId, dispatch) {
-    const db = firebase.database();
-    const profile = db.ref(`profiles/${userId}`);
-    profile.on('value', (snapshot) => {
-        const data = snapshot.val() || {};
-        dispatch(actions.profileFetchSuccessful(data));
-    });
+function deconstruct(obj: Object) {
+    return JSON.parse(JSON.stringify(obj));
 }
 
 /**
+ * listens for changes in a user's profile
+ * @param {string} uid - user id
+ * @param {function} dispatch - dispatch function
+ * @returns {Promise<void>} - Promise
+ */
+function setupProfileListener(uid: string, dispatch: () => any) {
+    const ref = db.collection('profiles').doc(uid);
+    return ref.onSnapshot(doc => {
+        if (doc.exists) {
+            const profile = doc.data();
+            dispatch(actions.profileFetchSuccessful(profile));
+        }
+    });
+}
+
+
+/**
  *
- * @param dispatch
+ * @param {function} dispatch - dispatch something
  * @returns {Promise<void>}
  */
-async function initialize(dispatch): Promise {
-
-
+export function initialize(dispatch): Promise {
     const user = firebase.auth().currentUser;
 
     if (user) {
@@ -33,15 +57,16 @@ async function initialize(dispatch): Promise {
 
     // TODO: Check for cached data here.
 
-    /** Setup Listeners : Don't return listeners **/
     firebase
         .auth()
-        .onAuthStateChanged((user) => {
+        .onAuthStateChanged((_user) => {
             if (!!user) {
-                dispatch(actions.userLoggedIn(User.create(user)));
-                setupProfileListener(user.uid, dispatch);
+                /** Setup Listeners. Async ops should be added to the Promise.all **/
+                const profileListener = setupProfileListener(user.uid, dispatch);
+                Promise.all([profileListener])
+                    .then(() => actions.userLoggedIn(User.create(_user)));
             } else {
-                dispatch(actions.userFailedLogIn());
+                dispatch(actions.userLoggedOut());
             }
         });
 
@@ -50,16 +75,16 @@ async function initialize(dispatch): Promise {
     const FOO = new Promise((resolve) => {
         setTimeout(() => resolve(true), 2000);
     });
-    return Promise.all([FOO]);
+    return Promise.all([FOO]).then(actions.initilizationSuccessful(dispatch)).catch(actions.initializaionFailed(dispatch));
 }
 
 /**
- *
- * @param _email
- * @param password
- * @returns {Promise<firebase.auth.UserCredential | never>}
+ * Log a user in
+ * @param {string} _email - email of user
+ * @param {string} password - user's password
+ * @returns {Promise<firebase.auth.UserCredential | never>} - login promise
  */
-function loginWithEmailPassword(_email: string, password: string): Promise {
+export function loginWithEmailPassword(_email: string, password: string): Promise {
     return firebase
         .auth()
         .signInWithEmailAndPassword(_email, password)
@@ -80,38 +105,31 @@ function loginWithEmailPassword(_email: string, password: string): Promise {
 }
 
 /**
- *
- * @param emailAddress
+ * Resets a user's password
+ * @param {string} emailAddress
  * @returns {Promise<void>}
  */
-function resetPassword(emailAddress: string): Promise {
+export function resetPassword(emailAddress: string): Promise {
     return firebase.auth().sendPasswordResetEmail(emailAddress);
 }
 
 /**
- *
+ * Log a user out
  * @returns {Promise<void>}
  */
-function logout() {
+export function logout() {
     return firebase.auth().signOut();
 }
 
 /**
  *
- * @param profile
- * @param teamMembers
- * @returns {Promise<any>}
+ * @param {User} user - the user
+ * @returns {Promise<any>} - Promise
  */
-function updateProfile(profile: Object, teamMembers: Object): Promise {
-    const db = firebase.database();
-    return db.ref(`profiles/${profile.uid}`).set(newProfile);
+export function updateProfile(user: User): Promise {
+    const data = deconstruct(user);
+    return db.collection('profiles').doc(user.uid).update({
+        ...data,
+        updated: firebase.firestore.FieldValue.serverTimestamp()
+    });
 }
-
-
-export const firebaseData = {
-    initialize,
-    loginWithEmailPassword,
-    logout,
-    resetPassword,
-    updateProfile
-};

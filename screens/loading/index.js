@@ -38,7 +38,6 @@ class LoadingScreen extends Component<Props> {
     }
 
     _loadResourcesAsync = async () => Promise.all([
-        this.props.actions.initialize(),
         Asset.loadAsync([
             require('../../assets/images/cvoeo-logo.png')
         ]),
@@ -48,7 +47,8 @@ class LoadingScreen extends Component<Props> {
             // We include SpaceMono because we use it in HomeScreen.js. Feel free
             // to remove this if you are not using it in your app
             'space-mono': require('../../assets/fonts/SpaceMono-Regular.ttf')
-        })
+        }),
+        this.props.actions.initialize(),
     ]);
 
     _handleLoadingError = error => {

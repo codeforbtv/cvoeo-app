@@ -14,13 +14,8 @@ import {Provider} from 'react-redux';
 import reducer from './reducers/';
 import thunk from 'redux-thunk';
 import Loading from './screens/loading';
-import config from './data-sources/firebase-config.js';
-import firebase from 'firebase';
 
 const store = createStore(reducer, applyMiddleware(thunk));
-
-firebase.initializeApp(config);
-
 
 export default class App extends React.Component {
 
