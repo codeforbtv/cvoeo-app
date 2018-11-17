@@ -1,8 +1,8 @@
 const initialState = {
     loading: {initialized: false},
     login: {
-        userIsLoggedIn: null,
-        user: null,
+        userIsLoggedIn: false,
+        user: null
     },
     user: {}
 };

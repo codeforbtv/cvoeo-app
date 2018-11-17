@@ -5,10 +5,11 @@ import {bindActionCreators} from 'redux';
 import {AppLoading, Asset, Font} from 'expo';
 import {Ionicons} from '@expo/vector-icons';
 import * as actions from './actions';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import Login from '../../screens/login/index';
-import MainTabNavigator from '../../navigation/MainTabNavigator';
+import type {Node} from 'react';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -22,6 +23,7 @@ const styles = StyleSheet.create({
 
 
 type Props = {
+    children: ?Node,
     initialized: boolean,
     actions: Object,
     user: Object,
