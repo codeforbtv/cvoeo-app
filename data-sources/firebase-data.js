@@ -32,12 +32,12 @@ function deconstruct(obj: Object) {
  * @param {function} dispatch - dispatch function
  * @returns {Promise<void>} - Promise
  */
-function setupProfileListener(uid: string, dispatch: () => any) {
+function setupProfileListener(uid: string, dispatch: any => void) {
     const ref = db.collection('users').doc(uid);
     return ref.onSnapshot(doc => {
         if (doc.exists) {
             const profile = doc.data();
-            dispatch(actions.profileFetchSuccessful(profile));
+            actions.profileFetchSuccessful(dispatch, profile);
         }
     });
 }
@@ -54,6 +54,7 @@ export function initialize(dispatch): Promise {
         .auth()
         .onAuthStateChanged((_user) => {
             if (!!_user) {
+
                 /** Setup Listeners. Async ops should be added to the Promise.all **/
                 const profileListener = setupProfileListener(_user.uid, dispatch);
                 Promise.all([profileListener])
@@ -82,23 +83,23 @@ export function loginWithEmailPassword(_email: string, password: string): Promis
         .auth()
         .signInWithEmailAndPassword(_email, password)
         .then((user) => {
-            const {uid, email, displayName, photoURL} = (user ||{}).user;
+            const {uid, email, displayName, photoURL} = (user || {}).user;
             // Retrieve the user's profile, If there is none, create it.
-            const docRef = db.collection("users").doc(uid);
+            const docRef = db.collection('users').doc(uid);
             docRef.get().then( doc => {
                 if (!doc.exists) {
                     const newProfile = deconstruct(User.create({uid, email, displayName, photoURL, created: firebase.firestore.FieldValue.serverTimestamp()}));
-                    debugger;
                     docRef.set(newProfile);
                 }
-            }).catch(function(error) {
-                console.log("Error getting document:", error);
+            }).catch((error) => {
+                console.log('Error getting document:', error);
             });
         })
         .catch(error => {
             throw error; // Rethrow so we can deal with error later too.
         });
 }
+
 /**
  * Resets a user's password
  * @param {string} emailAddress

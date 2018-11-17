@@ -5,17 +5,14 @@
  */
 
 import React from 'react';
-// import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-// import { AppLoading, Asset, Font, Icon } from 'expo';
-// import AppNavigator from './navigation/AppNavigator';
 
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import reducer from './reducers/';
 import thunk from 'redux-thunk';
 import Session from './components/session';
-import {View} from "react-native";
-import MainTabNavigator from "./navigation/MainTabNavigator";
+import {View} from 'react-native';
+import Dashboard from './screens/dashboard';
 
 const store = createStore(reducer, applyMiddleware(thunk));
 
@@ -29,7 +26,7 @@ export default class App extends React.Component {
                         padding: 0, margin: 0, flex: 1,
                         justifyContent: 'flex-start'
                     }}>
-                        <MainTabNavigator/>
+                        <Dashboard/>
                     </View>
                 </Session>
             </Provider>
