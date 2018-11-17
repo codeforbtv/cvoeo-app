@@ -33,7 +33,7 @@ function deconstruct(obj: Object) {
  * @returns {Promise<void>} - Promise
  */
 function setupProfileListener(uid: string, dispatch: () => any) {
-    const ref = db.collection('profiles').doc(uid);
+    const ref = db.collection('users').doc(uid);
     return ref.onSnapshot(doc => {
         if (doc.exists) {
             const profile = doc.data();
@@ -49,33 +49,26 @@ function setupProfileListener(uid: string, dispatch: () => any) {
  * @returns {Promise<void>}
  */
 export function initialize(dispatch): Promise {
-    const user = firebase.auth().currentUser;
-
-    if (user) {
-        dispatch(actions.userLoggedIn(User.create(user)));
-    }
-
     // TODO: Check for cached data here.
-
     firebase
         .auth()
         .onAuthStateChanged((_user) => {
-            if (!!user) {
+            if (!!_user) {
                 /** Setup Listeners. Async ops should be added to the Promise.all **/
-                const profileListener = setupProfileListener(user.uid, dispatch);
+                const profileListener = setupProfileListener(_user.uid, dispatch);
                 Promise.all([profileListener])
-                    .then(() => actions.userLoggedIn(User.create(_user)));
+                    .then(() => actions.userLoggedIn(dispatch)(User.create(_user)));
             } else {
-                dispatch(actions.userLoggedOut());
+                actions.userLoggedOut(dispatch);
             }
         });
 
     /** ADD YOUR INIT FUNCTIONS HERE. ASYNC OPS SHOULD BE ADDED TO THE RETURNED PROMISE.ALL **/
 
     const FOO = new Promise((resolve) => {
-        setTimeout(() => resolve(true), 2000);
+        setTimeout(() => resolve(true), 10);
     });
-    return Promise.all([FOO]).then(actions.initilizationSuccessful(dispatch)).catch(actions.initializaionFailed(dispatch));
+    return Promise.all([FOO]).then(actions.initializationSuccessful(dispatch)).catch(actions.initializationFailed(dispatch));
 }
 
 /**
@@ -89,21 +82,23 @@ export function loginWithEmailPassword(_email: string, password: string): Promis
         .auth()
         .signInWithEmailAndPassword(_email, password)
         .then((user) => {
-            const {uid, email, displayName, photoURL} = user;
+            const {uid, email, displayName, photoURL} = (user ||{}).user;
             // Retrieve the user's profile, If there is none, create it.
-            firebase.database().ref(`profiles/${uid}`).once('value').then(snapshot => {
-                if (!snapshot.val()) {
-                    const newProfile = User.create({uid, email, displayName, photoURL});
-                    newProfile.created = (new Date()).toString();
-                    firebase.database().ref(`profiles/${uid}`).set(newProfile);
+            const docRef = db.collection("users").doc(uid);
+            docRef.get().then( doc => {
+                if (!doc.exists) {
+                    const newProfile = deconstruct(User.create({uid, email, displayName, photoURL, created: firebase.firestore.FieldValue.serverTimestamp()}));
+                    debugger;
+                    docRef.set(newProfile);
                 }
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
             });
         })
         .catch(error => {
             throw error; // Rethrow so we can deal with error later too.
         });
 }
-
 /**
  * Resets a user's password
  * @param {string} emailAddress
@@ -128,7 +123,7 @@ export function logout() {
  */
 export function updateProfile(user: User): Promise {
     const data = deconstruct(user);
-    return db.collection('profiles').doc(user.uid).update({
+    return db.collection('users').doc(user.uid).update({
         ...data,
         updated: firebase.firestore.FieldValue.serverTimestamp()
     });

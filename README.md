@@ -6,7 +6,6 @@
 ### Requirements
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [node.js & npm](https://www.npmjs.com/get-npm)
-- [java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [expo](expo.io)
   - install expo on your computer using npm: `sudo npm install expo-cli --global`
 

@@ -5,9 +5,9 @@ import {bindActionCreators} from 'redux';
 import {AppLoading, Asset, Font} from 'expo';
 import {Ionicons} from '@expo/vector-icons';
 import * as actions from './actions';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {connect} from 'react-redux';
-import Login from '../login';
+import Login from '../../screens/login/index';
 import MainTabNavigator from '../../navigation/MainTabNavigator';
 const styles = StyleSheet.create({
     container: {
@@ -28,7 +28,7 @@ type Props = {
     userIsLoggedIn: boolean
 };
 
-class LoadingScreen extends Component<Props> {
+class Session extends Component<Props> {
 
 
     constructor(props) {
@@ -63,8 +63,9 @@ class LoadingScreen extends Component<Props> {
     };
 
     render() {
+        const {initialized, userIsLoggedIn, children} = this.props;
         switch (true) {
-            case (!this.props.initialized):
+            case (!initialized || (typeof userIsLoggedIn !== 'boolean')):
                 return (
                     <AppLoading
                         startAsync={this._loadResourcesAsync}
@@ -72,17 +73,12 @@ class LoadingScreen extends Component<Props> {
                         onFinish={this._handleFinishLoading}
                     />
                 );
-            case (!this.props.userIsLoggedIn) :
+            case (userIsLoggedIn === false) :
                 return (
                     <Login/>
                 );
-
             default :
-                return (
-                    <View style={[styles.container, {padding: 0, margin: 0}]}>
-                        <MainTabNavigator/>
-                    </View>
-                );
+                return children;
         }
     }
 
@@ -102,4 +98,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoadingScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(Session);

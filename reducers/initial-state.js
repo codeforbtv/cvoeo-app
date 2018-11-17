@@ -1,10 +1,10 @@
 const initialState = {
+    loading: {initialized: false},
     login: {
-        userIsLoggedIn: false,
-        user: null
+        userIsLoggedIn: null,
+        user: null,
     },
-    profile: {},
-    loading: {initialized: false}
+    user: {}
 };
 
 export default initialState;
