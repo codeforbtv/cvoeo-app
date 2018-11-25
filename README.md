@@ -50,4 +50,4 @@ Sadly, you must have a mac to run the iOS emulator.  If you're on a Windows mach
 ## Running Tests
 There is a script defined in package.json that allows you to run the tests as follows from the project root:
 
-`$ npm tests`
+`$ npm test`
