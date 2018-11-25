@@ -86,7 +86,7 @@ const common = {
         paddingLeft: 3,
         paddingRight: 3,
         paddingTop: 10,
-        backgroundColor: colors.background,
+        backgroundColor: colors.background
     },
     searchHeader: {
         backgroundColor: colors.background,
@@ -202,7 +202,7 @@ const common = {
         shadowOffset: {width: 0, height: 1},
         shadowOpacity: 1,
         shadowRadius: 0
-    },
+    }
 
 };
 

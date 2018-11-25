@@ -1,6 +1,6 @@
 // @flow
 
-import {isValidEmail, isValidPhone} from "../libs/validators";
+import {isValidEmail, isValidPhone} from '../libs/validators';
 import {type} from 'ramda';
 
 const nonDigit = /[^\d]/g;
@@ -11,6 +11,7 @@ export default class User {
     email: string;
     phone: string;
     created: Date;
+    updated: Date;
 
     constructor(args = {}) {
         this.uid = typeof args.uid === 'string' || typeof args.id === 'string'
@@ -27,6 +28,9 @@ export default class User {
             : null;
         this.created = type(args.created) === 'Date'
             ? new Date(args.created)
+            : null;
+        this.updated = type(args.updated) === 'Date'
+            ? new Date(args.updated)
             : null;
     }
 

@@ -3,10 +3,16 @@ import initialState from '../../reducers/initial-state';
 
 export function reducers(state = initialState.loading, action) {
     switch (action.type) {
-        case actions.INIT_COMPLETED:
+        case actions.INITIALIZATION_COMPLETED:
             return {
                 ...state,
                 initialized: true
+            };
+        case actions.INITIALIZATION_FAIL:
+            return {
+                ...state,
+                initialized: false,
+                initError: action.error
             };
         case actions.INITIAL_AUTH_CHECKED:
             return {
