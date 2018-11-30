@@ -94,21 +94,19 @@ export default class App extends React.Component {
                 <Text style={styles.bigBlock}></Text>
                 <Text style={styles.bigTitle}>Well Done!</Text>
               </View>
-
-              {/* <LinearGradient
-                colors={['#d4af37', '#ffdf00', '#cfb53b']}
-                style={{ alignItems: 'center', borderRadius: 90 }}>
-                <Text style={styles.bigCircle}>$150</Text>
-              </LinearGradient> */}
-
               <View style={styles.row}>
                 <View style={styles.smallerBlock}>
                 <Text style={styles.bigBlock}></Text>
                   <Text style={[styles.money, styles.end]}>$0</Text>
                 </View>
                 <View style={styles.bottomLine}>
+                <View style={styles.cone}></View>
                   <View style={styles.semiCircle}>
-                    <View style={styles.diagonalLine}></View>
+                  <View style={styles.diagonalLine}></View>
+                  <Icon
+                      style={styles.arrow}
+                      name={icon}
+                    />
                   </View>
                 </View>
                 <View style={styles.smallerBlock}>
@@ -368,8 +366,6 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderTopLeftRadius: 14,
-    // borderBottomLeftRadius: 7,
-    // borderTopRightRadius: 7,
     textAlign: 'center',
     paddingTop: 5,
     paddingLeft: 2,
@@ -431,6 +427,28 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     transform: [{ rotate: '-45deg' }],
   },
+  arrow: {
+    fontSize: 22,
+    transform: [{ rotate: '135deg' }],
+    position: 'absolute',
+    top: -1,
+    left: 7,
+  },
+  cone: {
+    width: 0,
+    height:0,
+    borderLeftWidth: 45,
+    borderLeftColor: 'transparent',
+    borderRightWidth: 44,
+    borderRightColor: 'transparent',
+    borderTopWidth: 101,
+    borderTopColor: 'rgba(215,210,160, 0.5)',
+    transform: [{ rotate: '-67.5deg' }],
+    position: 'absolute',
+    bottom: -19,
+    left: 25.5,
+    zIndex: 0,
+  },
   bottomLine: {
     display: 'flex',
     alignItems: 'center',
@@ -450,5 +468,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 110,
     borderTopRightRadius: 110,
     alignItems: 'center',
+    zIndex: 1,
   },
 });
