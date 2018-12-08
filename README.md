@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/github/codeforbtv/cvoeo-app/badges/gpa.svg)](https://codeclimate.com/github/codeforbtv/cvoeo-app)
+
 # Money On My Mind
 ## A Code for BTV App with sponsorship by CVOEO
 
