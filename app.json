@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "CVOEO",
-    "description": "A Code For America App to help CVOEO's Reach-Up clients stay on track with their personal finance coaching.",
+    "description": "A Code For BTV app to help CVOEO's Reach-Up clients stay on track with their personal finance coaching.",
     "slug": "CVOEO",
     "privacy": "public",
     "sdkVersion": "30.0.0",
@@ -10,7 +10,7 @@
     "githubUrl": "https://github.com/codeforbtv/cvoeo-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/momm-logo.png",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
