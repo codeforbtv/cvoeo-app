@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 // import * as constants from '../../styles/constants';
 import * as actions from './actions';
-import logo from '../../assets/images/cvoeo-logo.png';
+import logo from '../../assets/images/FinancialFuturesLogo.jpg';
 import LoginForm from '../../components/login-form';
 import commonStyles from '../../styles/common';
 
@@ -17,10 +17,10 @@ const myStyles = {
     logo: {
         justifyContent: 'center',
         alignItems: 'center',
-        paddingBottom: 15
+        paddingBottom: 10
     },
     logoText: {
-        fontSize: 32,
+        fontSize: 24,
         color: '#999',
         shadowColor: '#666',
         shadowOffset: {width: 1, height: 0},
@@ -76,7 +76,7 @@ class LoginScreen extends Component<Props> {
                     <ScrollView style={styles.scroll}>
                         <View style={{paddingLeft: 20, paddingRight: 20}}>
                             <View style={styles.logo}>
-                                <Image source={logo} style={{height: 60, width: '100%'}}/>
+                                <Image source={logo} style={{height: 80, width: '100%'}}/>
                                 <Text style={styles.logoText}>Money on My Mind</Text>
                             </View>
                             <View style={{width: '100%'}}>
