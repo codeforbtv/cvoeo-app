@@ -222,7 +222,7 @@ class Dashboard extends Component<Props> {
                     <Text style={styles.date}> </Text>
                   </View>
                   <View style={styles.biggerBlock}>
-                    <Text style={styles.subTitle}>Attended first workshop</Text>
+                    <Text style={styles.subTitle}>Attended "Spend Smart 1/2" Workshop</Text>
                     <Text style={styles.subText}> </Text>
                   </View>
                 </View>)
