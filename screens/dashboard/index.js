@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DrawerItems } from 'react-navigation';
+import * as dataSource from '../../data-sources/firebase-data';
 
 // import global actions
 import * as actions from './actions';
@@ -27,6 +28,7 @@ const styles = StyleSheet.create(commonStyles);
 
 type Props = {
   actions: Object,
+  profile: Object,
   navigation: Object
 };
 
@@ -66,6 +68,7 @@ class Dashboard extends Component<Props> {
   }
 
   render() {
+
     let arrow = this.icons['arrow'];
     let icon1 = this.icons['open'];
     if (this.state.expanded1) {
@@ -110,7 +113,7 @@ class Dashboard extends Component<Props> {
                     <Text style={styles.date}> </Text>
                   </View>
                   <View style={styles.bigBlock}>
-                    <Text style={styles.subTitle}>Spend Smart 2/2 Workshop</Text>
+                    <Text style={styles.subTitle}></Text>
                     <Text style={styles.subText}>Thu 01/04/19 8:00am</Text>
                     <Text style={styles.subText}>library</Text>
                     <Text style={styles.subText}></Text>
@@ -142,7 +145,7 @@ class Dashboard extends Component<Props> {
           <View style={styles.padding}>
             <View style={styles.progressBox}>
               <View style={styles.spaceRow}>
-                <Text style={[styles.bigTitle, styles.bigLetters]}>$150</Text>
+                <Text style={[styles.bigTitle, styles.bigLetters]}>${`${(this.props.profile ||{}).savings}`}</Text>
                 <Text style={styles.bigBlock}></Text>
                 <Text style={styles.bigTitle}>Well Done!</Text>
               </View>
@@ -265,7 +268,7 @@ class Dashboard extends Component<Props> {
   }
 }
 
-const mapStateToProps = (state) => ({ session: state.login.session });
+const mapStateToProps = (state) => ({session: state.login.session, profile: state.dashboard.profile});
 
 const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(actions, dispatch)

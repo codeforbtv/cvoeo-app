@@ -12,8 +12,8 @@ export const userLoggedOut = (dispatch) => dispatch({type: types.LOGOUT_SUCCESSF
 
 export const profileFetchSuccessful = curry((dispatch: any => void, profile: Object) => dispatch({
     type: types.FETCH_PROFILE_SUCCESS,
-    profile
-}));
+    data: profile
+})); 
 
 export const initializationSuccessful = curry((dispatch, profile) => dispatch({
     type: types.INITIALIZATION_COMPLETED,
