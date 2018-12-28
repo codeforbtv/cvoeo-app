@@ -14,8 +14,8 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
-import { LinearGradient } from 'expo';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { DrawerItems } from 'react-navigation';
 
 // import global actions
 import * as actions from './actions';
@@ -36,30 +36,53 @@ class Dashboard extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false
+      expanded1: false,
+      expanded2: false,
+      expanded3: false
     };
     this.icons = {
+      'arrow': 'angle-down',
       'open': 'angle-down',
       'close': 'angle-up'
     };
   }
 
-  toggle() {
+  toggle1() {
     this.setState({
-      expanded: !this.state.expanded
+      expanded1: !this.state.expanded1
+    });
+  }
+
+  toggle2() {
+    this.setState({
+      expanded2: !this.state.expanded2
+    });
+  }
+
+  toggle3() {
+    this.setState({
+      expanded3: !this.state.expanded3
     });
   }
 
   render() {
-    let icon = this.icons['open'];
-    if (this.state.expanded) {
-      icon = this.icons['close'];
+    let arrow = this.icons['arrow'];
+    let icon1 = this.icons['open'];
+    if (this.state.expanded1) {
+      icon1 = this.icons['close'];
+    }
+    let icon2 = this.icons['open'];
+    if (this.state.expanded2) {
+      icon2 = this.icons['close'];
+    }
+    let icon3 = this.icons['open'];
+    if (this.state.expanded3) {
+      icon3 = this.icons['close'];
     }
     return (
       <View scrollEnabled={false} style={styles.container}>
-        <View>
-          <Text style={styles.title}>Money On My Mind</Text>
-            <Button onPress={() => this.props.actions.logout} style={[styles.linkText, { fontSize: 16 }]} title='Logout'/>
+        <View style={styles.titleRow}>
+          <Text style={[styles.title, styles.blackText]}>m</Text><Text style={styles.title}>om</Text><Text style={[styles.title, styles.greenText]}>m</Text>
         </View>
         <ScrollView style={styles.main}>
           <View style={styles.padding}>
@@ -75,43 +98,44 @@ class Dashboard extends Component<Props> {
                   <Text style={styles.subText}>CVOEO Office</Text>
                 </View>
                 <View style={styles.smallBlock}>
-                  <Text style={styles.circle}>2</Text>
+                  <Text style={styles.circle}>3</Text>
                   <Text style={styles.days}>days</Text>
-                </View>
-              </View>
-              <View style={styles.moreButton}>
-                <View style={styles.row}>
-                  <Text style={styles.moreButton}></Text>
-                  <TouchableHighlight
-                    style={styles.dashButton}
-                    onPress={this.toggle.bind(this)}
-                    underlayColor="#fff">
-                    <Icon
-                      style={styles.FAIcon}
-                      name={icon}
-                    />
-                  </TouchableHighlight>
                 </View>
               </View>
 
               {
-                this.state.expanded && (<View style={styles.row}>
+                this.state.expanded1 && (<View style={styles.row}>
                   {this.props.children}
                   <View style={styles.smallerBlock}>
                     <Text style={styles.date}> </Text>
                   </View>
                   <View style={styles.bigBlock}>
-                    <Text style={styles.subTitle}>Meeting with Coach</Text>
-                    <Text style={styles.subText}>Wed 12/26/18 2:00pm</Text>
-                    <Text style={styles.subText}>CVOEO Office</Text>
+                    <Text style={styles.subTitle}>Spend Smart 2/2 Workshop</Text>
+                    <Text style={styles.subText}>Thu 01/04/19 8:00am</Text>
+                    <Text style={styles.subText}>library</Text>
                     <Text style={styles.subText}></Text>
                   </View>
                   <View style={styles.smallBlock}>
-                    <Text style={styles.circle}>9</Text>
-                    <Text style={styles.days}>days</Text>
+                    <Text style={styles.circle}>2</Text>
+                    <Text style={styles.days}>weeks</Text>
                   </View>
                 </View>)
               }
+
+              <View style={styles.moreButton}>
+                <View style={styles.row}>
+                  <Text style={styles.moreButton}></Text>
+                  <TouchableHighlight
+                    style={styles.dashButton}
+                    onPress={this.toggle1.bind(this)}
+                    underlayColor="transparent">
+                    <Icon
+                      style={[styles.FAIcon, styles.icon1]}
+                      name={icon1}
+                    />
+                  </TouchableHighlight>
+                </View>
+              </View>
 
             </View>
           </View>
@@ -133,7 +157,7 @@ class Dashboard extends Component<Props> {
                     <View style={styles.diagonalLine}></View>
                     <Icon
                       style={styles.arrow}
-                      name={icon}
+                      name={arrow}
                     />
                   </View>
                 </View>
@@ -158,23 +182,9 @@ class Dashboard extends Component<Props> {
                   <Text style={styles.subText}>some important detail</Text>
                 </View>
               </View>
-              <View style={styles.moreButton}>
-                <View style={styles.row}>
-                  <Text style={styles.moreButton}></Text>
-                  <TouchableHighlight
-                    style={styles.dashButton}
-                    onPress={this.toggle.bind(this)}
-                    underlayColor="#fff">
-                    <Icon
-                      style={styles.FAIcon}
-                      name={icon}
-                    />
-                  </TouchableHighlight>
-                </View>
-              </View>
 
               {
-                this.state.expanded && (<View style={styles.row}>
+                this.state.expanded2 && (<View style={styles.row}>
                   {this.props.children}
                   <View style={styles.smallerBlock}>
                     <Text style={styles.date}> </Text>
@@ -188,6 +198,20 @@ class Dashboard extends Component<Props> {
                 </View>)
               }
 
+              <View style={styles.moreButton}>
+                <View style={styles.row}>
+                  <Text style={styles.moreButton}></Text>
+                  <TouchableHighlight
+                    style={styles.dashButton}
+                    onPress={this.toggle2.bind(this)}
+                    underlayColor="transparent">
+                    <Icon
+                      style={[styles.FAIcon, styles.icon2]}
+                      name={icon2}
+                    />
+                  </TouchableHighlight>
+                </View>
+              </View>
             </View>
           </View>
           <View style={styles.padding}>
@@ -202,23 +226,9 @@ class Dashboard extends Component<Props> {
                   <Text style={styles.subText}>some important detail</Text>
                 </View>
               </View>
-              <View style={styles.moreButton}>
-                <View style={styles.row}>
-                  <Text style={styles.moreButton}></Text>
-                  <TouchableHighlight
-                    style={styles.dashButton}
-                    onPress={this.toggle.bind(this)}
-                    underlayColor="#fff">
-                    <Icon
-                      style={styles.FAIcon}
-                      name={icon}
-                    />
-                  </TouchableHighlight>
-                </View>
-              </View>
 
               {
-                this.state.expanded && (<View style={styles.row}>
+                this.state.expanded3 && (<View style={styles.row}>
                   {this.props.children}
                   <View style={styles.smallerBlock}>
                     <Text style={styles.date}> </Text>
@@ -230,10 +240,25 @@ class Dashboard extends Component<Props> {
                 </View>)
               }
 
+              <View style={styles.moreButton}>
+                <View style={styles.row}>
+                  <Text style={styles.moreButton}></Text>
+                  <TouchableHighlight
+                    style={styles.dashButton}
+                    onPress={this.toggle3.bind(this)}
+                    underlayColor="transparent">
+                    <Icon
+                      style={[styles.FAIcon, styles.icon3]}
+                      name={icon3}
+                    />
+                  </TouchableHighlight>
+                </View>
+              </View>
             </View>
           </View>
           <View style={styles.padding}>
           </View>
+          {/* <Button onPress={() => this.props.actions.logout.bind(this)} style={[styles.linkText, { fontSize: 16 }]} title='Logout'/> */}
         </ScrollView>
       </View>
     );

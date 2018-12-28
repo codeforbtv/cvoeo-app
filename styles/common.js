@@ -211,16 +211,29 @@ const common = {
         backgroundColor: 'transparent',
         alignSelf: 'stretch',
     },
+    titleRow: {
+        display: 'flex',
+        flexDirection: 'row',
+        backgroundColor: '#04a0c6',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     title: {
-        backgroundColor: '#4a6a7c',
+        backgroundColor: '#04a0c6',
         color: '#fff',
         fontSize: 25,
         fontWeight: 'bold',
-        paddingTop: 15,
+        paddingTop: 14,
         paddingBottom: 15,
-        alignSelf: 'stretch',
+        alignSelf: 'center',
         textAlign: 'center',
         fontFamily: 'System',
+    },
+    blackText: {
+        color: '#000',
+    },
+    greenText: {
+        color: '#b3cc95',
     },
     padding: {
         paddingTop: 8,
@@ -319,10 +332,10 @@ const common = {
         color: '#afb066',
     },
     goalsTitle: {
-        color: '#8e9d91',
+        color: '#809f5b',
     },
     completedTitle: {
-        color: '#4a6a7c',
+        color: '#037a96',
     },
     subTitle: {
         alignItems: 'center',
@@ -360,7 +373,7 @@ const common = {
         justifyContent: 'space-around',
     },
     bigTitle: {
-        color: '#38515e',
+        color: '#037a96',
         fontSize: 20,
         fontWeight: 'bold',
         paddingLeft: 24,
@@ -370,20 +383,34 @@ const common = {
     },
     bigLetters: {
         fontSize: 40,
+        color: '#000',
     },
     FAIcon: {
         alignItems: 'flex-end',
         color: 'rgba(2,2,2,0.3)',
         fontSize: 20,
         fontWeight: 'bold',
-        backgroundColor: 'rgba(50,50,50,0.2)',
         width: 28,
         height: 28,
-        borderTopLeftRadius: 14,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 0,
+        borderBottomLeftRadius: 0,
         borderBottomRightRadius: 3,
         textAlign: 'center',
-        paddingTop: 5,
-        paddingLeft: 2,
+        paddingTop: 6,
+        paddingLeft: 3,
+    },
+    icon1: {
+        backgroundColor: '#dddea8',
+        color: '#67674e',
+    },
+    icon2: {
+        backgroundColor: '#b3cc95',
+        color: '#535f46',
+    },
+    icon3: {
+        backgroundColor: '#51bed9',
+        color: '#265865',
     },
     dashButton: {
         backgroundColor: 'transparent',
@@ -422,7 +449,7 @@ const common = {
     },
     money: {
         flex: 1,
-        color: '#38515e',
+        color: '#000',
         fontWeight: 'bold',
     },
     start: {

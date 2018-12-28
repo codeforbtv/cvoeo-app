@@ -15,6 +15,8 @@ export function reducers(state = initialState.login, action) {
                 successMessage: null,
                 error: action.error
             };
+        case types.LOGOUT_SUCCESSFUL:
+            return initialState.login;
 
         default:
             return state;
