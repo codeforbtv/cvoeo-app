@@ -9,7 +9,7 @@ import {
   Button,
   TouchableHighlight,
   Animated,
-  Alert,
+  Art,
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -17,6 +17,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DrawerItems } from 'react-navigation';
 import * as dataSource from '../../data-sources/firebase-data';
+import moment from 'moment';
 
 // import global actions
 import * as actions from './actions';
@@ -48,7 +49,7 @@ class Dashboard extends Component<Props> {
       'close': 'angle-up'
     };
   }
-
+ 
   toggle1() {
     this.setState({
       expanded1: !this.state.expanded1
@@ -68,6 +69,32 @@ class Dashboard extends Component<Props> {
   }
 
   render() {
+    let upcomingTitle0 = ((((this.props.profile ||{}).upcomingArray ||{})[0] ||{}).title);
+    let upcomingDate0 = ((((this.props.profile ||{}).upcomingArray ||{})[0] ||{}).date);
+    let upcomingMoment0 = moment(new Date(((upcomingDate0 ||{}).seconds) * 1000)).format('ddd M/D/YY h:mma');
+    let upcomingMomentDays0 = moment(new Date(((upcomingDate0 ||{}).seconds) * 1000)).toNow(true);
+    let upcomingLocation0 = ((((this.props.profile ||{}).upcomingArray ||{})[0] ||{}).location);
+
+    let upcomingTitle1 = ((((this.props.profile ||{}).upcomingArray ||{})[1] ||{}).title);
+    let upcomingLocation1 = ((((this.props.profile ||{}).upcomingArray ||{})[1] ||{}).location);
+    let upcomingDate1 = ((((this.props.profile ||{}).upcomingArray ||{})[1] ||{}).date);
+    let upcomingMoment1 = moment(new Date(((upcomingDate1 ||{}).seconds) * 1000)).format('ddd M/D/YY h:mma');
+    let upcomingMomentDays1 = moment(new Date(((upcomingDate1 ||{}).seconds) * 1000)).toNow(true);
+
+    let goalTitle0 = ((((this.props.profile ||{}).goalArray ||{})[0] ||{}).title);
+    let goalDetail0 = ((((this.props.profile ||{}).goalArray ||{})[0] ||{}).detail);
+    let goalTitle1 = ((((this.props.profile ||{}).goalArray ||{})[1] ||{}).title);
+    let goalDetail1 = ((((this.props.profile ||{}).goalArray ||{})[1] ||{}).detail);
+    let goalTitle2 = ((((this.props.profile ||{}).goalArray ||{})[2] ||{}).title);
+    let goalDetail2 = ((((this.props.profile ||{}).goalArray ||{})[2] ||{}).detail);
+
+    let completeTitle0 = ((((this.props.profile ||{}).completeArray ||{})[0] ||{}).title);
+    let completeDetail0 = ((((this.props.profile ||{}).completeArray ||{})[0] ||{}).detail);
+    let completeTitle1 = ((((this.props.profile ||{}).completeArray ||{})[1] ||{}).title);
+    let completeDetail1 = ((((this.props.profile ||{}).completeArray ||{})[1] ||{}).detail);
+
+    let incentives = (this.props.profile ||{}).incentives;
+    let percentComplete = incentives/5;
 
     let arrow = this.icons['arrow'];
     let icon1 = this.icons['open'];
@@ -96,13 +123,13 @@ class Dashboard extends Component<Props> {
                   <Text style={styles.date}> </Text>
                 </View>
                 <View style={styles.bigBlock}>
-                  <Text style={styles.subTitle}>Meeting with Coach</Text>
-                  <Text style={styles.subText}>Wed 12/19/18 12:00pm</Text>
-                  <Text style={styles.subText}>CVOEO Office</Text>
+                  <Text style={styles.subTitle}>{upcomingTitle0}</Text>
+                  <Text style={styles.subText}>{upcomingMoment0}</Text>
+                  <Text style={styles.subText}>{upcomingLocation0}</Text>
                 </View>
                 <View style={styles.smallBlock}>
-                  <Text style={styles.circle}>3</Text>
-                  <Text style={styles.days}>days</Text>
+                  <Text style={styles.circle}>{upcomingMomentDays0.split(' ')[0]}</Text>
+                  <Text style={styles.days}>{upcomingMomentDays0.split(' ')[1]}</Text>
                 </View>
               </View>
 
@@ -113,14 +140,14 @@ class Dashboard extends Component<Props> {
                     <Text style={styles.date}> </Text>
                   </View>
                   <View style={styles.bigBlock}>
-                    <Text style={styles.subTitle}></Text>
-                    <Text style={styles.subText}>Thu 01/04/19 8:00am</Text>
-                    <Text style={styles.subText}>library</Text>
+                    <Text style={styles.subTitle}>{upcomingTitle1}</Text>
+                    <Text style={styles.subText}>{upcomingMoment1}</Text>
+                    <Text style={styles.subText}>{upcomingLocation1}</Text>
                     <Text style={styles.subText}></Text>
                   </View>
                   <View style={styles.smallBlock}>
-                    <Text style={styles.circle}>2</Text>
-                    <Text style={styles.days}>weeks</Text>
+                  <Text style={styles.circle}>{upcomingMomentDays1.split(' ')[0]}</Text>
+                  <Text style={styles.days}>{upcomingMomentDays1.split(' ')[1]}</Text>
                   </View>
                 </View>)
               }
@@ -145,9 +172,9 @@ class Dashboard extends Component<Props> {
           <View style={styles.padding}>
             <View style={styles.progressBox}>
               <View style={styles.spaceRow}>
-                <Text style={[styles.bigTitle, styles.bigLetters]}>${`${(this.props.profile ||{}).savings}`}</Text>
+                <Text style={[styles.bigTitle, styles.bigLetters]}>${incentives}</Text>
                 <Text style={styles.bigBlock}></Text>
-                <Text style={styles.bigTitle}>Well Done!</Text>
+                <Text style={styles.bigTitle}>{percentComplete}% Complete!</Text>
               </View>
               <View style={styles.row}>
                 <View style={styles.smallerBlock}>
@@ -181,8 +208,8 @@ class Dashboard extends Component<Props> {
                   <Text style={styles.date}> </Text>
                 </View>
                 <View style={styles.biggerBlock}>
-                  <Text style={styles.subTitle}>Attend "Spend Smart 2/2" Workshop</Text>
-                  <Text style={styles.subText}>some important detail</Text>
+                  <Text style={styles.subTitle}>{goalTitle0}</Text>
+                  <Text style={styles.subText}>{goalDetail0}</Text>
                 </View>
               </View>
 
@@ -193,9 +220,9 @@ class Dashboard extends Component<Props> {
                     <Text style={styles.date}> </Text>
                   </View>
                   <View style={styles.biggerBlock}>
-                    <Text style={styles.subTitle}>Pay down past due bills</Text>
+                    <Text style={styles.subTitle}>{goalTitle1}</Text>
                     <Text style={styles.subText}> </Text>
-                    <Text style={styles.subTitle}>Attend "Keys To Credit" workshop</Text>
+                    <Text style={styles.subTitle}>{goalTitle2}</Text>
                     <Text style={styles.subText}> </Text>
                   </View>
                 </View>)
@@ -225,8 +252,8 @@ class Dashboard extends Component<Props> {
                   <Text style={styles.date}> </Text>
                 </View>
                 <View style={styles.biggerBlock}>
-                  <Text style={styles.subTitle}>Open matched savings account</Text>
-                  <Text style={styles.subText}>some important detail</Text>
+                  <Text style={styles.subTitle}>{completeTitle0}</Text>
+                  <Text style={styles.subText}>{completeDetail0}</Text>
                 </View>
               </View>
 
@@ -237,7 +264,7 @@ class Dashboard extends Component<Props> {
                     <Text style={styles.date}> </Text>
                   </View>
                   <View style={styles.biggerBlock}>
-                    <Text style={styles.subTitle}>Attended "Spend Smart 1/2" Workshop</Text>
+                    <Text style={styles.subTitle}>{completeTitle1}</Text>
                     <Text style={styles.subText}> </Text>
                   </View>
                 </View>)
