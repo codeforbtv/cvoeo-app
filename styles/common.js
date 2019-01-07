@@ -230,7 +230,7 @@ const common = {
         fontFamily: 'System',
     },
     blackText: {
-        color: '#000',
+        color: '#020202',
     },
     greenText: {
         color: '#b3cc95',
@@ -265,7 +265,7 @@ const common = {
     },
     goalsBox: {
         flex: 1,
-        backgroundColor: '#ddebdf',
+        backgroundColor: '#e3f4cf',
         alignItems: 'center',
         borderRadius: 3,
         shadowColor: 'rgba(0, 0, 0, 0.1)',
@@ -276,7 +276,7 @@ const common = {
     },
     completedBox: {
         flex: 1,
-        backgroundColor: '#c4e8f3',
+        backgroundColor: '#cceef6',
         alignItems: 'center',
         borderRadius: 3,
         shadowColor: 'rgba(0, 0, 0, 0.1)',
@@ -285,9 +285,15 @@ const common = {
         shadowRadius: 6,
         shadowOffset: { width: 1, height: 5 },
     },
-    row: {
+    dashRow: {
         display: 'flex',
         flexDirection: 'row',
+        backgroundColor: 'transparent',
+        alignItems: 'center',
+    },
+    dashColumn: {
+        display: 'flex',
+        flexDirection: 'column',
         backgroundColor: 'transparent',
         alignItems: 'center',
     },
@@ -383,7 +389,7 @@ const common = {
     },
     bigLetters: {
         fontSize: 40,
-        color: '#000',
+        color: '#020202',
     },
     FAIcon: {
         alignItems: 'flex-end',
@@ -432,24 +438,9 @@ const common = {
         paddingTop: 4,
         fontFamily: 'System',
     },
-    bigCircle: {
-        backgroundColor: 'transparent',
-        color: '#d4af37',
-        fontSize: 60,
-        textShadowColor: 'rgba(8, 6, 3, 0.75)',
-        textShadowOffset: { width: -1, height: -1 },
-        textShadowRadius: 10,
-        paddingTop: 45,
-        width: 180,
-        height: 180,
-        borderWidth: 6,
-        borderColor: '#d4af37',
-        borderRadius: 90,
-        textAlign: 'center',
-    },
     money: {
         flex: 1,
-        color: '#000',
+        color: '#020202',
         fontWeight: 'bold',
     },
     start: {
@@ -466,12 +457,12 @@ const common = {
         width: 80,
         height: 130,
         borderRightWidth: 2,
-        borderColor: '#38515e',
+        borderColor: '#020202',
         transform: [{ rotate: '-45deg' }],
     },
     arrow: {
         fontSize: 22,
-        color: '#38515e',
+        color: '#020202',
         transform: [{ rotate: '135deg' }],
         position: 'absolute',
         top: 0,
