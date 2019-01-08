@@ -50,39 +50,88 @@ class Dashboard extends Component<Props> {
     };
   }
 
-  showUpcoming() {
+  showUpcoming(start, end) {
 
-    let myArray = ((this.props.profile || {}).upcomingArray || {});
-    let iterations = myArray.length;
-
-    let allUpcomingevents = [];
-    for (i=1;i<iterations;i++) {
+    let allUpcomingEvents = [];
+    for (i = start; i < end; i++) {
 
       let upcomingTitle = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).title);
-      let upcomingLocation = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).location);
-      let upcomingDate = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).date);
-      let upcomingMoment = moment(new Date(((upcomingDate || {}).seconds) * 1000)).format('ddd M/D/YY h:mma');
-      let upcomingMomentDays = moment(new Date(((upcomingDate || {}).seconds) * 1000)).toNow(true);
+      if (upcomingTitle) {
+        let upcomingLocation = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).location);
+        let upcomingDate = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).date);
+        let upcomingMoment = moment(new Date(((upcomingDate || {}).seconds) * 1000)).format('ddd M/D/YY h:mma');
+        let upcomingMomentDays = moment(new Date(((upcomingDate || {}).seconds) * 1000)).toNow(true);
 
-      allUpcomingevents.push(
-      <View style={styles.dashRow}>
-        <View style={styles.smallerBlock}>
-          <Text style={styles.date}> </Text>
-        </View>
-        <View style={styles.bigBlock}>
-          <Text style={styles.subTitle}>{upcomingTitle}</Text>
-          <Text style={styles.subText}>{upcomingMoment}</Text>
-          <Text style={styles.subText}>{upcomingLocation}</Text>
-          <Text style={styles.subText}></Text>
-        </View>
-        <View style={styles.smallBlock}>
-          <Text style={styles.circle}>{upcomingMomentDays.split(' ')[0]}</Text>
-          <Text style={styles.days}>{upcomingMomentDays.split(' ')[1]}</Text>
-        </View>
-      </View>
-    );
+        allUpcomingEvents.push(
+          <View style={styles.dashRow} key={i}>
+            <View style={styles.smallerBlock}>
+              <Text style={styles.date}> </Text>
+            </View>
+            <View style={styles.bigBlock}>
+              <Text style={styles.subTitle}>{upcomingTitle}</Text>
+              <Text style={styles.subText}>{upcomingMoment}</Text>
+              <Text style={styles.subText}>{upcomingLocation}</Text>
+              <Text style={styles.subText}></Text>
+            </View>
+            <View style={styles.smallBlock}>
+              <Text style={styles.circle}>{upcomingMomentDays.split(' ')[0]}</Text>
+              <Text style={styles.days}>{upcomingMomentDays.split(' ')[1]}</Text>
+            </View>
+          </View>
+        );
+      }
     }
-    return allUpcomingevents;
+    return allUpcomingEvents;
+  }
+
+  showGoals(start, end) {
+
+    let allGoals = [];
+    for (i = start; i < end; i++) {
+
+      let goalTitle = ((((this.props.profile || {}).goalArray || {})[i] || {}).title);
+      let goalDetail = ((((this.props.profile || {}).goalArray || {})[i] || {}).detail);
+      if (goalTitle) {
+
+        allGoals.push(
+          <View style={styles.dashRow} key={i}>
+            <View style={styles.smallerBlock}>
+              <Text style={styles.date}> </Text>
+            </View>
+            <View style={styles.biggerBlock}>
+              <Text style={styles.subTitle}>{goalTitle}</Text>
+              <Text style={styles.subText}>{goalDetail}</Text>
+            </View>
+          </View>
+        );
+      }
+    }
+    return allGoals;
+  }
+
+  showComplete(start, end) {
+
+    let allComplete = [];
+    for (i = start; i < end; i++) {
+
+      let completeTitle = ((((this.props.profile || {}).completeArray || {})[i] || {}).title);
+      let completeDetail = ((((this.props.profile || {}).completeArray || {})[i] || {}).detail);
+      if (completeTitle) {
+
+        allComplete.push(
+          <View style={styles.dashRow} key={i}>
+            <View style={styles.smallerBlock}>
+              <Text style={styles.date}> </Text>
+            </View>
+            <View style={styles.biggerBlock}>
+              <Text style={styles.subTitle}>{completeTitle}</Text>
+              <Text style={styles.subText}>{completeDetail}</Text>
+            </View>
+          </View>
+        );
+      }
+    }
+    return allComplete;
   }
 
   toggle1() {
@@ -104,31 +153,12 @@ class Dashboard extends Component<Props> {
   }
 
   render() {
-    let upcomingTitle0 = ((((this.props.profile || {}).upcomingArray || {})[0] || {}).title);
-    let upcomingDate0 = ((((this.props.profile || {}).upcomingArray || {})[0] || {}).date);
-    let upcomingMoment0 = moment(new Date(((upcomingDate0 || {}).seconds) * 1000)).format('ddd M/D/YY h:mma');
-    let upcomingMomentDays0 = moment(new Date(((upcomingDate0 || {}).seconds) * 1000)).toNow(true);
-    let upcomingLocation0 = ((((this.props.profile || {}).upcomingArray || {})[0] || {}).location);
 
-    let upcomingTitle1 = ((((this.props.profile || {}).upcomingArray || {})[1] || {}).title);
-    let upcomingLocation1 = ((((this.props.profile || {}).upcomingArray || {})[1] || {}).location);
-    let upcomingDate1 = ((((this.props.profile || {}).upcomingArray || {})[1] || {}).date);
-    let upcomingMoment1 = moment(new Date(((upcomingDate1 || {}).seconds) * 1000)).format('ddd M/D/YY h:mma');
-    let upcomingMomentDays1 = moment(new Date(((upcomingDate1 || {}).seconds) * 1000)).toNow(true);
+    let upcomingArray = ((this.props.profile || {}).upcomingArray || {});
+    let goalArray = ((this.props.profile || {}).goalArray || {});
+    let completeArray = ((this.props.profile || {}).completeArray || {});
 
-    let goalTitle0 = ((((this.props.profile || {}).goalArray || {})[0] || {}).title);
-    let goalDetail0 = ((((this.props.profile || {}).goalArray || {})[0] || {}).detail);
-    let goalTitle1 = ((((this.props.profile || {}).goalArray || {})[1] || {}).title);
-    let goalDetail1 = ((((this.props.profile || {}).goalArray || {})[1] || {}).detail);
-    let goalTitle2 = ((((this.props.profile || {}).goalArray || {})[2] || {}).title);
-    let goalDetail2 = ((((this.props.profile || {}).goalArray || {})[2] || {}).detail);
-
-    let completeTitle0 = ((((this.props.profile || {}).completeArray || {})[0] || {}).title);
-    let completeDetail0 = ((((this.props.profile || {}).completeArray || {})[0] || {}).detail);
-    let completeTitle1 = ((((this.props.profile || {}).completeArray || {})[1] || {}).title);
-    let completeDetail1 = ((((this.props.profile || {}).completeArray || {})[1] || {}).detail);
-
-    let incentives = (this.props.profile || {}).incentives;
+    let incentives = ((this.props.profile || {}).incentives || 0);
     let percentComplete = incentives / 5;
 
     let arrow = this.icons['arrow'];
@@ -153,26 +183,12 @@ class Dashboard extends Component<Props> {
           <View style={styles.padding}>
             <View style={styles.upcomingBox}>
               <Text style={[styles.blockTitle, styles.upcomingTitle]}>COMING UP:</Text>
-              <View style={styles.dashRow}>
-                <View style={styles.smallerBlock}>
-                  <Text style={styles.date}> </Text>
-                </View>
-                <View style={styles.bigBlock}>
-                  <Text style={styles.subTitle}>{upcomingTitle0}</Text>
-                  <Text style={styles.subText}>{upcomingMoment0}</Text>
-                  <Text style={styles.subText}>{upcomingLocation0}</Text>
-                </View>
-                <View style={styles.smallBlock}>
-                  <Text style={styles.circle}>{upcomingMomentDays0.split(' ')[0]}</Text>
-                  <Text style={styles.days}>{upcomingMomentDays0.split(' ')[1]}</Text>
-                </View>
-              </View>
-
+              {this.showUpcoming(0, 1)}
               {
                 this.state.expanded1 && (
                   <View style={styles.dashColumn}>
                     {this.props.children}
-                    {this.showUpcoming()}
+                    {this.showUpcoming(1, upcomingArray.length)}
                   </View>
                 )
               }
@@ -228,28 +244,14 @@ class Dashboard extends Component<Props> {
           <View style={styles.padding}>
             <View style={styles.goalsBox}>
               <Text style={[styles.blockTitle, styles.goalsTitle]}>CURRENT GOALS:</Text>
-              <View style={styles.dashRow}>
-                <View style={styles.smallerBlock}>
-                  <Text style={styles.date}> </Text>
-                </View>
-                <View style={styles.biggerBlock}>
-                  <Text style={styles.subTitle}>{goalTitle0}</Text>
-                  <Text style={styles.subText}>{goalDetail0}</Text>
-                </View>
-              </View>
+
+              {this.showGoals(0, 1)}
 
               {
-                this.state.expanded2 && (<View style={styles.dashRow}>
+                this.state.expanded2 && (
+                  <View style={styles.dashColumn}>
                   {this.props.children}
-                  <View style={styles.smallerBlock}>
-                    <Text style={styles.date}> </Text>
-                  </View>
-                  <View style={styles.biggerBlock}>
-                    <Text style={styles.subTitle}>{goalTitle1}</Text>
-                    <Text style={styles.subText}> </Text>
-                    <Text style={styles.subTitle}>{goalTitle2}</Text>
-                    <Text style={styles.subText}> </Text>
-                  </View>
+                  {this.showGoals(1, goalArray.length)}
                 </View>)
               }
 
@@ -272,26 +274,12 @@ class Dashboard extends Component<Props> {
           <View style={styles.padding}>
             <View style={styles.completedBox}>
               <Text style={[styles.blockTitle, styles.completedTitle]}>COMPLETED:</Text>
-              <View style={styles.dashRow}>
-                <View style={styles.smallerBlock}>
-                  <Text style={styles.date}> </Text>
-                </View>
-                <View style={styles.biggerBlock}>
-                  <Text style={styles.subTitle}>{completeTitle0}</Text>
-                  <Text style={styles.subText}>{completeDetail0}</Text>
-                </View>
-              </View>
-
+              {this.showComplete(0, 1)}
               {
-                this.state.expanded3 && (<View style={styles.dashRow}>
+                this.state.expanded3 && (
+                  <View style={styles.dashColumn}>
                   {this.props.children}
-                  <View style={styles.smallerBlock}>
-                    <Text style={styles.date}> </Text>
-                  </View>
-                  <View style={styles.biggerBlock}>
-                    <Text style={styles.subTitle}>{completeTitle1}</Text>
-                    <Text style={styles.subText}> </Text>
-                  </View>
+                  {this.showComplete(1, completeArray.length)}
                 </View>)
               }
 
