@@ -114,7 +114,8 @@ class Dashboard extends Component<Props> {
 
       let goalTitle = ((((this.props.profile || {}).goalArray || {})[i] || {}).title);
       let goalDetail = ((((this.props.profile || {}).goalArray || {})[i] || {}).detail);
-      if (goalTitle) {
+      let completed = ((((this.props.profile || {}).goalArray || {})[i] || {}).completed);
+      if (!completed) {
 
         allGoals.push(
           <View style={styles.dashRow} key={i}>
@@ -137,9 +138,10 @@ class Dashboard extends Component<Props> {
     let allComplete = [];
     for (i = start; i < end; i++) {
 
-      let completeTitle = ((((this.props.profile || {}).completeArray || {})[i] || {}).title);
-      let completeDetail = ((((this.props.profile || {}).completeArray || {})[i] || {}).detail);
-      if (completeTitle) {
+      let title = ((((this.props.profile || {}).goalArray || {})[i] || {}).title);
+      let detail = ((((this.props.profile || {}).goalArray || {})[i] || {}).detail);
+      let completed = ((((this.props.profile || {}).goalArray || {})[i] || {}).completed);
+      if (completed) {
 
         allComplete.push(
           <View style={styles.dashRow} key={i}>
@@ -147,8 +149,8 @@ class Dashboard extends Component<Props> {
               <Text style={styles.date}> </Text>
             </View>
             <View style={styles.biggerBlock}>
-              <Text style={styles.subTitle}>{completeTitle}</Text>
-              <Text style={styles.subText}>{completeDetail}</Text>
+              <Text style={styles.subTitle}>{title}</Text>
+              <Text style={styles.subText}>{detail}</Text>
             </View>
           </View>
         );
@@ -343,7 +345,7 @@ class Dashboard extends Component<Props> {
                 this.state.expanded3 && (
                   <View style={styles.dashColumn}>
                     {this.props.children}
-                    {this.showComplete(1, completeArray.length)}
+                    {this.showComplete(1, goalArray.length)}
                   </View>)
               }
 
@@ -365,7 +367,6 @@ class Dashboard extends Component<Props> {
           </View>
           <View style={styles.padding}>
           </View>
-          {/* <Button onPress={() => this.props.actions.logout.bind(this)} style={[styles.linkText, { fontSize: 16 }]} title='Logout'/> */}
         </ScrollView>
       </View>
     );
