@@ -183,7 +183,7 @@ class Dashboard extends Component<Props> {
 
     let incentives = ((this.props.profile || {}).incentives || 0);
     let percentComplete = incentives / 5;
-    let rotation = (1.75 * percentComplete) - 86;
+    let rotation = (1.72 * percentComplete) - 86;
 
     let icon1 = this.icons['open'];
     if (this.state.expanded1) {
@@ -277,7 +277,7 @@ class Dashboard extends Component<Props> {
                         clipPath="url(#clip)"
                       />
                     <Svg.Path
-                      d="M 100 98.5 L 100 0"
+                      d="M 100 100 L 100 0"
                       strokeWidth={2}
                       stroke="#020202"
                     />
