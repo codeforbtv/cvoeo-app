@@ -9,7 +9,7 @@ import {
   Button,
   TouchableHighlight,
   Animated,
-  Art,
+  ART,
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { DrawerItems } from 'react-navigation';
 import * as dataSource from '../../data-sources/firebase-data';
 import moment from 'moment';
+import { Svg } from 'expo';
 
 // import global actions
 import * as actions from './actions';
@@ -26,6 +27,12 @@ import * as actions from './actions';
 // @TODO: move the global styles from this screen into ../../styles/common 
 import commonStyles from '../../styles/common';
 const styles = StyleSheet.create(commonStyles);
+
+const {
+  Surface,
+  Group,
+  Shape,
+} = ART;
 
 type Props = {
   actions: Object,
@@ -44,23 +51,39 @@ class Dashboard extends Component<Props> {
       expanded3: false
     };
     this.icons = {
-      'arrow': 'angle-down',
       'open': 'angle-down',
       'close': 'angle-up'
     };
   }
+
 
   showUpcoming(start, end) {
 
     let allUpcomingEvents = [];
     for (i = start; i < end; i++) {
 
-      let upcomingTitle = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).title);
-      if (upcomingTitle) {
-        let upcomingLocation = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).location);
-        let upcomingDate = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).date);
-        let upcomingMoment = moment(new Date(((upcomingDate || {}).seconds) * 1000)).format('ddd M/D/YY h:mma');
-        let upcomingMomentDays = moment(new Date(((upcomingDate || {}).seconds) * 1000)).toNow(true);
+      let title = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).title);
+      let location = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).location);
+      let date = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).date);
+      let momentDate = moment(new Date(((date || {}).seconds) * 1000));
+      let localDate = moment(momentDate.toISOString()).toString();
+      let formattedDate = moment(localDate).format('ddd M/D/YY h:mma');
+      let dayNumber = momentDate.toNow(true).split(' ')[0];
+      let dayWord = momentDate.toNow(true).split(' ')[1];
+
+      if (title && moment(Date.now()) < momentDate) {
+
+        if (dayNumber === "a") {
+          dayNumber = 1;
+        }
+
+        if (dayWord === "days" && dayNumber >= 7) {
+          dayNumber = Math.floor(dayNumber / 7);
+          dayWord = "weeks";
+          if (dayNumber === 1) {
+            dayWord = "week";
+          }
+        }
 
         allUpcomingEvents.push(
           <View style={styles.dashRow} key={i}>
@@ -68,14 +91,14 @@ class Dashboard extends Component<Props> {
               <Text style={styles.date}> </Text>
             </View>
             <View style={styles.bigBlock}>
-              <Text style={styles.subTitle}>{upcomingTitle}</Text>
-              <Text style={styles.subText}>{upcomingMoment}</Text>
-              <Text style={styles.subText}>{upcomingLocation}</Text>
+              <Text style={styles.subTitle}>{title}</Text>
+              <Text style={styles.subText}>{formattedDate}</Text>
+              <Text style={styles.subText}>{location}</Text>
               <Text style={styles.subText}></Text>
             </View>
             <View style={styles.smallBlock}>
-              <Text style={styles.circle}>{upcomingMomentDays.split(' ')[0]}</Text>
-              <Text style={styles.days}>{upcomingMomentDays.split(' ')[1]}</Text>
+              <Text style={styles.circle}>{dayNumber}</Text>
+              <Text style={styles.days}>{dayWord}</Text>
             </View>
           </View>
         );
@@ -160,8 +183,8 @@ class Dashboard extends Component<Props> {
 
     let incentives = ((this.props.profile || {}).incentives || 0);
     let percentComplete = incentives / 5;
+    let rotation = (1.75 * percentComplete) - 86;
 
-    let arrow = this.icons['arrow'];
     let icon1 = this.icons['open'];
     if (this.state.expanded1) {
       icon1 = this.icons['close'];
@@ -223,14 +246,55 @@ class Dashboard extends Component<Props> {
                   <Text style={[styles.money, styles.end]}>$0</Text>
                 </View>
                 <View style={styles.bottomLine}>
-                  <View style={styles.cone}></View>
-                  <View style={styles.semiCircle}>
-                    <View style={styles.diagonalLine}></View>
-                    <Icon
-                      style={styles.arrow}
-                      name={arrow}
+
+                  <Svg height={100} width={200}>
+                    <Svg.Circle
+                      cx={100}
+                      cy={100}
+                      r={85}
+                      strokeWidth={6}
+                      stroke="#dc552b"
+                      fill="#eeeec2"
                     />
-                  </View>
+                    <Svg.G rotation={rotation} origin="100, 100">
+                      <Svg.ClipPath id="clip">
+                        <Svg.Rect
+                          x={100}
+                          height={200}
+                          width={200}
+                        />
+                        <Svg.Polygon
+                          points="50,50 120,120" />
+
+                      </Svg.ClipPath>
+                      <Svg.Circle
+                        cx={100}
+                        cy={100}
+                        r={85}
+                        strokeWidth={6}
+                        stroke="#fea488"
+                        fill="#fdfffb"
+                        clipPath="url(#clip)"
+                      />
+                    <Svg.Path
+                      d="M 100 98.5 L 100 0"
+                      strokeWidth={2}
+                      stroke="#020202"
+                    />
+                    <Svg.Path
+                      d="M 100 0 L 95 5"
+                      strokeWidth={2}
+                      stroke="#020202"
+                    />
+                    <Svg.Path
+                      d="M 100 0 L 105 5"
+                      strokeWidth={2}
+                      stroke="#020202"
+                    />
+                    </Svg.G>
+
+                  </Svg>
+
                 </View>
                 <View style={styles.smallerBlock}>
                   <Text style={styles.bigBlock}></Text>
@@ -250,9 +314,9 @@ class Dashboard extends Component<Props> {
               {
                 this.state.expanded2 && (
                   <View style={styles.dashColumn}>
-                  {this.props.children}
-                  {this.showGoals(1, goalArray.length)}
-                </View>)
+                    {this.props.children}
+                    {this.showGoals(1, goalArray.length)}
+                  </View>)
               }
 
               <View style={styles.moreButton}>
@@ -278,9 +342,9 @@ class Dashboard extends Component<Props> {
               {
                 this.state.expanded3 && (
                   <View style={styles.dashColumn}>
-                  {this.props.children}
-                  {this.showComplete(1, completeArray.length)}
-                </View>)
+                    {this.props.children}
+                    {this.showComplete(1, completeArray.length)}
+                  </View>)
               }
 
               <View style={styles.moreButton}>
