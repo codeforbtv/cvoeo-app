@@ -57,10 +57,12 @@ class Dashboard extends Component<Props> {
   }
 
 
-  showUpcoming(start, end) {
+  showUpcoming(firstOrRemaining) {
+
+    let upcomingArray = ((this.props.profile || {}).upcomingArray || {});
 
     let allUpcomingEvents = [];
-    for (i = start; i < end; i++) {
+    for (i = 0; i < upcomingArray.length; i++) {
 
       let title = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).title);
       let location = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).location);
@@ -104,46 +106,26 @@ class Dashboard extends Component<Props> {
         );
       }
     }
-    return allUpcomingEvents;
+    if (firstOrRemaining === 'first') {
+    return allUpcomingEvents[0];
+    }
+    if (firstOrRemaining === 'remaining') {
+      return allUpcomingEvents.slice(1);
+    }
   }
 
-  showGoals(start, end) {
+  showGoals(firstOrRemaining, isComplete) {
+    let goalArray = ((this.props.profile || {}).goalArray || {});
 
     let allGoals = [];
-    for (i = start; i < end; i++) {
-
-      let goalTitle = ((((this.props.profile || {}).goalArray || {})[i] || {}).title);
-      let goalDetail = ((((this.props.profile || {}).goalArray || {})[i] || {}).detail);
-      let completed = ((((this.props.profile || {}).goalArray || {})[i] || {}).completed);
-      if (!completed) {
-
-        allGoals.push(
-          <View style={styles.dashRow} key={i}>
-            <View style={styles.smallerBlock}>
-              <Text style={styles.date}> </Text>
-            </View>
-            <View style={styles.biggerBlock}>
-              <Text style={styles.subTitle}>{goalTitle}</Text>
-              <Text style={styles.subText}>{goalDetail}</Text>
-            </View>
-          </View>
-        );
-      }
-    }
-    return allGoals;
-  }
-
-  showComplete(start, end) {
-
-    let allComplete = [];
-    for (i = start; i < end; i++) {
+    for (i = 0; i < goalArray.length; i++) {
 
       let title = ((((this.props.profile || {}).goalArray || {})[i] || {}).title);
       let detail = ((((this.props.profile || {}).goalArray || {})[i] || {}).detail);
       let completed = ((((this.props.profile || {}).goalArray || {})[i] || {}).completed);
-      if (completed) {
+      if (completed === isComplete) {
 
-        allComplete.push(
+        allGoals.push(
           <View style={styles.dashRow} key={i}>
             <View style={styles.smallerBlock}>
               <Text style={styles.date}> </Text>
@@ -156,8 +138,15 @@ class Dashboard extends Component<Props> {
         );
       }
     }
-    return allComplete;
+    if (firstOrRemaining === 'first') {
+      return allGoals[0];
+    }
+    if (firstOrRemaining === 'remaining') {
+      return allGoals.slice(1);
+    }
+
   }
+
 
   toggle1() {
     this.setState({
@@ -178,10 +167,6 @@ class Dashboard extends Component<Props> {
   }
 
   render() {
-
-    let upcomingArray = ((this.props.profile || {}).upcomingArray || {});
-    let goalArray = ((this.props.profile || {}).goalArray || {});
-    let completeArray = ((this.props.profile || {}).completeArray || {});
 
     let incentives = ((this.props.profile || {}).incentives || 0);
     let percentComplete = incentives / 5;
@@ -208,12 +193,12 @@ class Dashboard extends Component<Props> {
           <View style={styles.padding}>
             <View style={styles.upcomingBox}>
               <Text style={[styles.blockTitle, styles.upcomingTitle]}>COMING UP:</Text>
-              {this.showUpcoming(0, 1)}
+              {this.showUpcoming('first')}
               {
                 this.state.expanded1 && (
                   <View style={styles.dashColumn}>
                     {this.props.children}
-                    {this.showUpcoming(1, upcomingArray.length)}
+                    {this.showUpcoming('remaining')}
                   </View>
                 )
               }
@@ -311,13 +296,13 @@ class Dashboard extends Component<Props> {
             <View style={styles.goalsBox}>
               <Text style={[styles.blockTitle, styles.goalsTitle]}>CURRENT GOALS:</Text>
 
-              {this.showGoals(0, 1)}
+              {this.showGoals('first', false)}
 
               {
                 this.state.expanded2 && (
                   <View style={styles.dashColumn}>
                     {this.props.children}
-                    {this.showGoals(1, goalArray.length)}
+                    {this.showGoals('remaining', false)}
                   </View>)
               }
 
@@ -340,12 +325,12 @@ class Dashboard extends Component<Props> {
           <View style={styles.padding}>
             <View style={styles.completedBox}>
               <Text style={[styles.blockTitle, styles.completedTitle]}>COMPLETED:</Text>
-              {this.showComplete(0, 1)}
+              {this.showGoals('first', true)}
               {
                 this.state.expanded3 && (
                   <View style={styles.dashColumn}>
                     {this.props.children}
-                    {this.showComplete(1, goalArray.length)}
+                    {this.showGoals('remaining', true)}
                   </View>)
               }
 
