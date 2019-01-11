@@ -10,6 +10,7 @@ import {
   TouchableHighlight,
   Animated,
   ART,
+  Alert,
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -51,6 +52,7 @@ class Dashboard extends Component<Props> {
       expanded3: false
     };
     this.icons = {
+      'dots': 'ellipsis-v',
       'open': 'angle-down',
       'close': 'angle-up'
     };
@@ -75,7 +77,7 @@ class Dashboard extends Component<Props> {
 
       if (title && moment(Date.now()) < momentDate) {
 
-        if (dayNumber === "a") {
+        if (dayNumber === "a" || dayNumber === "an") {
           dayNumber = 1;
         }
 
@@ -99,7 +101,9 @@ class Dashboard extends Component<Props> {
               <Text style={styles.subText}></Text>
             </View>
             <View style={styles.smallBlock}>
-              <Text style={styles.circle}>{dayNumber}</Text>
+            <View style={styles.circle}>
+              <Text style={styles.circleText}>{dayNumber}</Text>
+              </View>
               <Text style={styles.days}>{dayWord}</Text>
             </View>
           </View>
@@ -107,7 +111,7 @@ class Dashboard extends Component<Props> {
       }
     }
     if (firstOrRemaining === 'first') {
-    return allUpcomingEvents[0];
+      return allUpcomingEvents[0];
     }
     if (firstOrRemaining === 'remaining') {
       return allUpcomingEvents.slice(1);
@@ -139,6 +143,23 @@ class Dashboard extends Component<Props> {
       }
     }
     if (firstOrRemaining === 'first') {
+      if (!allGoals[0]) {
+          let message = ["Let's work together on some goals to move you forward.", "Schedule an appointment with your counselor today!"];
+        if (isComplete) {
+          message = ["Keep up the good work.", "You'll finish a goal soon!"];
+        }
+        allGoals.push (
+          <View style={styles.dashRow} key={i}>
+            <View style={styles.smallerBlock}>
+              <Text style={styles.date}> </Text>
+            </View>
+            <View style={styles.biggerBlock}>
+              <Text style={styles.subTitle}>{message[0]}</Text>
+              <Text style={styles.subText}>{message[1]}</Text>
+            </View>
+          </View>
+        );
+      }
       return allGoals[0];
     }
     if (firstOrRemaining === 'remaining') {
@@ -147,6 +168,18 @@ class Dashboard extends Component<Props> {
 
   }
 
+  ellipsisAlert() {
+    Alert.alert(
+    'Alert Title',
+    'My Alert Msg',
+    [
+      {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+      {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ],
+    { cancelable: false }
+  )
+  }
 
   toggle1() {
     this.setState({
@@ -172,6 +205,7 @@ class Dashboard extends Component<Props> {
     let percentComplete = incentives / 5;
     let rotation = (1.72 * percentComplete) - 86;
 
+    let dots = this.icons['dots'];
     let icon1 = this.icons['open'];
     if (this.state.expanded1) {
       icon1 = this.icons['close'];
@@ -186,8 +220,20 @@ class Dashboard extends Component<Props> {
     }
     return (
       <View scrollEnabled={false} style={styles.container}>
-        <View style={styles.titleRow}>
-          <Text style={[styles.title, styles.blackText]}>m</Text><Text style={styles.title}>om</Text><Text style={[styles.title, styles.greenText]}>m</Text>
+        <View style={styles.dashRow}>
+          <View><Text style={styles.dots}>&nbsp;</Text></View>
+          <View style={styles.titleRow}>
+            <Text style={[styles.title, styles.blackText]}>m</Text><Text style={styles.title}>om</Text><Text style={[styles.title, styles.greenText]}>m</Text>
+          </View>
+          <TouchableHighlight
+            onPress={this.ellipsisAlert.bind(this)}
+            underlayColor="transparent"
+            >
+            <Icon
+              name={dots}
+              style={[styles.title, styles.dots]}
+            />
+          </TouchableHighlight>
         </View>
         <ScrollView style={styles.main}>
           <View style={styles.padding}>
@@ -263,21 +309,21 @@ class Dashboard extends Component<Props> {
                         fill="#fdfffb"
                         clipPath="url(#clip)"
                       />
-                    <Svg.Path
-                      d="M 100 100 L 100 0"
-                      strokeWidth={2}
-                      stroke="#020202"
-                    />
-                    <Svg.Path
-                      d="M 100 0 L 95 5"
-                      strokeWidth={2}
-                      stroke="#020202"
-                    />
-                    <Svg.Path
-                      d="M 100 0 L 105 5"
-                      strokeWidth={2}
-                      stroke="#020202"
-                    />
+                      <Svg.Path
+                        d="M 100 100 L 100 0"
+                        strokeWidth={2}
+                        stroke="#020202"
+                      />
+                      <Svg.Path
+                        d="M 100 0 L 95 5"
+                        strokeWidth={2}
+                        stroke="#020202"
+                      />
+                      <Svg.Path
+                        d="M 100 0 L 105 5"
+                        strokeWidth={2}
+                        stroke="#020202"
+                      />
                     </Svg.G>
 
                   </Svg>

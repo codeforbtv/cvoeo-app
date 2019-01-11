@@ -212,6 +212,7 @@ const common = {
         alignSelf: 'stretch',
     },
     titleRow: {
+        flex: 10,
         display: 'flex',
         flexDirection: 'row',
         backgroundColor: '#04a0c6',
@@ -223,7 +224,7 @@ const common = {
         color: '#fff',
         fontSize: 25,
         fontWeight: 'bold',
-        paddingTop: 14,
+        paddingTop: 12,
         paddingBottom: 15,
         alignSelf: 'center',
         textAlign: 'center',
@@ -234,6 +235,16 @@ const common = {
     },
     greenText: {
         color: '#b3cc95',
+    },
+    dots: {
+        backgroundColor: '#04a0c6',
+        flex: 1,
+        fontWeight: 'normal',
+        fontSize: 20,
+        paddingTop: 20,
+        paddingRight: 18,
+        paddingLeft: 18,
+        paddingBottom: 12,
     },
     padding: {
         paddingTop: 8,
@@ -429,13 +440,16 @@ const common = {
     },
     circle: {
         backgroundColor: '#fea488',
-        color: '#fff',
-        fontSize: 22,
         width: 40,
         height: 40,
         borderRadius: 20,
+        paddingTop: 5,
+    },
+    circleText: {
+        backgroundColor: 'transparent',
+        color: '#fff',
+        fontSize: 22,
         textAlign: 'center',
-        paddingTop: 4,
         fontFamily: 'System',
     },
     money: {
