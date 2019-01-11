@@ -202,7 +202,7 @@ class Dashboard extends Component<Props> {
   render() {
 
     let incentivesEarned = ((this.props.profile || {}).incentivesEarned || 0);
-    let incentivesAvailable = 500;
+    const incentivesAvailable = 500;
     let percentComplete = (incentivesEarned / incentivesAvailable) * 100;
     let rotation = (1.72 * percentComplete) - 86;
 
