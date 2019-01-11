@@ -201,8 +201,9 @@ class Dashboard extends Component<Props> {
 
   render() {
 
-    let incentives = ((this.props.profile || {}).incentives || 0);
-    let percentComplete = incentives / 5;
+    let incentivesEarned = ((this.props.profile || {}).incentivesEarned || 0);
+    let incentivesAvailable = 500;
+    let percentComplete = (incentivesEarned / incentivesAvailable) * 100;
     let rotation = (1.72 * percentComplete) - 86;
 
     let dots = this.icons['dots'];
@@ -269,7 +270,7 @@ class Dashboard extends Component<Props> {
           <View style={styles.padding}>
             <View style={styles.progressBox}>
               <View style={styles.spaceRow}>
-                <Text style={[styles.bigTitle, styles.bigLetters]}>${incentives}</Text>
+                <Text style={[styles.bigTitle, styles.bigLetters]}>${incentivesEarned}</Text>
                 <Text style={styles.bigBlock}></Text>
                 <Text style={styles.bigTitle}>{percentComplete}% Complete!</Text>
               </View>
