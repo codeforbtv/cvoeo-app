@@ -1,507 +1,415 @@
 // @flow
 
 import React, { Component } from 'react';
-import {bindActionCreators} from 'redux';
-import { 
-    StyleSheet, 
-    Text, 
-    View, 
-    TouchableHighlight, 
-    Animated, 
-    Alert, 
-    TouchableOpacity, 
+import { bindActionCreators } from 'redux';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TouchableHighlight,
+  Animated,
+  ART,
+  Alert,
+  TouchableOpacity,
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
-import { LinearGradient } from 'expo';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { DrawerItems } from 'react-navigation';
+import * as dataSource from '../../data-sources/firebase-data';
+import moment from 'moment';
+import { Svg } from 'expo';
 
 // import global actions
 import * as actions from './actions';
 
 // import global styles
 // @TODO: move the global styles from this screen into ../../styles/common 
-// import commonStyles from '../../styles/common';
-// const styles = StyleSheet.create(commonStyles);
+import commonStyles from '../../styles/common';
+const styles = StyleSheet.create(commonStyles);
+
+const {
+  Surface,
+  Group,
+  Shape,
+} = ART;
 
 type Props = {
-    actions: Object,
-    navigation: Object
+  actions: Object,
+  profile: Object,
+  navigation: Object
 };
 
 
 class Dashboard extends Component<Props> {
 
-    constructor(props) {
-        super(props);
-        this.state = { 
-            expanded: false 
-        };
-        this.icons = {
-          'open': 'angle-down',
-          'close': 'angle-up'
-        };    
-      }
-    
-      toggle() {
-        this.setState({
-          expanded: !this.state.expanded
-        });
-      }
-    
-      render() {
-        let icon = this.icons['open'];
-        if (this.state.expanded) {
-          icon = this.icons['close'];
+  constructor(props) {
+    super(props);
+    this.state = {
+      expanded1: false,
+      expanded2: false,
+      expanded3: false
+    };
+    this.icons = {
+      'dots': 'ellipsis-v',
+      'open': 'angle-down',
+      'close': 'angle-up'
+    };
+  }
+
+
+  showUpcoming(firstOrRemaining) {
+
+    let upcomingArray = ((this.props.profile || {}).upcomingArray || {});
+
+    let allUpcomingEvents = [];
+    for (i = 0; i < upcomingArray.length; i++) {
+
+      let title = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).title);
+      let location = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).location);
+      let date = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).date);
+      let momentDate = moment(new Date(((date || {}).seconds) * 1000));
+      let localDate = moment(momentDate.toISOString()).toString();
+      let formattedDate = moment(localDate).format('ddd M/D/YY h:mma');
+      let dayNumber = momentDate.toNow(true).split(' ')[0];
+      let dayWord = momentDate.toNow(true).split(' ')[1];
+
+      if (title && moment(Date.now()) < momentDate) {
+
+        if (dayNumber === "a" || dayNumber === "an") {
+          dayNumber = 1;
         }
-        return (
-          <View scrollEnabled={false} style={styles.container}>
-            <View>
-              <Text style={styles.title}>Money On My Mind</Text>
+
+        if (dayWord === "days" && dayNumber >= 7) {
+          dayNumber = Math.floor(dayNumber / 7);
+          dayWord = "weeks";
+          if (dayNumber === 1) {
+            dayWord = "week";
+          }
+        }
+
+        allUpcomingEvents.push(
+          <View style={styles.dashRow} key={i}>
+            <View style={styles.smallerBlock}>
+              <Text style={styles.date}> </Text>
             </View>
-            <ScrollView style={styles.main}>
-              <View style={styles.padding}>
-                <View style={styles.upcomingBox}>
-                  <Text style={[styles.blockTitle, styles.upcomingTitle]}>COMING UP:</Text>
-                  <View style={styles.row}>
-                    <View style={styles.smallerBlock}>
-                      <Text style={styles.date}> </Text>
-                    </View>
-                    <View style={styles.bigBlock}>
-                      <Text style={styles.subTitle}>Meeting with Coach</Text>
-                      <Text style={styles.subText}>Wed 12/19/18 12:00pm</Text>
-                      <Text style={styles.subText}>CVOEO Office</Text>
-                    </View>
-                    <View style={styles.smallBlock}>
-                      <Text style={styles.circle}>2</Text>
-                      <Text style={styles.days}>days</Text>
-                    </View>
-                  </View>
-                  <View style={styles.moreButton}>
-                    <View style={styles.row}>
-                      <Text style={styles.moreButton}></Text>
-                      <TouchableHighlight
-                        style={styles.button}
-                        onPress={this.toggle.bind(this)}
-                        underlayColor="#fff">
-                        <Icon
-                          style={styles.FAIcon}
-                          name={icon}
-                        />
-                      </TouchableHighlight>
-                    </View>
-                  </View>
-    
-                  {
-                    this.state.expanded && (<View style={styles.row}>
-                      {this.props.children}
-                      <View style={styles.smallerBlock}>
-                        <Text style={styles.date}> </Text>
-                      </View>
-                      <View style={styles.bigBlock}>
-                        <Text style={styles.subTitle}>Meeting with Coach</Text>
-                        <Text style={styles.subText}>Wed 12/26/18 2:00pm</Text>
-                        <Text style={styles.subText}>CVOEO Office</Text>
-                        <Text style={styles.subText}></Text>
-                      </View>
-                      <View style={styles.smallBlock}>
-                        <Text style={styles.circle}>9</Text>
-                        <Text style={styles.days}>days</Text>
-                      </View>
-                    </View>)
-                  }
-    
-                </View>
+            <View style={styles.bigBlock}>
+              <Text style={styles.subTitle}>{title}</Text>
+              <Text style={styles.subText}>{formattedDate}</Text>
+              <Text style={styles.subText}>{location}</Text>
+              <Text style={styles.subText}></Text>
+            </View>
+            <View style={styles.smallBlock}>
+            <View style={styles.circle}>
+              <Text style={styles.circleText}>{dayNumber}</Text>
               </View>
-              <View style={styles.padding}>
-                <View style={styles.progressBox}>
-                  <View style={styles.spaceRow}>
-                    <Text style={[styles.bigTitle, styles.bigLetters]}>$150</Text>
-                    <Text style={styles.bigBlock}></Text>
-                    <Text style={styles.bigTitle}>Well Done!</Text>
-                  </View>
-                  <View style={styles.row}>
-                    <View style={styles.smallerBlock}>
-                    <Text style={styles.bigBlock}></Text>
-                      <Text style={[styles.money, styles.end]}>$0</Text>
-                    </View>
-                    <View style={styles.bottomLine}>
-                    <View style={styles.cone}></View>
-                      <View style={styles.semiCircle}>
-                      <View style={styles.diagonalLine}></View>
-                      <Icon
-                          style={styles.arrow}
-                          name={icon}
-                        />
-                      </View>
-                    </View>
-                    <View style={styles.smallerBlock}>
-                    <Text style={styles.bigBlock}></Text>
-                      <Text style={[styles.money, styles.start]}>$500</Text>
-                    </View>
-                    <Text style={styles.moreButton}> </Text>
-                  </View>
-                </View>
-              </View>
-    
-              <View style={styles.padding}>
-                <View style={styles.goalsBox}>
-                  <Text style={[styles.blockTitle, styles.goalsTitle]}>CURRENT GOALS:</Text>
-                  <View style={styles.row}>
-                    <View style={styles.smallerBlock}>
-                      <Text style={styles.date}> </Text>
-                    </View>
-                    <View style={styles.biggerBlock}>
-                      <Text style={styles.subTitle}>Attend "Spend Smart 2/2" Workshop</Text>
-                      <Text style={styles.subText}>some important detail</Text>
-                    </View>
-                  </View>
-                  <View style={styles.moreButton}>
-                    <View style={styles.row}>
-                      <Text style={styles.moreButton}></Text>
-                      <TouchableHighlight
-                        style={styles.button}
-                        onPress={this.toggle.bind(this)}
-                        underlayColor="#fff">
-                        <Icon
-                          style={styles.FAIcon}
-                          name={icon}
-                        />
-                      </TouchableHighlight>
-                    </View>
-                  </View>
-    
-                  {
-                    this.state.expanded && (<View style={styles.row}>
-                      {this.props.children}
-                      <View style={styles.smallerBlock}>
-                        <Text style={styles.date}> </Text>
-                      </View>
-                      <View style={styles.biggerBlock}>
-                        <Text style={styles.subTitle}>Pay down past due bills</Text>
-                        <Text style={styles.subText}> </Text>
-                        <Text style={styles.subTitle}>Attend "Keys To Credit" workshop</Text>
-                        <Text style={styles.subText}> </Text>
-                      </View>
-                    </View>)
-                  }
-    
-                </View>
-              </View>
-              <View style={styles.padding}>
-                <View style={styles.completedBox}>
-                  <Text style={[styles.blockTitle, styles.completedTitle]}>COMPLETED:</Text>
-                  <View style={styles.row}>
-                    <View style={styles.smallerBlock}>
-                      <Text style={styles.date}> </Text>
-                    </View>
-                    <View style={styles.biggerBlock}>
-                      <Text style={styles.subTitle}>Open matched savings account</Text>
-                      <Text style={styles.subText}>some important detail</Text>
-                    </View>
-                  </View>
-                  <View style={styles.moreButton}>
-                    <View style={styles.row}>
-                      <Text style={styles.moreButton}></Text>
-                      <TouchableHighlight
-                        style={styles.button}
-                        onPress={this.toggle.bind(this)}
-                        underlayColor="#fff">
-                        <Icon
-                          style={styles.FAIcon}
-                          name={icon}
-                        />
-                      </TouchableHighlight>
-                    </View>
-                  </View>
-    
-                  {
-                    this.state.expanded && (<View style={styles.row}>
-                      {this.props.children}
-                      <View style={styles.smallerBlock}>
-                        <Text style={styles.date}> </Text>
-                      </View>
-                      <View style={styles.biggerBlock}>
-                        <Text style={styles.subTitle}>Attended first workshop</Text>
-                        <Text style={styles.subText}> </Text>
-                      </View>
-                    </View>)
-                  }
-    
-                </View>
-              </View>
-            </ScrollView>
+              <Text style={styles.days}>{dayWord}</Text>
+            </View>
           </View>
         );
       }
+    }
+    if (firstOrRemaining === 'first') {
+      return allUpcomingEvents[0];
+    }
+    if (firstOrRemaining === 'remaining') {
+      return allUpcomingEvents.slice(1);
+    }
+  }
+
+  showGoals(firstOrRemaining, isComplete) {
+    let goalArray = ((this.props.profile || {}).goalArray || {});
+
+    let allGoals = [];
+    for (i = 0; i < goalArray.length; i++) {
+
+      let title = ((((this.props.profile || {}).goalArray || {})[i] || {}).title);
+      let detail = ((((this.props.profile || {}).goalArray || {})[i] || {}).detail);
+      let completed = ((((this.props.profile || {}).goalArray || {})[i] || {}).completed);
+      if (completed === isComplete) {
+
+        allGoals.push(
+          <View style={styles.dashRow} key={i}>
+            <View style={styles.smallerBlock}>
+              <Text style={styles.date}> </Text>
+            </View>
+            <View style={styles.biggerBlock}>
+              <Text style={styles.subTitle}>{title}</Text>
+              <Text style={styles.subText}>{detail}</Text>
+            </View>
+          </View>
+        );
+      }
+    }
+    if (firstOrRemaining === 'first') {
+      if (!allGoals[0]) {
+          let message = ["Let's work together on some goals to move you forward.", "Schedule an appointment with your counselor today!"];
+        if (isComplete) {
+          message = ["Keep up the good work.", "You'll finish a goal soon!"];
+        }
+        allGoals.push (
+          <View style={styles.dashRow} key={i}>
+            <View style={styles.smallerBlock}>
+              <Text style={styles.date}> </Text>
+            </View>
+            <View style={styles.biggerBlock}>
+              <Text style={styles.subTitle}>{message[0]}</Text>
+              <Text style={styles.subText}>{message[1]}</Text>
+            </View>
+          </View>
+        );
+      }
+      return allGoals[0];
+    }
+    if (firstOrRemaining === 'remaining') {
+      return allGoals.slice(1);
+    }
+
+  }
+
+  ellipsisAlert() {
+    Alert.alert(
+    'Alert Title',
+    'My Alert Msg',
+    [
+      {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+      {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ],
+    { cancelable: false }
+  )
+  }
+
+  toggle1() {
+    this.setState({
+      expanded1: !this.state.expanded1
+    });
+  }
+
+  toggle2() {
+    this.setState({
+      expanded2: !this.state.expanded2
+    });
+  }
+
+  toggle3() {
+    this.setState({
+      expanded3: !this.state.expanded3
+    });
+  }
+
+  render() {
+
+    let incentivesEarned = ((this.props.profile || {}).incentivesEarned || 0);
+    const incentivesAvailable = 500;
+    let percentComplete = (incentivesEarned / incentivesAvailable) * 100;
+    let rotation = (1.72 * percentComplete) - 86;
+
+    let dots = this.icons['dots'];
+    let icon1 = this.icons['open'];
+    if (this.state.expanded1) {
+      icon1 = this.icons['close'];
+    }
+    let icon2 = this.icons['open'];
+    if (this.state.expanded2) {
+      icon2 = this.icons['close'];
+    }
+    let icon3 = this.icons['open'];
+    if (this.state.expanded3) {
+      icon3 = this.icons['close'];
+    }
+    return (
+      <View scrollEnabled={false} style={styles.container}>
+        <View style={styles.dashRow}>
+          <View><Text style={styles.dots}>&nbsp;</Text></View>
+          <View style={styles.titleRow}>
+            <Text style={[styles.title, styles.blackText]}>m</Text><Text style={styles.title}>om</Text><Text style={[styles.title, styles.greenText]}>m</Text>
+          </View>
+          <TouchableHighlight
+            onPress={this.ellipsisAlert.bind(this)}
+            underlayColor="transparent"
+            >
+            <Icon
+              name={dots}
+              style={[styles.title, styles.dots]}
+            />
+          </TouchableHighlight>
+        </View>
+        <ScrollView style={styles.main}>
+          <View style={styles.padding}>
+            <View style={styles.upcomingBox}>
+              <Text style={[styles.blockTitle, styles.upcomingTitle]}>COMING UP:</Text>
+              {this.showUpcoming('first')}
+              {
+                this.state.expanded1 && (
+                  <View style={styles.dashColumn}>
+                    {this.props.children}
+                    {this.showUpcoming('remaining')}
+                  </View>
+                )
+              }
+
+              <View style={styles.moreButton}>
+                <View style={styles.dashRow}>
+                  <Text style={styles.moreButton}></Text>
+                  <TouchableHighlight
+                    style={styles.dashButton}
+                    onPress={this.toggle1.bind(this)}
+                    underlayColor="transparent">
+                    <Icon
+                      style={[styles.FAIcon, styles.icon1]}
+                      name={icon1}
+                    />
+                  </TouchableHighlight>
+                </View>
+              </View>
+
+            </View>
+          </View>
+          <View style={styles.padding}>
+            <View style={styles.progressBox}>
+              <View style={styles.spaceRow}>
+                <Text style={[styles.bigTitle, styles.bigLetters]}>${incentivesEarned}</Text>
+                <Text style={styles.bigBlock}></Text>
+                <Text style={styles.bigTitle}>{percentComplete}% Complete!</Text>
+              </View>
+              <View style={styles.dashRow}>
+                <View style={styles.smallerBlock}>
+                  <Text style={styles.bigBlock}></Text>
+                  <Text style={[styles.money, styles.end]}>$0</Text>
+                </View>
+                <View style={styles.bottomLine}>
+
+                  <Svg height={100} width={200}>
+                    <Svg.Circle
+                      cx={100}
+                      cy={100}
+                      r={85}
+                      strokeWidth={6}
+                      stroke="#dc552b"
+                      fill="#eeeec2"
+                    />
+                    <Svg.G rotation={rotation} origin="100, 100">
+                      <Svg.ClipPath id="clip">
+                        <Svg.Rect
+                          x={100}
+                          height={200}
+                          width={200}
+                        />
+                        <Svg.Polygon
+                          points="50,50 120,120" />
+
+                      </Svg.ClipPath>
+                      <Svg.Circle
+                        cx={100}
+                        cy={100}
+                        r={85}
+                        strokeWidth={6}
+                        stroke="#fea488"
+                        fill="#fdfffb"
+                        clipPath="url(#clip)"
+                      />
+                      <Svg.Path
+                        d="M 100 100 L 100 0"
+                        strokeWidth={2}
+                        stroke="#020202"
+                      />
+                      <Svg.Path
+                        d="M 100 0 L 95 5"
+                        strokeWidth={2}
+                        stroke="#020202"
+                      />
+                      <Svg.Path
+                        d="M 100 0 L 105 5"
+                        strokeWidth={2}
+                        stroke="#020202"
+                      />
+                    </Svg.G>
+
+                  </Svg>
+
+                </View>
+                <View style={styles.smallerBlock}>
+                  <Text style={styles.bigBlock}></Text>
+                  <Text style={[styles.money, styles.start]}>$500</Text>
+                </View>
+                <Text style={styles.moreButton}> </Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.padding}>
+            <View style={styles.goalsBox}>
+              <Text style={[styles.blockTitle, styles.goalsTitle]}>CURRENT GOALS:</Text>
+
+              {this.showGoals('first', false)}
+
+              {
+                this.state.expanded2 && (
+                  <View style={styles.dashColumn}>
+                    {this.props.children}
+                    {this.showGoals('remaining', false)}
+                  </View>)
+              }
+
+              <View style={styles.moreButton}>
+                <View style={styles.dashRow}>
+                  <Text style={styles.moreButton}></Text>
+                  <TouchableHighlight
+                    style={styles.dashButton}
+                    onPress={this.toggle2.bind(this)}
+                    underlayColor="transparent">
+                    <Icon
+                      style={[styles.FAIcon, styles.icon2]}
+                      name={icon2}
+                    />
+                  </TouchableHighlight>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View style={styles.padding}>
+            <View style={styles.completedBox}>
+              <Text style={[styles.blockTitle, styles.completedTitle]}>COMPLETED:</Text>
+              {this.showGoals('first', true)}
+              {
+                this.state.expanded3 && (
+                  <View style={styles.dashColumn}>
+                    {this.props.children}
+                    {this.showGoals('remaining', true)}
+                  </View>)
+              }
+
+              <View style={styles.moreButton}>
+                <View style={styles.dashRow}>
+                  <Text style={styles.moreButton}></Text>
+                  <TouchableHighlight
+                    style={styles.dashButton}
+                    onPress={this.toggle3.bind(this)}
+                    underlayColor="transparent">
+                    <Icon
+                      style={[styles.FAIcon, styles.icon3]}
+                      name={icon3}
+                    />
+                  </TouchableHighlight>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View style={styles.padding}>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
 }
 
-const mapStateToProps = (state) => ({session: state.login.session});
+const mapStateToProps = (state) => ({ session: state.login.session, profile: state.dashboard.profile });
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators(actions, dispatch)
+  actions: bindActionCreators(actions, dispatch)
 });
 
-const styles = StyleSheet.create({
-    main: {
-      backgroundColor: '#000',
-    },
-    container: {
-      flex: 1,
-      backgroundColor: 'transparent',
-      alignSelf: 'stretch',
-    },
-    title: {
-      backgroundColor: '#467',
-      color: '#fff',
-      fontSize: 25,
-      fontWeight: 'bold',
-      paddingTop: 35,
-      paddingBottom: 15,
-      alignSelf: 'stretch',
-      textAlign: 'center',
-      fontFamily: 'System',
-    },
-    padding: {
-      padding: 10,
-      paddingBottom: 0,
-    },
-    upcomingBox: {
-      flex: 1,
-      backgroundColor: '#fffae1',
-      alignItems: 'center',
-      borderRadius: 2,
-    },
-    progressBox: {
-      flex: 1,
-      backgroundColor: '#eee',
-      alignItems: 'center',
-      borderRadius: 2,
-    },
-    goalsBox: {
-      flex: 1,
-      backgroundColor: '#d4e5de',
-      alignItems: 'center',
-      borderRadius: 2,
-    },
-    completedBox: {
-      flex: 1,
-      backgroundColor: '#b1e1f5',
-      alignItems: 'center',
-      borderRadius: 2,
-    },
-    row: {
-      display: 'flex',
-      flexDirection: 'row',
-      backgroundColor: 'transparent',
-      alignItems: 'center',
-    },
-    bigBlock: {
-      backgroundColor: 'transparent',
-      flex: 5,
-      alignItems: 'center',
-      padding: 2,
-    },
-    biggerBlock: {
-      backgroundColor: 'transparent',
-      flex: 9,
-      alignItems: 'center',
-      padding: 2,
-    },
-    smallBlock: {
-      backgroundColor: 'transparent',
-      flexDirection: 'row',
-      flex: 3,
-      alignItems: 'flex-start',
-    },
-    smallerBlock: {
-      backgroundColor: 'transparent',
-      flex: 1,
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-    },
-    blockTitle: {
-      alignItems: 'flex-start',
-      color: 'rgba(2,2,2,0.34)',
-      fontSize: 16,
-      fontWeight: 'bold',
-      paddingTop: 6,
-      paddingLeft: 7,
-      paddingBottom: 5,
-      alignSelf: 'stretch',
-      textAlign: 'left',
-      fontFamily: 'System',
-    },
-    upcomingTitle: {
-      color: '#a8b144',
-    },
-    goalsTitle: {
-      color: '#839f8f',
-    },
-    completedTitle: {
-      color: '#446479',
-    },
-    subTitle: {
-      alignItems: 'center',
-      color: '#d51',
-      fontSize: 17,
-      fontWeight: 'bold',
-      paddingTop: 1,
-      alignSelf: 'stretch',
-      textAlign: 'left',
-      fontFamily: 'System',
-    },
-    subText: {
-      backgroundColor: 'transparent',
-      alignItems: 'center',
-      color: '#555',
-      fontSize: 16,
-      alignSelf: 'stretch',
-      textAlign: 'left',
-      fontFamily: 'System',
-    },
-    days: {
-      alignSelf: 'flex-end',
-      color: '#aaa',
-      fontSize: 14,
-      paddingBottom: 1,
-      paddingLeft: 2,
-      textAlign: 'center',
-      fontFamily: 'System',
-    },
-    spaceRow: {
-      display: 'flex',
-      flexDirection: 'row',
-      backgroundColor: 'transparent',
-      alignItems: 'center',
-      justifyContent: 'space-around',
-    },
-    bigTitle: {
-      color: '#356',
-      fontSize: 20,
-      fontWeight: 'bold',
-      paddingLeft: 24,
-      paddingRight: 24,
-      paddingTop: 7,
-      fontFamily: 'System',
-    },
-    bigLetters: {
-      fontSize: 40,
-    },
-    FAIcon: {
-      alignItems: 'flex-end',
-      color: 'rgba(2,2,2,0.3)',
-      fontSize: 20,
-      fontWeight: 'bold',
-      backgroundColor: 'rgba(50,50,50,0.2)',
-      width: 28,
-      height: 28,
-      borderTopLeftRadius: 14,
-      textAlign: 'center',
-      paddingTop: 5,
-      paddingLeft: 2,
-    },
-    button: {
-      backgroundColor: 'transparent',
-    },
-    moreButton: {
-      backgroundColor: 'transparent',
-      alignItems: 'flex-end',
-      paddingTop: 3,
-      alignSelf: 'stretch',
-    },
-    circle: {
-      backgroundColor: '#ffa07a',
-      color: '#fff8c7',
-      fontSize: 22,
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      textAlign: 'center',
-      paddingTop: 4,
-      fontFamily: 'System',
-    },
-    bigCircle: {
-      backgroundColor: 'transparent',
-      color: '#d4af37',
-      fontSize: 60,
-      textShadowColor: 'rgba(8, 6, 3, 0.75)',
-      textShadowOffset: { width: -1, height: -1 },
-      textShadowRadius: 10,
-      paddingTop: 45,
-      width: 180,
-      height: 180,
-      borderWidth: 6,
-      borderColor: '#d4af37',
-      borderRadius: 90,
-      textAlign: 'center',
-    },
-    money: {
-      flex: 1,
-      color: '#446479',
-      fontWeight: 'bold',
-      },
-      start: {
-        alignSelf: 'flex-start'
-      },
-      end: {
-        alignSelf: 'flex-end'
-      },
-        diagonalLine: {
-      position: 'absolute',
-      bottom: -45,
-      left: -8,
-      backgroundColor: 'rgba(215,210,160, 0.0)',
-      width: 80,
-      height: 130,
-      borderRightWidth: 2,
-      borderColor: '#000',
-      transform: [{ rotate: '-45deg' }],
-    },
-    arrow: {
-      fontSize: 22,
-      transform: [{ rotate: '135deg' }],
-      position: 'absolute',
-      top: -1,
-      left: 7,
-    },
-    cone: {
-      width: 0,
-      height:0,
-      borderLeftWidth: 45,
-      borderLeftColor: 'transparent',
-      borderRightWidth: 44,
-      borderRightColor: 'transparent',
-      borderTopWidth: 101,
-      borderTopColor: 'rgba(215,210,160, 0.5)',
-      transform: [{ rotate: '-67.5deg' }],
-      position: 'absolute',
-      bottom: -19,
-      left: 25.5,
-      zIndex: 0,
-    },
-    bottomLine: {
-      display: 'flex',
-      alignItems: 'center',
-      borderBottomWidth: 2,
-      borderColor: 'rgba(0,0,0,0.0)',
-      width: 235,
-      paddingBottom: 10,
-    },
-    semiCircle: {
-      flex: 10,
-      backgroundColor: 'transparent',
-      width: 220,
-      height: 110,
-      borderWidth: 7,
-      borderBottomWidth: 0,
-      borderColor: '#ffa07a',
-      borderTopLeftRadius: 110,
-      borderTopRightRadius: 110,
-      alignItems: 'center',
-      zIndex: 1,
-    },
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
