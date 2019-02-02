@@ -1,3 +1,8 @@
+// Save all security rules in database.rules.json.
+// database.rules.json will overwrite any rules saved via the Firestore Console.
+
+// Default security rules.  Read/Write only available to authed users
+// TODO:  Add real security rules see : https://firebase.google.com/docs/firestore/security/get-started
 {
   "rules": {
     "users": {

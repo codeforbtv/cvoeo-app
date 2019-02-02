@@ -11,9 +11,7 @@ firebase.initializeApp(config);
 const db = firebase.firestore();
 
 // Disable deprecated features
-db.settings({
-    timestampsInSnapshots: true
-});
+db.settings({});
 
 
 /**
