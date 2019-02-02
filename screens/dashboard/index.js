@@ -6,10 +6,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   TouchableHighlight,
   Animated,
-  ART,
   Alert,
   TouchableOpacity,
 } from 'react-native';
@@ -17,9 +15,8 @@ import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DrawerItems } from 'react-navigation';
-import * as dataSource from '../../data-sources/firebase-data';
-import moment from 'moment';
 import { Svg } from 'expo';
+import Upcoming from './components/upcoming';
 
 // import global actions
 import * as actions from './actions';
@@ -28,12 +25,6 @@ import * as actions from './actions';
 // @TODO: move the global styles from this screen into ../../styles/common 
 import commonStyles from '../../styles/common';
 const styles = StyleSheet.create(commonStyles);
-
-const {
-  Surface,
-  Group,
-  Shape,
-} = ART;
 
 type Props = {
   actions: Object,
@@ -48,7 +39,6 @@ class Dashboard extends Component<Props> {
     super(props);
     this.ellipsisAlert = this.ellipsisAlert.bind(this);
     this.state = {
-      expanded1: false,
       expanded2: false,
       expanded3: false
     };
@@ -57,66 +47,6 @@ class Dashboard extends Component<Props> {
       'open': 'angle-down',
       'close': 'angle-up'
     };
-  }
-
-
-  showUpcoming(firstOrRemaining) {
-
-    let upcomingArray = ((this.props.profile || {}).upcomingArray || {});
-
-    let allUpcomingEvents = [];
-    for (i = 0; i < upcomingArray.length; i++) {
-
-      let title = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).title);
-      let location = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).location);
-      let date = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).date);
-      let momentDate = moment(new Date(((date || {}).seconds) * 1000));
-      let localDate = moment(momentDate.toISOString()).toString();
-      let formattedDate = moment(localDate).format('ddd M/D/YY h:mma');
-      let dayNumber = momentDate.toNow(true).split(' ')[0];
-      let dayWord = momentDate.toNow(true).split(' ')[1];
-
-      if (title && moment(Date.now()) < momentDate) {
-
-        if (dayNumber === "a" || dayNumber === "an") {
-          dayNumber = 1;
-        }
-
-        if (dayWord === "days" && dayNumber >= 7) {
-          dayNumber = Math.floor(dayNumber / 7);
-          dayWord = "weeks";
-          if (dayNumber === 1) {
-            dayWord = "week";
-          }
-        }
-
-        allUpcomingEvents.push(
-          <View style={styles.dashRow} key={i}>
-            <View style={styles.smallerBlock}>
-              <Text style={styles.date}> </Text>
-            </View>
-            <View style={styles.bigBlock}>
-              <Text style={styles.subTitle}>{title}</Text>
-              <Text style={styles.subText}>{formattedDate}</Text>
-              <Text style={styles.subText}>{location}</Text>
-              <Text style={styles.subText}></Text>
-            </View>
-            <View style={styles.smallBlock}>
-            <View style={styles.circle}>
-              <Text style={styles.circleText}>{dayNumber}</Text>
-              </View>
-              <Text style={styles.days}>{dayWord}</Text>
-            </View>
-          </View>
-        );
-      }
-    }
-    if (firstOrRemaining === 'first') {
-      return allUpcomingEvents[0];
-    }
-    if (firstOrRemaining === 'remaining') {
-      return allUpcomingEvents.slice(1);
-    }
   }
 
   showGoals(firstOrRemaining, isComplete) {
@@ -184,12 +114,6 @@ class Dashboard extends Component<Props> {
     );
 }
 
-  toggle1() {
-    this.setState({
-      expanded1: !this.state.expanded1
-    });
-  }
-
   toggle2() {
     this.setState({
       expanded2: !this.state.expanded2
@@ -210,10 +134,6 @@ class Dashboard extends Component<Props> {
     let rotation = (1.72 * percentComplete) - 86;
 
     let dots = this.icons['dots'];
-    let icon1 = this.icons['open'];
-    if (this.state.expanded1) {
-      icon1 = this.icons['close'];
-    }
     let icon2 = this.icons['open'];
     if (this.state.expanded2) {
       icon2 = this.icons['close'];
@@ -240,36 +160,9 @@ class Dashboard extends Component<Props> {
           </TouchableHighlight>
         </View>
         <ScrollView style={styles.main}>
-          <View style={styles.padding}>
-            <View style={styles.upcomingBox}>
-              <Text style={[styles.blockTitle, styles.upcomingTitle]}>COMING UP:</Text>
-              {this.showUpcoming('first')}
-              {
-                this.state.expanded1 && (
-                  <View style={styles.dashColumn}>
-                    {this.props.children}
-                    {this.showUpcoming('remaining')}
-                  </View>
-                )
-              }
 
-              <View style={styles.moreButton}>
-                <View style={styles.dashRow}>
-                  <Text style={styles.moreButton}></Text>
-                  <TouchableHighlight
-                    style={styles.dashButton}
-                    onPress={this.toggle1.bind(this)}
-                    underlayColor="transparent">
-                    <Icon
-                      style={[styles.FAIcon, styles.icon1]}
-                      name={icon1}
-                    />
-                  </TouchableHighlight>
-                </View>
-              </View>
+          {/* <Upcoming /> */}
 
-            </View>
-          </View>
           <View style={styles.padding}>
             <View style={styles.progressBox}>
               <View style={styles.spaceRow}>
