@@ -9,22 +9,6 @@ export function getCurrentUser() {
 }
 
 
-export function logout() {
-    return (dispatch: Object => *) => {
-        dataSource.logout()
-            .then((results) => {
-                dispatch({
-                    type: types.LOGOUT_SUCCESSFUL,
-                    results
-                });
-            })
-            .catch(err => {
-                dispatch({type: types.LOGOUT_FAIL, err});
-            });
-    };
-}
-
-
 export function loginWithEmailPassword(email: string, password: string) {
     return (dispatch: Object => *) => {
         dataSource.loginWithEmailPassword(email, password).catch(error => {
