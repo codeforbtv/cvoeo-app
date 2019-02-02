@@ -46,6 +46,7 @@ class Dashboard extends Component<Props> {
 
   constructor(props) {
     super(props);
+    this.ellipsisAlert = this.ellipsisAlert.bind(this);
     this.state = {
       expanded1: false,
       expanded2: false,
@@ -169,17 +170,19 @@ class Dashboard extends Component<Props> {
   }
 
   ellipsisAlert() {
+
+    const logoutCallback = this.props.actions.logout;
+
     Alert.alert(
-    'Alert Title',
-    'My Alert Msg',
-    [
-      {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-      {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-      {text: 'OK', onPress: () => console.log('OK Pressed')},
-    ],
-    { cancelable: false }
-  )
-  }
+        'Do you want to logout?',
+        'This will return you to the login screen.',
+        [
+            {text: 'Logout', onPress: logoutCallback},
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
+        ],
+        {cancelable: false}
+    );
+}
 
   toggle1() {
     this.setState({
@@ -227,7 +230,7 @@ class Dashboard extends Component<Props> {
             <Text style={[styles.title, styles.blackText]}>m</Text><Text style={styles.title}>om</Text><Text style={[styles.title, styles.greenText]}>m</Text>
           </View>
           <TouchableHighlight
-            onPress={this.ellipsisAlert.bind(this)}
+            onPress={this.ellipsisAlert}
             underlayColor="transparent"
             >
             <Icon
