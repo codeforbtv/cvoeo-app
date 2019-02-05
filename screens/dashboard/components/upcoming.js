@@ -123,7 +123,6 @@ export class Upcoming extends Component<Props> {
           {
             this.state.expanded && (
               <View style={styles.dashColumn}>
-                {this.props.children}
                 {showUpcoming('remaining')}
               </View>
             )
@@ -133,7 +132,7 @@ export class Upcoming extends Component<Props> {
             <View style={styles.dashRow}>
               <Text style={styles.moreButton}></Text>
               <TouchableHighlight
-                onPress={this.toggle.bind(this)}
+                onPress={this.toggle}
                 style={styles.dashButton}
                 underlayColor="transparent">
                 <Icon
