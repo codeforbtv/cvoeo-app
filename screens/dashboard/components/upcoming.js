@@ -22,82 +22,23 @@ const styles = StyleSheet.create(commonStyles);
 
 type Props = {
   actions: Object,
-  profile: Object,
-  navigation: Object
+  navigation: Object,
+  profile: Object
 };
 
+const icons = {
+  'open': 'angle-down',
+  'close': 'angle-up'
+};
 
 export class Upcoming extends Component<Props> {
 
   constructor(props) {
     super(props);
+    this.toggle = this.toggle.bind(this);
     this.state = {
       expanded: false
     };
-    this.icons = {
-      'open': 'angle-down',
-      'close': 'angle-up'
-    };
-  }
-
-
-  showUpcoming(firstOrRemaining) {
-
-    let upcomingArray = ((this.props.profile || {}).upcomingArray || {});
-
-    let allUpcomingEvents = [];
-    for (i = 0; i < upcomingArray.length; i++) {
-
-      let title = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).title);
-      let location = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).location);
-      let date = ((((this.props.profile || {}).upcomingArray || {})[i] || {}).date);
-      let momentDate = moment(new Date(((date || {}).seconds) * 1000));
-      let localDate = moment(momentDate.toISOString()).toString();
-      let formattedDate = moment(localDate).format('ddd M/D/YY h:mma');
-      let dayNumber = momentDate.toNow(true).split(' ')[0];
-      let dayWord = momentDate.toNow(true).split(' ')[1];
-
-      if (title && moment(Date.now()) < momentDate) {
-
-        if (dayNumber === "a" || dayNumber === "an") {
-          dayNumber = 1;
-        }
-
-        if (dayWord === "days" && dayNumber >= 7) {
-          dayNumber = Math.floor(dayNumber / 7);
-          dayWord = "weeks";
-          if (dayNumber === 1) {
-            dayWord = "week";
-          }
-        }
-
-        allUpcomingEvents.push(
-          <View style={styles.dashRow} key={i}>
-            <View style={styles.smallerBlock}>
-              <Text style={styles.date}> </Text>
-            </View>
-            <View style={styles.bigBlock}>
-              <Text style={styles.subTitle}>{title}</Text>
-              <Text style={styles.subText}>{formattedDate}</Text>
-              <Text style={styles.subText}>{location}</Text>
-              <Text style={styles.subText}></Text>
-            </View>
-            <View style={styles.smallBlock}>
-              <View style={styles.circle}>
-                <Text style={styles.circleText}>{dayNumber}</Text>
-              </View>
-              <Text style={styles.days}>{dayWord}</Text>
-            </View>
-          </View>
-        );
-      }
-    }
-    if (firstOrRemaining === 'first') {
-      return allUpcomingEvents[0];
-    }
-    if (firstOrRemaining === 'remaining') {
-      return allUpcomingEvents.slice(1);
-    }
   }
 
   toggle() {
@@ -108,20 +49,82 @@ export class Upcoming extends Component<Props> {
 
   render() {
 
-    let icon = this.icons['open'];
+    let icon = icons['open'];
     if (this.state.expanded) {
-      icon = this.icons['close'];
+      icon = icons['close'];
     }
+
+    const showUpcoming = (firstOrRemaining) => {
+
+      const upcomingArray = ((this.props.profile || []).upcomingArray || []);
+      const upcomingSorted = upcomingArray.sort((a, b) => a.date.seconds - b.date.seconds);
+      const upcomingMapped = upcomingSorted.map((event, i) => {
+
+        const { title, location, date } = event;
+        const momentDate = moment(new Date((date.seconds) * 1000));
+        const localDate = moment(momentDate.toISOString());
+        const formattedDate = moment(localDate).format('ddd M/D/YY h:mma');
+
+        let dayNumber = momentDate.toNow(true).split(' ')[0];
+        let dayWord = momentDate.toNow(true).split(' ')[1];
+
+        switch (true) {
+          case dayNumber.includes("a") && dayWord === "few":
+            dayNumber = 1;
+            dayWord = "minute";
+            break;
+          case dayNumber.includes("a"):
+            dayNumber = 1;
+            break;
+          case dayWord === "days" && dayNumber > 6 && dayNumber < 14:
+            dayNumber = 1;
+            dayWord = "week";
+            break;
+          case dayWord === "days" && dayNumber > 13 && dayNumber < 29:
+            dayNumber = Math.floor(dayNumber / 7);
+            dayWord = "weeks";
+            break;
+        }
+
+
+        if (title && moment(Date.now()) < momentDate) {
+
+          return (
+            <View style={styles.dashRow} key={i}>
+              <View style={styles.smallerBlock}>
+                <Text style={styles.date}> </Text>
+              </View>
+              <View style={styles.bigBlock}>
+                <Text style={styles.subTitle}>{title}</Text>
+                <Text style={styles.subText}>{formattedDate}</Text>
+                <Text style={styles.subText}>{location}</Text>
+                <Text style={styles.subText}></Text>
+              </View>
+              <View style={styles.smallBlock}>
+                <View style={styles.circle}>
+                  <Text style={styles.circleText}>{dayNumber}</Text>
+                </View>
+                <Text style={styles.days}>{dayWord}</Text>
+              </View>
+            </View>
+          );
+        }
+        else return "expired";
+      });
+      const upcomingFiltered = upcomingMapped.filter(element => element !== "expired");
+      return (firstOrRemaining === 'first' ? upcomingFiltered[0] || [] : upcomingFiltered.slice(1));
+    }
+
     return (
-      <View style={styles.padding}>
+      <View style={styles.padding} >
         <View style={styles.upcomingBox}>
           <Text style={[styles.blockTitle, styles.upcomingTitle]}>COMING UP:</Text>
-          {this.showUpcoming('first')}
+          {showUpcoming('first')}
           {
             this.state.expanded && (
               <View style={styles.dashColumn}>
                 {this.props.children}
-                {this.showUpcoming('remaining')}
+                {showUpcoming('remaining')}
               </View>
             )
           }
@@ -130,12 +133,12 @@ export class Upcoming extends Component<Props> {
             <View style={styles.dashRow}>
               <Text style={styles.moreButton}></Text>
               <TouchableHighlight
-                style={styles.dashButton}
                 onPress={this.toggle.bind(this)}
+                style={styles.dashButton}
                 underlayColor="transparent">
                 <Icon
-                  style={[styles.FAIcon, styles.icon1]}
                   name={icon}
+                  style={[styles.FAIcon, styles.icon1]}
                 />
               </TouchableHighlight>
             </View>
