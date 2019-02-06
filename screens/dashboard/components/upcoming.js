@@ -57,7 +57,8 @@ export class Upcoming extends Component<Props> {
     const showUpcoming = (firstOrRemaining) => {
 
       const upcomingArray = ((this.props.profile || []).upcomingArray || []);
-      const upcomingSorted = upcomingArray.sort((a, b) => a.date.seconds - b.date.seconds);
+      const upcomingFiltered = upcomingArray.filter(element => (((element.date.seconds) * 1000) > Date.now()));
+      const upcomingSorted = upcomingFiltered.sort((a, b) => a.date.seconds - b.date.seconds);
       const upcomingMapped = upcomingSorted.map((event, i) => {
 
         const { title, location, date } = event;
@@ -86,9 +87,6 @@ export class Upcoming extends Component<Props> {
             break;
         }
 
-
-        if (title && moment(Date.now()) < momentDate) {
-
           return (
             <View style={styles.dashRow} key={i}>
               <View style={styles.smallerBlock}>
@@ -108,11 +106,8 @@ export class Upcoming extends Component<Props> {
               </View>
             </View>
           );
-        }
-        else return "expired";
       });
-      const upcomingFiltered = upcomingMapped.filter(element => element !== "expired");
-      return (firstOrRemaining === 'first' ? upcomingFiltered[0] || [] : upcomingFiltered.slice(1));
+      return (firstOrRemaining === 'first' ? upcomingMapped[0] || [] : upcomingMapped.slice(1));
     }
 
     return (
