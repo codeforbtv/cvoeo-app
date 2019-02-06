@@ -52,7 +52,8 @@ class ForgotPassword extends Component<Props> {
                     paddingLeft: 20,
                     paddingRight: 20,
                     paddingBottom: 20,
-                    paddingTop: '20%'
+                    paddingTop: '20%',
+                    backgroundColor: '#00a1ca'
                 }]}>
                     {this.state.passwordResetSent
                         ? (
@@ -72,10 +73,10 @@ class ForgotPassword extends Component<Props> {
                                     keyBoardType='email-address'
                                     placeholder='you@domain.com'
                                     onChangeText={this.onChangeState('email')}
-                                    style={styles.textInput}
+                                    style={[styles.textInput, {borderRadius: '9'}]}
                                     underlineColorAndroid={'transparent'}
                                 />
-                                <TouchableOpacity style={styles.button}
+                                <TouchableOpacity style={[styles.button, {borderRadius: '9'}]}
                                     onPress={this.onButtonPress}>
                                     <Text style={styles.buttonText}>{'Reset Password'}</Text>
                                 </TouchableOpacity>
