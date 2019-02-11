@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 // import * as constants from '../../styles/constants';
 import * as actions from './actions';
-import logo from '../../assets/images/FinancialFuturesLogo.jpg';
+import logo from '../../assets/images/splash.png';
 import LoginForm from '../../components/login-form';
 import commonStyles from '../../styles/common';
 
@@ -76,8 +76,7 @@ class LoginScreen extends Component<Props> {
                     <ScrollView style={styles.scroll}>
                         <View style={{paddingLeft: 20, paddingRight: 20}}>
                             <View style={styles.logo}>
-                                <Image source={logo} style={{height: 80, width: '100%'}}/>
-                                <Text style={styles.logoText}>Money on My Mind</Text>
+                                <Image source={logo} style={{height: '90%', width: '100%'}}/>
                             </View>
                             <View style={{width: '100%'}}>
                                 <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
