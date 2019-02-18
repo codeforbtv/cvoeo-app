@@ -56,10 +56,10 @@ export class Upcoming extends Component<Props> {
 
     const showUpcoming = (firstOrRemaining) => {
 
-      const upcomingArray = ((this.props.profile || []).upcomingArray || []);
-      const upcomingFiltered = upcomingArray.filter(element => (((element.date.seconds) * 1000) > Date.now()));
-      const upcomingSorted = upcomingFiltered.sort((a, b) => a.date.seconds - b.date.seconds);
-      const upcomingMapped = upcomingSorted.map((event, i) => {
+      const upcoming = ((this.props.profile || []).upcomingArray || [])
+            .filter(element => (((element.date.seconds) * 1000) > Date.now()))
+            .sort((a, b) => a.date.seconds - b.date.seconds)
+            .map((event, i) => {
 
         const { title, location, date } = event;
         const momentDate = moment(new Date((date.seconds) * 1000));
@@ -70,7 +70,7 @@ export class Upcoming extends Component<Props> {
         let dayWord = momentDate.toNow(true).split(' ')[1];
 
         switch (true) {
-          case dayNumber.includes("a") && dayWord === "few":
+          case dayNumber === "a" && dayWord === "few":
             dayNumber = 1;
             dayWord = "minute";
             break;
@@ -107,7 +107,7 @@ export class Upcoming extends Component<Props> {
             </View>
           );
       });
-      return (firstOrRemaining === 'first' ? upcomingMapped[0] || [] : upcomingMapped.slice(1));
+      return (firstOrRemaining === 'first' ? upcoming[0] || [] : upcoming.slice(1));
     }
 
     return (
