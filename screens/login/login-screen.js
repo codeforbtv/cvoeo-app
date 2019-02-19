@@ -1,31 +1,23 @@
 // @flow
 
-import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import {
     Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableHighlight, View, Alert,
     Platform
 } from 'react-native';
 // import * as constants from '../../styles/constants';
 import * as actions from './actions';
-import logo from '../../assets/images/FinancialFuturesLogo.jpg';
+import logo from '../../assets/images/login.png';
 import LoginForm from '../../components/login-form';
 import commonStyles from '../../styles/common';
 
 const myStyles = {
     logo: {
+        paddingBottom: 12,
         justifyContent: 'center',
-        alignItems: 'center',
-        paddingBottom: 10
-    },
-    logoText: {
-        fontSize: 24,
-        color: '#999',
-        shadowColor: '#666',
-        shadowOffset: {width: 1, height: 0},
-        shadowOpacity: 1,
-        shadowRadius: 0
+        alignItems: 'center'
     }
 };
 const combinedStyles = Object.assign({}, commonStyles, myStyles);
@@ -40,7 +32,7 @@ type Props = {
 class LoginScreen extends Component<Props> {
 
     static navigationOptions = {
-        title: 'Log In'
+        header: null
     };
 
     constructor(props) {
@@ -59,7 +51,7 @@ class LoginScreen extends Component<Props> {
                         }
                     }
                 ],
-                {cancelable: false}
+                { cancelable: false }
             );
 
         }
@@ -69,27 +61,27 @@ class LoginScreen extends Component<Props> {
     render() {
         return (
             <KeyboardAvoidingView
-                style={styles.frame}
+                style={[styles.frame, { backgroundColor: '#04a0c6' }]}
                 behavior={Platform.OS === 'ios' ? 'padding' : null}
             >
                 <View style={styles.container}>
-                    <ScrollView style={styles.scroll}>
-                        <View style={{paddingLeft: 20, paddingRight: 20}}>
+                    <ScrollView style={[styles.scroll, { backgroundColor: '#04a0c6' }]}>
+                        <View style={{ paddingTop: 30, paddingLeft: 20, paddingRight: 20 }}>
                             <View style={styles.logo}>
-                                <Image source={logo} style={{height: 80, width: '100%'}}/>
-                                <Text style={styles.logoText}>Money on My Mind</Text>
+                                <Image source={logo} style={{ height: 342, width: '100%' }} />
                             </View>
-                            <View style={{width: '100%'}}>
-                                <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword}/>
+                            <View style={{ width: '91%', alignSelf: 'center' }}>
+                                <LoginForm onButtonPress={this.props.actions.loginWithEmailPassword} />
                                 <TouchableHighlight
                                     style={styles.link}
-                                    onPress={() => this.props.navigation.navigate('ForgotPassword')}>
-                                    <Text style={[styles.linkText, {fontSize: 16}]}>I forgot my password</Text>
+                                    onPress={() => this.props.navigation.navigate('ForgotPassword')}
+                                    underlayColor="transparent">
+                                    <Text style={styles.linkText}>forgot password?</Text>
                                 </TouchableHighlight>
 
                             </View>
                         </View>
-                        <View style={styles.padForIOSKeyboard}/>
+                        <View style={styles.padForIOSKeyboard} />
                     </ScrollView>
                 </View>
             </KeyboardAvoidingView>

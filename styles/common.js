@@ -122,8 +122,9 @@ const common = {
         justifyContent: 'flex-start'
     },
     textInput: {
-        borderColor: '#000',
-        borderWidth: 1,
+        borderColor: '#fff',
+        borderWidth: 0,
+        borderRadius: 20,
         backgroundColor: 'white',
         height: 40,
         textAlign: 'left',
@@ -131,20 +132,21 @@ const common = {
     },
     button: {
         borderStyle: 'solid',
-        borderWidth: 1,
+        borderWidth: 0,
+        borderRadius: 20,
         borderColor: colors.buttonColor,
-        backgroundColor: colors.buttonColor,
+        backgroundColor: '#b3cc95',
         padding: 10,
-        marginTop: 10,
-        marginBottom: 10,
+        marginTop: 24,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.6,
         shadowRadius: 2
     },
     buttonText: {
-        color: 'white',
-        fontSize: 18,
+        color: '#000',
+        fontSize: 16,
+        fontWeight: 'bold',
         textAlign: 'center'
     },
     buttonBar: {
@@ -176,16 +178,18 @@ const common = {
         textAlign: 'center',
         height: 30
     },
-
+    label: {
+        color: '#fff',
+        paddingTop: 5,
+        paddingBottom: 2.5
+    },
     link: {
         width: '100%',
-        margin: 5,
-        padding: 5
     },
     linkText: {
-        fontSize: 16,
-        color: 'gray',
-        textAlign: 'center'
+        fontSize: 15,
+        color: '#fff',
+        textAlign: 'right'
     },
     searchResultsTitle: {
         fontSize: 20,

@@ -47,14 +47,14 @@ export default class LoginForm extends Component<Props> {
 
     render() {
         return (
-            <View style={{marginBottom: 10}}>
+            <View style={{marginBottom: 10, backgroundColor: '#04a0c6'}}>
                 <View>
-                    <Text style={styles.label}>Email</Text>
+                    <Text style={styles.label}>Username</Text>
                     <TextInput
                         autoCapitalize='none'
                         keyBoardType='email-address'
                         autoCorrect={false}
-                        placeholder='you@domain.com'
+                        placeholder={''}
                         value={this.state.email}
                         onChangeText={this.onChangeEmail}
                         style={styles.textInput}
@@ -67,7 +67,7 @@ export default class LoginForm extends Component<Props> {
                         autoCapitalize='none'
                         keyBoardType={'default'}
                         autoCorrect={false}
-                        placeholder={'*****'}
+                        placeholder={''}
                         secureTextEntry={true}
                         value={this.state.password}
                         onChangeText={this.onChangeState('password')}
@@ -76,7 +76,7 @@ export default class LoginForm extends Component<Props> {
                     />
                 </View>
                 <TouchableOpacity style={styles.button} onPress={this.onButtonPress}>
-                    <Text style={styles.buttonText}>{this.props.buttonText || 'Login'}</Text>
+                    <Text style={styles.buttonText}>{this.props.buttonText || 'Sign in'}</Text>
                 </TouchableOpacity>
             </View>
         );
