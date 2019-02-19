@@ -15,9 +15,9 @@ import commonStyles from '../../styles/common';
 
 const myStyles = {
     logo: {
-        flex: 10,
+        paddingBottom: 12,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
     }
 };
 const combinedStyles = Object.assign({}, commonStyles, myStyles);
@@ -66,7 +66,7 @@ class LoginScreen extends Component<Props> {
             >
                 <View style={styles.container}>
                     <ScrollView style={[styles.scroll, { backgroundColor: '#04a0c6' }]}>
-                        <View style={{ paddingTop: 32, paddingLeft: 20, paddingRight: 20 }}>
+                        <View style={{ paddingTop: 30, paddingLeft: 20, paddingRight: 20 }}>
                             <View style={styles.logo}>
                                 <Image source={logo} style={{ height: 342, width: '100%' }} />
                             </View>
