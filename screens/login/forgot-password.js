@@ -59,11 +59,41 @@ class ForgotPassword extends Component<Props> {
                 }]}>
                     {this.state.passwordResetSent
                         ? (
-                            <View style={[styles.container, { paddingTop: 20 }]}>
-                                <Text style={[styles.text, { textAlign: 'center' }]}>Check your email</Text>
-                                <TouchableHighlight style={styles.link} onPress={() => this.props.navigation.goBack()}>
-                                    <Text style={styles.linkText}>{'< Back to Login'}</Text>
+                            <View style={styles.container}>
+                                <TouchableHighlight
+                                    style={styles.link}
+                                    onPress={() => this.props.navigation.navigate('Login')}
+                                    underlayColor="transparent">
+                                    <View style={{ display: 'flex', 
+                                                   flexDirection: 'row', 
+                                                   marginBottom: '38%' }}>
+                                        <Icon
+                                            name='angle-left'
+                                            style={{ color: '#fff', 
+                                                     fontWeight: 'bold', 
+                                                     fontSize: 48 }}
+                                        />
+                                        <Text style={{ color: '#fff', 
+                                                       paddingTop: 16 }}>&nbsp; Log in</Text>
+                                    </View>
                                 </TouchableHighlight>
+
+                                <View style={{ alignSelf: 'center',
+                                               height: '35%',
+                                               width: '91%',
+                                               padding: 10,
+                                               backgroundColor: '#fff',
+                                               borderColor: '#020202',
+                                               borderWidth: 2,
+                                                }}>
+                                    <Text style={{ color: '#020202',
+                                                   fontSize: 15,
+                                                   fontWeight: 'bold',
+                                                   margin: 30,
+                                                   textAlign: 'center',
+                                                   paddingRight: 10
+                                                   }}>Please check your email for the password reset link. {'\n\n'} Once you've set a new password, please return to the login screen.</Text>
+                                </View>
                             </View>
                         )
                         : (
