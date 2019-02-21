@@ -3,20 +3,22 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import {
+  Alert,
+  Animated,
+  Dimensions,
+  Image,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
   TouchableHighlight,
-  Animated,
-  Alert,
-  ScrollView,
   TouchableOpacity,
+  View,
   YellowBox
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DrawerItems } from 'react-navigation';
-import { Svg } from 'expo';
+import { LinearGradient, Svg } from 'expo';
 import Upcoming from './components/upcoming';
 
 // import global actions
@@ -148,9 +150,11 @@ class Dashboard extends Component<Props> {
     return (
       <View scrollEnabled={false} style={styles.container}>
         <View style={styles.dashRow}>
-          <View><Text style={styles.dots}>{'   '}</Text></View>
           <View style={styles.titleRow}>
-            <Text style={[styles.title, styles.blackText]}>{'m'}</Text><Text style={styles.title}>{'om'}</Text><Text style={[styles.title, styles.greenText]}>{'m'}</Text>
+            <Image source={require('../../assets/images/FinancialFuturesLogo.jpg')} 
+            style={{ position: 'absolute', left: -55, top: 18, width: '100%', height: 40, resizeMode: 'contain'}}
+            />
+            <Text style={[styles.title, {marginLeft: 100}]}>{' '}</Text>
           </View>
           <TouchableHighlight
             onPress={this.ellipsisAlert}
@@ -162,9 +166,19 @@ class Dashboard extends Component<Props> {
             />
           </TouchableHighlight>
         </View>
+        <LinearGradient colors={['#fff', '#04a0c6']}
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 60,
+            height: (Dimensions.get('window').height - 60),
+            zIndex: -1
+          }}
+          />
         <ScrollView style={styles.main}>
 
-          <Upcoming />
+          {/* <Upcoming /> */}
 
           <View style={styles.padding}>
             <View style={styles.progressBox}>
