@@ -75,8 +75,8 @@ class LoginScreen extends Component<Props> {
                                 <TouchableHighlight
                                     style={styles.link}
                                     onPress={() => this.props.navigation.navigate('ForgotPassword')}
-                                    underlayColor="transparent">
-                                    <Text style={styles.linkText}>forgot password?</Text>
+                                    underlayColor='transparent'>
+                                    <Text style={styles.linkText}>{'forgot password\?'}</Text>
                                 </TouchableHighlight>
 
                             </View>

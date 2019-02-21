@@ -63,36 +63,44 @@ class ForgotPassword extends Component<Props> {
                                 <TouchableHighlight
                                     style={styles.link}
                                     onPress={() => this.props.navigation.navigate('Login')}
-                                    underlayColor="transparent">
-                                    <View style={{ display: 'flex', 
-                                                   flexDirection: 'row', 
-                                                   marginBottom: '38%' }}>
+                                    underlayColor='transparent'>
+                                    <View style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        marginBottom: '38%'
+                                    }}>
                                         <Icon
                                             name='angle-left'
-                                            style={{ color: '#fff', 
-                                                     fontWeight: 'bold', 
-                                                     fontSize: 48 }}
+                                            style={{
+                                                color: '#fff',
+                                                fontWeight: 'bold',
+                                                fontSize: 48
+                                            }}
                                         />
-                                        <Text style={{ color: '#fff', 
-                                                       paddingTop: 16 }}>&nbsp; Log in</Text>
+                                        <Text style={{
+                                            color: '#fff',
+                                            paddingTop: 16
+                                        }}>{'  Log in'}</Text>
                                     </View>
                                 </TouchableHighlight>
 
-                                <View style={{ alignSelf: 'center',
-                                               height: '35%',
-                                               width: '91%',
-                                               padding: 10,
-                                               backgroundColor: '#fff',
-                                               borderColor: '#020202',
-                                               borderWidth: 2,
-                                                }}>
-                                    <Text style={{ color: '#020202',
-                                                   fontSize: 15,
-                                                   fontWeight: 'bold',
-                                                   margin: 30,
-                                                   textAlign: 'center',
-                                                   paddingRight: 10
-                                                   }}>Please check your email for the password reset link. {'\n\n'} Once you've set a new password, please return to the login screen.</Text>
+                                <View style={{
+                                    alignSelf: 'center',
+                                    height: '35%',
+                                    width: '91%',
+                                    padding: 10,
+                                    backgroundColor: '#fff',
+                                    borderColor: '#020202',
+                                    borderWidth: 2,
+                                }}>
+                                    <Text style={{
+                                        color: '#020202',
+                                        fontSize: 15,
+                                        fontWeight: 'bold',
+                                        margin: 30,
+                                        textAlign: 'center',
+                                        paddingRight: 10
+                                    }}>{'Please check your email for the password reset link. \n\n Once you\'ve set a new password, please return to the login screen.'}</Text>
                                 </View>
                             </View>
                         )
@@ -101,37 +109,45 @@ class ForgotPassword extends Component<Props> {
                                 <TouchableHighlight
                                     style={styles.link}
                                     onPress={() => this.props.navigation.navigate('Login')}
-                                    underlayColor="transparent">
-                                    <View style={{ display: 'flex', 
-                                                   flexDirection: 'row', 
-                                                   marginBottom: '38%' }}>
+                                    underlayColor='transparent'>
+                                    <View style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        marginBottom: '38%'
+                                    }}>
                                         <Icon
                                             name='angle-left'
-                                            style={{ color: '#fff', 
-                                                     fontWeight: 'bold', 
-                                                     fontSize: 48 }}
+                                            style={{
+                                                color: '#fff',
+                                                fontWeight: 'bold',
+                                                fontSize: 48
+                                            }}
                                         />
-                                        <Text style={{ color: '#fff', 
-                                                       paddingTop: 16 }}>&nbsp; Log in</Text>
+                                        <Text style={{
+                                            color: '#fff',
+                                            paddingTop: 16
+                                        }}>{'  Log in'}</Text>
                                     </View>
                                 </TouchableHighlight>
 
-                                <View style={{ alignSelf: 'center',
-                                               height: '35%',
-                                               width: '91%',
-                                               padding: 10,
-                                               backgroundColor: '#fff',
-                                               borderColor: '#020202',
-                                               borderWidth: 2,
-                                                }}>
-                                    <Text style={{ color: '#020202',
-                                                   fontSize: 15,
-                                                   fontWeight: 'bold',
-                                                   marginBottom: 36,
-                                                   textAlign: 'right',
-                                                   paddingRight: 10
-                                                   }}>Forgot Password?</Text>
-                                    <Text style={{ color: '#979797', fontWeight: 'bold' }}>&nbsp; Email Address</Text>
+                                <View style={{
+                                    alignSelf: 'center',
+                                    height: '35%',
+                                    width: '91%',
+                                    padding: 10,
+                                    backgroundColor: '#fff',
+                                    borderColor: '#020202',
+                                    borderWidth: 2,
+                                }}>
+                                    <Text style={{
+                                        color: '#020202',
+                                        fontSize: 15,
+                                        fontWeight: 'bold',
+                                        marginBottom: 36,
+                                        textAlign: 'right',
+                                        paddingRight: 10
+                                    }}>{'Forgot Password\?'}</Text>
+                                    <Text style={{ color: '#979797', fontWeight: 'bold' }}>{'  Email Address'}</Text>
                                     <TextInput
                                         autoCorrect={false}
                                         value={this.state.email}

@@ -49,7 +49,7 @@ export default class LoginForm extends Component<Props> {
         return (
             <View style={{marginBottom: 10, backgroundColor: '#04a0c6'}}>
                 <View>
-                    <Text style={styles.label}>Username</Text>
+                    <Text style={styles.label}>{'Username'}</Text>
                     <TextInput
                         autoCapitalize='none'
                         keyBoardType='email-address'
@@ -62,7 +62,7 @@ export default class LoginForm extends Component<Props> {
                     />
                 </View>
                 <View>
-                    <Text style={styles.label}>Password</Text>
+                    <Text style={styles.label}>{'Password'}</Text>
                     <TextInput
                         autoCapitalize='none'
                         keyBoardType={'default'}
