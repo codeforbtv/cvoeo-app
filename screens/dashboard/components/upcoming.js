@@ -113,7 +113,7 @@ export class Upcoming extends Component<Props> {
     return (
       <View style={styles.padding} >
         <View style={styles.upcomingBox}>
-          <Text style={[styles.blockTitle, styles.upcomingTitle]}>COMING UP:</Text>
+          <Text style={[styles.blockTitle, styles.upcomingTitle]}>{'COMING UP:'}</Text>
           {showUpcoming('first')}
           {
             this.state.expanded && (
@@ -129,7 +129,7 @@ export class Upcoming extends Component<Props> {
               <TouchableHighlight
                 onPress={this.toggle}
                 style={styles.dashButton}
-                underlayColor="transparent">
+                underlayColor='transparent'>
                 <Icon
                   name={icon}
                   style={[styles.FAIcon, styles.icon1]}
