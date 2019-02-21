@@ -146,7 +146,7 @@ class ForgotPassword extends Component<Props> {
                                         marginBottom: 36,
                                         textAlign: 'right',
                                         paddingRight: 10
-                                    }}>{'Forgot Password\?'}</Text>
+                                    }}>{'Forgot Password?'}</Text>
                                     <Text style={{ color: '#979797', fontWeight: 'bold' }}>{'  Email Address'}</Text>
                                     <TextInput
                                         autoCorrect={false}

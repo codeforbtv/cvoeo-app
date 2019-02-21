@@ -78,9 +78,9 @@ class Dashboard extends Component<Props> {
     }
     if (firstOrRemaining === 'first') {
       if (!allGoals[0]) {
-          let message = ['Let\'s work together on some goals to move you forward.', 'Schedule an appointment with your counselor today\!'];
+          let message = ['Let\'s work together on some goals to move you forward.', 'Schedule an appointment with your counselor today!'];
         if (isComplete) {
-          message = ['Keep up the good work.', 'You\'ll finish a goal soon\!'];
+          message = ['Keep up the good work.', 'You\'ll finish a goal soon!'];
         }
         allGoals.push (
           <View style={styles.dashRow} key={i}>
@@ -171,12 +171,12 @@ class Dashboard extends Component<Props> {
               <View style={styles.spaceRow}>
                 <Text style={[styles.bigTitle, styles.bigLetters]}>{'$' + incentivesEarned}</Text>
                 <Text style={styles.bigBlock}></Text>
-                <Text style={styles.bigTitle}>{percentComplete+ '\% Complete\!'}</Text>
+                <Text style={styles.bigTitle}>{percentComplete+ '% Complete!'}</Text>
               </View>
               <View style={styles.dashRow}>
                 <View style={styles.smallerBlock}>
                   <Text style={styles.bigBlock}></Text>
-                  <Text style={[styles.money, styles.end]}>{'\$0'}</Text>
+                  <Text style={[styles.money, styles.end]}>{'$0'}</Text>
                 </View>
                 <View style={styles.bottomLine}>
 
@@ -231,7 +231,7 @@ class Dashboard extends Component<Props> {
                 </View>
                 <View style={styles.smallerBlock}>
                   <Text style={styles.bigBlock}></Text>
-                  <Text style={[styles.money, styles.start]}>{'\$500'}</Text>
+                  <Text style={[styles.money, styles.start]}>{'$500'}</Text>
                 </View>
                 <Text style={styles.moreButton}> </Text>
               </View>
@@ -240,7 +240,7 @@ class Dashboard extends Component<Props> {
 
           <View style={styles.padding}>
             <View style={styles.goalsBox}>
-              <Text style={[styles.blockTitle, styles.goalsTitle]}>{'CURRENT GOALS\:'}</Text>
+              <Text style={[styles.blockTitle, styles.goalsTitle]}>{'CURRENT GOALS:'}</Text>
 
               {this.showGoals('first', false)}
 
@@ -270,7 +270,7 @@ class Dashboard extends Component<Props> {
           </View>
           <View style={styles.padding}>
             <View style={styles.completedBox}>
-              <Text style={[styles.blockTitle, styles.completedTitle]}>{'COMPLETED\:'}</Text>
+              <Text style={[styles.blockTitle, styles.completedTitle]}>{'COMPLETED:'}</Text>
               {this.showGoals('first', true)}
               {
                 this.state.expanded3 && (
