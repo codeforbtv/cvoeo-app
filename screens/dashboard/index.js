@@ -9,11 +9,11 @@ import {
   TouchableHighlight,
   Animated,
   Alert,
+  ScrollView,
   TouchableOpacity,
   YellowBox
 } from 'react-native';
 import { connect } from 'react-redux';
-import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DrawerItems } from 'react-navigation';
 import { Svg } from 'expo';
@@ -27,7 +27,7 @@ import * as actions from './actions';
 import commonStyles from '../../styles/common';
 const styles = StyleSheet.create(commonStyles);
 
-YellowBox.ignoreWarnings(['Setting a timer', 'You are binding']);
+YellowBox.ignoreWarnings(['Setting a timer']);
 
 type Props = {
   actions: Object,
