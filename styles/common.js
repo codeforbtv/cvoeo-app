@@ -208,7 +208,10 @@ const common = {
         shadowRadius: 0
     },
     main: {
-        backgroundColor: '#fff',
+        display: 'flex',
+        flex: 1,
+        backgroundColor: 'transparent',
+        alignSelf: 'stretch',
     },
     container: {
         flex: 1,
@@ -219,18 +222,17 @@ const common = {
         flex: 10,
         display: 'flex',
         flexDirection: 'row',
-        backgroundColor: '#04a0c6',
+        backgroundColor: 'transparent',
         alignItems: 'center',
         justifyContent: 'center',
     },
     title: {
-        backgroundColor: '#04a0c6',
-        color: '#fff',
+        backgroundColor: 'transparent',
+        color: '#000',
         fontSize: 25,
         fontWeight: 'bold',
         paddingTop: 12,
         paddingBottom: 15,
-        alignSelf: 'center',
         textAlign: 'center',
         fontFamily: 'System',
     },
@@ -241,7 +243,7 @@ const common = {
         color: '#b3cc95',
     },
     dots: {
-        backgroundColor: '#04a0c6',
+        backgroundColor: 'transparent',
         flex: 1,
         fontWeight: 'normal',
         fontSize: 20,
@@ -256,7 +258,7 @@ const common = {
         paddingRight: 9,
         paddingBottom: 0,
     },
-    upcomingBox: {
+    goalsBox: {
         flex: 1,
         backgroundColor: '#fcf8e8',
         alignItems: 'center',
@@ -278,7 +280,7 @@ const common = {
         shadowRadius: 6,
         shadowOffset: { width: 1, height: 5 },
     },
-    goalsBox: {
+    completedBox: {
         flex: 1,
         backgroundColor: '#e3f4cf',
         alignItems: 'center',
@@ -289,7 +291,7 @@ const common = {
         shadowRadius: 6,
         shadowOffset: { width: 1, height: 5 },
     },
-    completedBox: {
+    upcomingBox: {
         flex: 1,
         backgroundColor: '#cceef6',
         alignItems: 'center',
@@ -322,7 +324,7 @@ const common = {
         backgroundColor: 'transparent',
         flex: 9,
         alignItems: 'center',
-        padding: 2,
+        padding: 1,
     },
     smallBlock: {
         backgroundColor: 'transparent',
@@ -340,28 +342,28 @@ const common = {
     blockTitle: {
         alignItems: 'flex-start',
         color: 'rgba(2,2,2,0.34)',
-        fontSize: 16,
+        fontSize: 14.5,
         fontWeight: 'bold',
-        paddingTop: 6,
-        paddingLeft: 7,
+        paddingTop: 30,
+        paddingLeft: 30,
         paddingBottom: 5,
         alignSelf: 'stretch',
         textAlign: 'left',
         fontFamily: 'System',
     },
-    upcomingTitle: {
+    goalsTitle: {
         color: '#afb066',
     },
-    goalsTitle: {
+    completedTitle: {
         color: '#809f5b',
     },
-    completedTitle: {
+    upcomingTitle: {
         color: '#037a96',
     },
     subTitle: {
         alignItems: 'center',
         color: '#dc552b',
-        fontSize: 17,
+        fontSize: 14,
         fontWeight: 'bold',
         paddingTop: 1,
         alignSelf: 'stretch',
@@ -372,7 +374,7 @@ const common = {
         backgroundColor: 'transparent',
         alignItems: 'center',
         color: '#555',
-        fontSize: 16,
+        fontSize: 14,
         alignSelf: 'stretch',
         textAlign: 'left',
         fontFamily: 'System',
@@ -409,16 +411,17 @@ const common = {
     },
     bigTitle: {
         color: '#037a96',
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
         paddingLeft: 24,
         paddingRight: 24,
-        paddingTop: 10,
+        paddingTop: 24,
         fontFamily: 'System',
     },
     bigLetters: {
         fontSize: 40,
         color: '#020202',
+        paddingTop: 10,
     },
     FAIcon: {
         alignItems: 'flex-end',
@@ -435,15 +438,15 @@ const common = {
         paddingTop: 6,
         paddingLeft: 3,
     },
-    icon1: {
+    icon2: {
         backgroundColor: '#dddea8',
         color: '#67674e',
     },
-    icon2: {
+    icon3: {
         backgroundColor: '#b3cc95',
         color: '#535f46',
     },
-    icon3: {
+    icon1: {
         backgroundColor: '#51bed9',
         color: '#265865',
     },
@@ -460,6 +463,7 @@ const common = {
         flex: 1,
         color: '#020202',
         fontWeight: 'bold',
+        paddingBottom: 4
     },
     start: {
         alignSelf: 'flex-start'
@@ -472,8 +476,8 @@ const common = {
         alignItems: 'center',
         borderBottomWidth: 2,
         borderColor: 'rgba(0,0,0,0.0)',
-        width: 235,
-        paddingBottom: 10,
+        width: 202,
+        paddingBottom: 20,
     },
 
 };
