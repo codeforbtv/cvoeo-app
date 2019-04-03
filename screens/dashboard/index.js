@@ -7,6 +7,7 @@ import {
   Animated,
   Dimensions,
   Image,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -148,6 +149,7 @@ class Dashboard extends Component<Props> {
       icon3 = this.icons['close'];
     }
     return (
+      <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <View scrollEnabled={false} style={styles.container}>
         <View style={styles.dashRow}>
           <View style={styles.titleRow}>
@@ -314,6 +316,7 @@ class Dashboard extends Component<Props> {
           </View>
         </ScrollView>
       </View>
+      </SafeAreaView>
     );
   }
 }
