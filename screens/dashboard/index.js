@@ -210,9 +210,6 @@ class Dashboard extends Component<Props> {
                           height={200}
                           width={200}
                         />
-                        <Svg.Polygon
-                          points="50,50 120,120" />
-
                       </Svg.ClipPath>
                       <Svg.Circle
                         cx={100}
