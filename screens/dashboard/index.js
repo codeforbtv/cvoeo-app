@@ -273,10 +273,12 @@ class Dashboard extends Component<Props> {
                     style={styles.dashButton}
                     onPress={this.toggle2.bind(this)}
                     underlayColor='transparent'>
-                    <Icon
-                      style={[styles.FAIcon, styles.icon2]}
-                      name={icon2}
-                    />
+                    <View style={[styles.FAIconView, styles.icon2Bg]}>
+                      <Icon
+                        style={[styles.FAIcon, styles.icon2]}
+                        name={icon2}
+                      />
+                    </View>
                   </TouchableHighlight>
                 </View>
               </View>
@@ -301,10 +303,12 @@ class Dashboard extends Component<Props> {
                     style={styles.dashButton}
                     onPress={this.toggle3.bind(this)}
                     underlayColor='transparent'>
-                    <Icon
-                      style={[styles.FAIcon, styles.icon3]}
-                      name={icon3}
-                    />
+                    <View style={[styles.FAIconView, styles.icon3Bg]}>
+                      <Icon
+                        style={[styles.FAIcon, styles.icon3]}
+                        name={icon3}
+                      />
+                    </View>
                   </TouchableHighlight>
                 </View>
               </View>
