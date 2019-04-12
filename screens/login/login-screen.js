@@ -23,8 +23,9 @@ const myStyles = {
 const combinedStyles = Object.assign({}, commonStyles, myStyles);
 const styles = StyleSheet.create(combinedStyles);
 const window = Dimensions.get('window');
-const logoHeight = 342 * (window.width / 287) * 0.89;
-const logoWidth = window.width * 0.89;
+const logoScale = 0.89;
+const logoHeight = 342 * (window.width / 287) * logoScale;
+const logoWidth = window.width * logoScale;
 
 type Props = {
     actions: Object,
