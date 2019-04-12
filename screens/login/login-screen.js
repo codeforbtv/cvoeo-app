@@ -70,7 +70,7 @@ class LoginScreen extends Component<Props> {
             >
                 <View style={styles.container}>
                     <ScrollView style={[styles.scroll, { backgroundColor: '#04a0c6' }]}>
-                        <View style={{ paddingTop: 30, paddingLeft: 20, paddingRight: 20 }}>
+                        <View style={{ paddingTop: 10, paddingLeft: 20, paddingRight: 20 }}>
                             <View style={styles.logo}>
                                 <Image source={logo} style={{ height: logoHeight, width: logoWidth }} />
                             </View>
