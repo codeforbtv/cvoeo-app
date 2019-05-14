@@ -36,6 +36,9 @@ You need to create a free Firebase project at Google.
     - *authDomain*: in the left accordian-panel, under the "Project Overview" is the "Develop" section. Within that, click the "Authentication" section. Once that is open, at the top of the page, switch to the "Sign-in method". Halfway down that page is the "Authorized domains" listing... the value we want is the one that ends in `firebaseapp.com`
     - *databaseURL*: in the left accordian-panel, in the "Database" section under the "Develop" heading, at the top of the database screen click the drop-down listed as "Cloud Firestore" and select "Realtime Database" instead. The Database URL is listed at the top of the "Data" window and looks like <something>.firebaseio.com
     - *storageBucket*: in the left accordian-panel, select "Storage" under the "Develop" heading. The Storage page, Files section shows the url of the storage bucket as gs://<something>.appspot.com.
+- Return to the "Authentication" section under the "Develop" heading. Select "Sign-in method" and click on the Provider for "Email/Password" to enable it.
+- Then switch to the "Users" sectio in the Authentication page, and add a user for yourself ... whatever user name password you want.
+- Save and load the app. It should let you login now.
 
 #### View in Expo Mobile App
 By using the expo mobile app, you will be able to test the app in both iOS & Android.  However, you will need a smart phone that can connect to the same network as the computer running expo.
