@@ -194,6 +194,7 @@ class Dashboard extends Component<Props> {
                 </View>
                 <View style={styles.bottomLine}>
 
+                  {/* Fuel Gague */}
                   <Svg height={100} width={200}>
                     <Svg.Circle
                       cx={100}
@@ -239,10 +240,24 @@ class Dashboard extends Component<Props> {
 
                   </Svg>
 
+
                 </View>
                 <View style={styles.smallerBlock}>
                   <Text style={styles.bigBlock}></Text>
                   <Text style={[styles.money, styles.start]}>{'$500'}</Text>
+
+
+
+                  {/* https://facebook.github.io/react-native/docs/modal */}
+                  <TouchableHighlight
+                    onPress={() => {
+                      this.setModalVisible(true);
+                    }}>
+                    <Text>Show Modal</Text>
+                  </TouchableHighlight>
+
+                  
+
                 </View>
                 <Text style={styles.moreButton}> </Text>
               </View>
