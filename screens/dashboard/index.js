@@ -17,7 +17,6 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { DrawerItems } from 'react-navigation';
 import { LinearGradient, Svg } from 'expo';
 import Upcoming from './components/upcoming';
 
