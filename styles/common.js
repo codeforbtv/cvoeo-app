@@ -423,32 +423,45 @@ const common = {
         color: '#020202',
         paddingTop: 10,
     },
-    FAIcon: {
+    FAIconView: {
         alignItems: 'flex-end',
         color: 'rgba(2,2,2,0.3)',
-        fontSize: 20,
-        fontWeight: 'bold',
         width: 28,
         height: 28,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 0,
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 3,
+    },
+    FAIcon: {
+        alignItems: 'flex-end',
+        backgroundColor: 'transparent',
+        color: 'rgba(2,2,2,0.3)',
+        fontSize: 20,
+        fontWeight: 'bold',
+        width: 28,
+        height: 28,
         textAlign: 'center',
         paddingTop: 6,
         paddingLeft: 3,
     },
     icon2: {
-        backgroundColor: '#dddea8',
         color: '#67674e',
     },
+    icon2Bg: {
+        backgroundColor: '#dddea8',
+    },
     icon3: {
-        backgroundColor: '#b3cc95',
         color: '#535f46',
     },
+    icon3Bg: {
+        backgroundColor: '#b3cc95',
+    },
     icon1: {
-        backgroundColor: '#51bed9',
         color: '#265865',
+    },
+    icon1Bg: {
+        backgroundColor: '#51bed9',
     },
     dashButton: {
         backgroundColor: 'transparent',
