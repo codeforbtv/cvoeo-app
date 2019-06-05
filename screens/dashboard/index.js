@@ -14,7 +14,8 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   View,
-  YellowBox
+  YellowBox,
+  Modal
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -23,7 +24,7 @@ import Upcoming from './components/upcoming';
 
 // import global actions
 import * as actions from './actions';
-
+import ModalTest from '../../components/modaltest';
 // import global styles
 // @TODO: move the global styles from this screen into ../../styles/common 
 import commonStyles from '../../styles/common';
@@ -244,6 +245,7 @@ class Dashboard extends Component<Props> {
                 <View style={styles.smallerBlock}>
                   <Text style={styles.bigBlock}></Text>
                   <Text style={[styles.money, styles.start]}>{'$500'}</Text>
+                  <ModalTest/>
                 </View>
                 <Text style={styles.moreButton}> </Text>
               </View>
