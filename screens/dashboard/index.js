@@ -7,6 +7,7 @@ import {
   Animated,
   Dimensions,
   Image,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -148,6 +149,7 @@ class Dashboard extends Component<Props> {
       icon3 = this.icons['close'];
     }
     return (
+      <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <View scrollEnabled={false} style={styles.container}>
         <View style={styles.dashRow}>
           <View style={styles.titleRow}>
@@ -271,10 +273,12 @@ class Dashboard extends Component<Props> {
                     style={styles.dashButton}
                     onPress={this.toggle2.bind(this)}
                     underlayColor='transparent'>
-                    <Icon
-                      style={[styles.FAIcon, styles.icon2]}
-                      name={icon2}
-                    />
+                    <View style={[styles.FAIconView, styles.icon2Bg]}>
+                      <Icon
+                        style={[styles.FAIcon, styles.icon2]}
+                        name={icon2}
+                      />
+                    </View>
                   </TouchableHighlight>
                 </View>
               </View>
@@ -299,10 +303,12 @@ class Dashboard extends Component<Props> {
                     style={styles.dashButton}
                     onPress={this.toggle3.bind(this)}
                     underlayColor='transparent'>
-                    <Icon
-                      style={[styles.FAIcon, styles.icon3]}
-                      name={icon3}
-                    />
+                    <View style={[styles.FAIconView, styles.icon3Bg]}>
+                      <Icon
+                        style={[styles.FAIcon, styles.icon3]}
+                        name={icon3}
+                      />
+                    </View>
                   </TouchableHighlight>
                 </View>
               </View>
@@ -312,6 +318,7 @@ class Dashboard extends Component<Props> {
           </View>
         </ScrollView>
       </View>
+      </SafeAreaView>
     );
   }
 }
