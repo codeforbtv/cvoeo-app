@@ -19,7 +19,7 @@ import {
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient, Svg } from 'expo';
-import Upcoming from './components/upcoming';
+import Upcoming from '../../components/upcoming';
 
 // import global actions
 import * as actions from './actions';
