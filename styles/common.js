@@ -445,16 +445,16 @@ const common = {
         paddingTop: 6,
         paddingLeft: 3,
     },
-    icon2: {
+    expandCurrentGoalsIcon: {
         color: '#67674e',
     },
-    icon2Bg: {
+    expandCurrentGoalsIconBg: {
         backgroundColor: '#dddea8',
     },
-    icon3: {
+    expandCompletedGoalsIcon: {
         color: '#535f46',
     },
-    icon3Bg: {
+    expandCompletedGoalsIconBg: {
         backgroundColor: '#b3cc95',
     },
     icon1: {

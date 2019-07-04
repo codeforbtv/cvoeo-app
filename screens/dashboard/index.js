@@ -12,15 +12,13 @@ import {
   StyleSheet,
   Text,
   TouchableHighlight,
-  TouchableOpacity,
   View,
   YellowBox
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient, Svg } from 'expo';
-import Upcoming from './components/upcoming';
-
+import { get } from 'lodash';
 // import global actions
 import * as actions from './actions';
 
@@ -44,8 +42,8 @@ class Dashboard extends Component<Props> {
     super(props);
     this.ellipsisAlert = this.ellipsisAlert.bind(this);
     this.state = {
-      expanded2: false,
-      expanded3: false
+      expandCurrentGoals: false,
+      expandCompletedGoals: false
     };
     this.icons = {
       'dots': 'ellipsis-v',
@@ -54,54 +52,18 @@ class Dashboard extends Component<Props> {
     };
   }
 
-  showGoals(firstOrRemaining, isComplete) {
-    let goalArray = ((this.props.profile || {}).goalArray || {});
-
-    let allGoals = [];
-    for (i = 0; i < goalArray.length; i++) {
-
-      let title = ((((this.props.profile || {}).goalArray || {})[i] || {}).title);
-      let detail = ((((this.props.profile || {}).goalArray || {})[i] || {}).detail);
-      let completed = ((((this.props.profile || {}).goalArray || {})[i] || {}).completed);
-      if (completed === isComplete) {
-
-        allGoals.push(
-          <View style={styles.dashRow} key={i}>
-            <View style={styles.smallerBlock}>
-              <Text style={styles.date}> </Text>
-            </View>
-            <View style={styles.biggerBlock}>
-              <Text style={styles.subTitle}>{title}</Text>
-              <Text style={styles.subText}>{detail}</Text>
-            </View>
-          </View>
-        );
-      }
-    }
-    if (firstOrRemaining === 'first') {
-      if (!allGoals[0]) {
-          let message = ['Let\'s work together on some goals to move you forward.', 'Schedule an appointment with your counselor today!'];
-        if (isComplete) {
-          message = ['Keep up the good work.', 'You\'ll finish a goal soon!'];
-        }
-        allGoals.push (
-          <View style={styles.dashRow} key={i}>
-            <View style={styles.smallerBlock}>
-              <Text style={styles.date}> </Text>
-            </View>
-            <View style={styles.biggerBlock}>
-              <Text style={styles.subTitle}>{message[0]}</Text>
-              <Text style={styles.subText}>{message[1]}</Text>
-            </View>
-          </View>
-        );
-      }
-      return allGoals[0];
-    }
-    if (firstOrRemaining === 'remaining') {
-      return allGoals.slice(1);
-    }
-
+  renderGoals(goalArray) {
+    return goalArray.map((goal, index) => 
+      <View style={styles.dashRow} key={index}>
+        <View style={styles.smallerBlock}>
+          <Text style={styles.date}> </Text>
+        </View>
+        <View style={styles.biggerBlock}>
+          <Text style={styles.subTitle}>{goal.title || ''}</Text>
+          <Text style={styles.subText}>{goal.detail || ''}</Text>
+        </View>
+      </View>
+    );
   }
 
   ellipsisAlert() {
@@ -119,15 +81,15 @@ class Dashboard extends Component<Props> {
     );
 }
 
-  toggle2() {
+  toggleExpandCurrentGoals() {
     this.setState({
-      expanded2: !this.state.expanded2
+      expandCurrentGoals: !this.state.expandCurrentGoals
     });
   }
 
-  toggle3() {
+  toggleExpandCompletedGoals() {
     this.setState({
-      expanded3: !this.state.expanded3
+      expandCompletedGoals: !this.state.expandCompletedGoals
     });
   }
 
@@ -136,17 +98,27 @@ class Dashboard extends Component<Props> {
     let incentivesEarned = ((this.props.profile || {}).incentivesEarned || 0);
     const incentivesAvailable = 500;
     let percentComplete = (incentivesEarned / incentivesAvailable) * 100;
-    let rotation = (1.72 * percentComplete) - 86;
+    let rotation = (1.72 * percentComplete) - 86;  
+   
+    const allGoals = get(this.props.profile, 'goalArray', []);
+    const incompleteGoals = allGoals.filter(goal => !goal.completed);
+    if (incompleteGoals.length <= 0) {
+      incompleteGoals.push({
+        title: 'Let\'s work together on some goals to move you forward.',
+        detail: 'Schedule an appointment with your counselor today!',
+        completed: false
+      })
+    }
 
-    let dots = this.icons['dots'];
-    let icon2 = this.icons['open'];
-    if (this.state.expanded2) {
-      icon2 = this.icons['close'];
+    const completedGoals = allGoals.filter(goal => goal.completed);
+    if (completedGoals.length <= 0) {
+      completedGoals.push({
+        title: 'Keep up the good work.',
+        detail: 'You\'ll finish a goal soon!',
+        completed: true
+      })
     }
-    let icon3 = this.icons['open'];
-    if (this.state.expanded3) {
-      icon3 = this.icons['close'];
-    }
+
     return (
       <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <View scrollEnabled={false} style={styles.container}>
@@ -162,7 +134,7 @@ class Dashboard extends Component<Props> {
             underlayColor='transparent'
             >
             <Icon
-              name={dots}
+            name={this.icons['dots']}
               style={[styles.title, styles.dots]}
             />
           </TouchableHighlight>
@@ -250,31 +222,41 @@ class Dashboard extends Component<Props> {
             </View>
           </View>
 
+          {/* CURRENT GOALS */}
+
           <View style={styles.padding}>
             <View style={styles.goalsBox}>
               <Text style={[styles.blockTitle, styles.goalsTitle]}>{'CURRENT GOALS:'}</Text>
-
-              {this.showGoals('first', false)}
-
               {
-                this.state.expanded2 && (
-                  <View style={styles.dashColumn}>
-                    {this.props.children}
-                    {this.showGoals('remaining', false)}
-                  </View>)
+                this.renderGoals(incompleteGoals.slice(0,1))
               }
-
+              {
+                this.state.expandCurrentGoals 
+                  && incompleteGoals.length > 1 
+                  && (
+                    <View style={styles.dashColumn}>
+                      { this.props.children }
+                      {            
+                        this.renderGoals(incompleteGoals.slice(1))
+                      }
+                    </View>
+                  )
+              }
               <View style={styles.moreButton}>
                 <View style={styles.dashRow}>
                   <Text style={styles.moreButton}></Text>
                   <TouchableHighlight
                     style={styles.dashButton}
-                    onPress={this.toggle2.bind(this)}
+                    onPress={this.toggleExpandCurrentGoals.bind(this)}
                     underlayColor='transparent'>
-                    <View style={[styles.FAIconView, styles.icon2Bg]}>
+                    <View style={[styles.FAIconView, styles.expandCurrentGoalsIconBg]}>
                       <Icon
-                        style={[styles.FAIcon, styles.icon2]}
-                        name={icon2}
+                        style={[styles.FAIcon, styles.expandCurrentGoalsIcon]}
+                        name={
+                          (this.state.expandCurrentGoals) 
+                            ? this.icons['close'] 
+                            : this.icons['open']
+                        }
                       />
                     </View>
                   </TouchableHighlight>
@@ -282,29 +264,40 @@ class Dashboard extends Component<Props> {
               </View>
             </View>
           </View>
+
+          {/* COMPLETED Goals */}
+
           <View style={styles.padding}>
             <View style={styles.completedBox}>
               <Text style={[styles.blockTitle, styles.completedTitle]}>{'COMPLETED:'}</Text>
-              {this.showGoals('first', true)}
               {
-                this.state.expanded3 && (
-                  <View style={styles.dashColumn}>
-                    {this.props.children}
-                    {this.showGoals('remaining', true)}
-                  </View>)
+                this.renderGoals(completedGoals.slice(0,1))
               }
-
+              {
+                this.state.expandCompletedGoals
+                  && completedGoals.length > 1 
+                  && (
+                    <View style={styles.dashColumn}>
+                      { this.props.children }
+                      {                
+                        this.renderGoals(completedGoals.slice(1))
+                      }
+                    </View>
+                  )
+              }
               <View style={styles.moreButton}>
                 <View style={styles.dashRow}>
                   <Text style={styles.moreButton}></Text>
                   <TouchableHighlight
                     style={styles.dashButton}
-                    onPress={this.toggle3.bind(this)}
+                    onPress={this.toggleExpandCompletedGoals.bind(this)}
                     underlayColor='transparent'>
-                    <View style={[styles.FAIconView, styles.icon3Bg]}>
+                    <View style={[styles.FAIconView, styles.expandCompletedGoalsIconBg]}>
                       <Icon
-                        style={[styles.FAIcon, styles.icon3]}
-                        name={icon3}
+                        style={[styles.FAIcon, styles.expandCompletedGoalsIcon]}
+                        name={(this.state.expandCompletedGoals) 
+                            ? this.icons['close'] 
+                            : this.icons['open']}
                       />
                     </View>
                   </TouchableHighlight>
