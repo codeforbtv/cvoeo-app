@@ -1,10 +1,10 @@
 // @flow
 
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import {
   Alert,
-  Animated,
   Dimensions,
   Image,
   SafeAreaView,
@@ -18,6 +18,7 @@ import {
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient, Svg } from 'expo';
+import { Goal } from './components/goal'
 import { get } from 'lodash';
 // import global actions
 import * as actions from './actions';
@@ -29,18 +30,16 @@ const styles = StyleSheet.create(commonStyles);
 
 YellowBox.ignoreWarnings(['Setting a timer']);
 
-type Props = {
-  actions: Object,
-  profile: Object,
-  navigation: Object
-};
+class Dashboard extends React.Component {
 
-
-class Dashboard extends Component<Props> {
+  static propTypes = {
+    actions: PropTypes.object,
+    profile: PropTypes.object,
+    navigation: PropTypes.object
+  };
 
   constructor(props) {
     super(props);
-    this.ellipsisAlert = this.ellipsisAlert.bind(this);
     this.state = {
       expandCurrentGoals: false,
       expandCompletedGoals: false
@@ -52,56 +51,38 @@ class Dashboard extends Component<Props> {
     };
   }
 
-  renderGoals(goalArray) {
-    return goalArray.map((goal, index) => 
-      <View style={styles.dashRow} key={index}>
-        <View style={styles.smallerBlock}>
-          <Text style={styles.date}> </Text>
-        </View>
-        <View style={styles.biggerBlock}>
-          <Text style={styles.subTitle}>{goal.title || ''}</Text>
-          <Text style={styles.subText}>{goal.detail || ''}</Text>
-        </View>
-      </View>
-    );
-  }
-
-  ellipsisAlert() {
-
-    const logoutCallback = this.props.actions.logout;
-
+  ellipsisAlert = () => {
     Alert.alert(
         'Do you want to logout?',
         'This will return you to the login screen.',
         [
-            {text: 'Logout', onPress: logoutCallback},
+            {text: 'Logout', onPress: this.props.actions.logout},
             {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
         ],
         {cancelable: false}
     );
-}
+  }
 
-  toggleExpandCurrentGoals() {
+  toggleExpandCurrentGoals = () => {
     this.setState({
       expandCurrentGoals: !this.state.expandCurrentGoals
     });
   }
 
-  toggleExpandCompletedGoals() {
+  toggleExpandCompletedGoals = () => {
     this.setState({
       expandCompletedGoals: !this.state.expandCompletedGoals
     });
   }
 
   render() {
-
-    let incentivesEarned = ((this.props.profile || {}).incentivesEarned || 0);
+    const incentivesEarned = ((this.props.profile || {}).incentivesEarned || 0);
     const incentivesAvailable = 500;
-    let percentComplete = (incentivesEarned / incentivesAvailable) * 100;
-    let rotation = (1.72 * percentComplete) - 86;  
+    const percentComplete = (incentivesEarned / incentivesAvailable) * 100;
+    const rotation = (1.72 * percentComplete) - 86;  
    
     const allGoals = get(this.props.profile, 'goalArray', []);
-    const incompleteGoals = allGoals.filter(goal => !goal.completed);
+    const incompleteGoals = allGoals.filter((goal) => !goal.completed);
     if (incompleteGoals.length <= 0) {
       incompleteGoals.push({
         title: 'Let\'s work together on some goals to move you forward.',
@@ -110,7 +91,7 @@ class Dashboard extends Component<Props> {
       })
     }
 
-    const completedGoals = allGoals.filter(goal => goal.completed);
+    const completedGoals = allGoals.filter((goal) => goal.completed);
     if (completedGoals.length <= 0) {
       completedGoals.push({
         title: 'Keep up the good work.',
@@ -228,26 +209,24 @@ class Dashboard extends Component<Props> {
             <View style={styles.goalsBox}>
               <Text style={[styles.blockTitle, styles.goalsTitle]}>{'CURRENT GOALS:'}</Text>
               {
-                this.renderGoals(incompleteGoals.slice(0,1))
+                incompleteGoals.slice(0,1).map((goal, index) => 
+                  //TODO: add unique key to goal object 
+                  <Goal key={index} {...goal} />  
+                )
               }
               {
-                this.state.expandCurrentGoals 
-                  && incompleteGoals.length > 1 
-                  && (
-                    <View style={styles.dashColumn}>
-                      { this.props.children }
-                      {            
-                        this.renderGoals(incompleteGoals.slice(1))
-                      }
-                    </View>
-                  )
+                this.state.expandCurrentGoals &&
+                incompleteGoals.slice(1).map((goal, index) => 
+                  //TODO: add unique key to goal object 
+                  <Goal key={index} {...goal} />
+                )
               }
               <View style={styles.moreButton}>
                 <View style={styles.dashRow}>
                   <Text style={styles.moreButton}></Text>
                   <TouchableHighlight
                     style={styles.dashButton}
-                    onPress={this.toggleExpandCurrentGoals.bind(this)}
+                    onPress={this.toggleExpandCurrentGoals}
                     underlayColor='transparent'>
                     <View style={[styles.FAIconView, styles.expandCurrentGoalsIconBg]}>
                       <Icon
@@ -271,26 +250,24 @@ class Dashboard extends Component<Props> {
             <View style={styles.completedBox}>
               <Text style={[styles.blockTitle, styles.completedTitle]}>{'COMPLETED:'}</Text>
               {
-                this.renderGoals(completedGoals.slice(0,1))
+                //TODO: add unique key to goal object 
+                completedGoals.slice(0,1).map((goal, index) => 
+                  <Goal key={index} {...goal} />
+                )
               }
               {
-                this.state.expandCompletedGoals
-                  && completedGoals.length > 1 
-                  && (
-                    <View style={styles.dashColumn}>
-                      { this.props.children }
-                      {                
-                        this.renderGoals(completedGoals.slice(1))
-                      }
-                    </View>
-                  )
+                //TODO: add unique key to goal object 
+                this.state.expandCompletedGoals &&
+                completedGoals.slice(1).map((goal, index) => 
+                  <Goal key={index} {...goal} />
+                )
               }
               <View style={styles.moreButton}>
                 <View style={styles.dashRow}>
                   <Text style={styles.moreButton}></Text>
                   <TouchableHighlight
                     style={styles.dashButton}
-                    onPress={this.toggleExpandCompletedGoals.bind(this)}
+                    onPress={this.toggleExpandCompletedGoals}
                     underlayColor='transparent'>
                     <View style={[styles.FAIconView, styles.expandCompletedGoalsIconBg]}>
                       <Icon
