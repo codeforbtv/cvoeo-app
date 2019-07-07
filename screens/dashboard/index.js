@@ -19,7 +19,6 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient, Svg } from 'expo';
 import { Goal } from './components/goal'
-import { get } from 'lodash';
 // import global actions
 import * as actions from './actions';
 
@@ -28,14 +27,12 @@ import * as actions from './actions';
 import commonStyles from '../../styles/common';
 const styles = StyleSheet.create(commonStyles);
 
-YellowBox.ignoreWarnings(['Setting a timer']);
-
 class Dashboard extends React.Component {
 
   static propTypes = {
     actions: PropTypes.object,
     profile: PropTypes.object,
-    navigation: PropTypes.object
+    navigation: PropTypes.object,
   };
 
   constructor(props) {
@@ -81,10 +78,12 @@ class Dashboard extends React.Component {
     const percentComplete = (incentivesEarned / incentivesAvailable) * 100;
     const rotation = (1.72 * percentComplete) - 86;  
    
-    const allGoals = get(this.props.profile, 'goalArray', []);
+    // const allGoals = get(this.props.profile, 'goalArray', []);
+    const allGoals = (this.props.profile || {}).goalArray || [];
     const incompleteGoals = allGoals.filter((goal) => !goal.completed);
     if (incompleteGoals.length <= 0) {
       incompleteGoals.push({
+        id: 0,
         title: 'Let\'s work together on some goals to move you forward.',
         detail: 'Schedule an appointment with your counselor today!',
         completed: false
@@ -94,6 +93,7 @@ class Dashboard extends React.Component {
     const completedGoals = allGoals.filter((goal) => goal.completed);
     if (completedGoals.length <= 0) {
       completedGoals.push({
+        id: 0,
         title: 'Keep up the good work.',
         detail: 'You\'ll finish a goal soon!',
         completed: true
@@ -207,18 +207,16 @@ class Dashboard extends React.Component {
 
           <View style={styles.padding}>
             <View style={styles.goalsBox}>
-              <Text style={[styles.blockTitle, styles.goalsTitle]}>{'CURRENT GOALS:'}</Text>
+              <Text style={[styles.blockTitle, styles.goalSectionTitle]}>{'CURRENT GOALS:'}</Text>
               {
-                incompleteGoals.slice(0,1).map((goal, index) => 
-                  //TODO: add unique key to goal object 
-                  <Goal key={index} {...goal} />  
+                incompleteGoals.slice(0,1).map((goal) => 
+                  <Goal key={goal.id} {...goal} />  
                 )
               }
               {
                 this.state.expandCurrentGoals &&
-                incompleteGoals.slice(1).map((goal, index) => 
-                  //TODO: add unique key to goal object 
-                  <Goal key={index} {...goal} />
+                incompleteGoals.slice(1).map((goal) => 
+                  <Goal key={goal.id} {...goal} />
                 )
               }
               <View style={styles.moreButton}>
@@ -250,16 +248,14 @@ class Dashboard extends React.Component {
             <View style={styles.completedBox}>
               <Text style={[styles.blockTitle, styles.completedTitle]}>{'COMPLETED:'}</Text>
               {
-                //TODO: add unique key to goal object 
-                completedGoals.slice(0,1).map((goal, index) => 
-                  <Goal key={index} {...goal} />
+                completedGoals.slice(0,1).map((goal) => 
+                  <Goal key={goal.id} {...goal} />
                 )
               }
               {
-                //TODO: add unique key to goal object 
                 this.state.expandCompletedGoals &&
-                completedGoals.slice(1).map((goal, index) => 
-                  <Goal key={index} {...goal} />
+                completedGoals.slice(1).map((goal) => 
+                  <Goal key={goal.id} {...goal} />
                 )
               }
               <View style={styles.moreButton}>

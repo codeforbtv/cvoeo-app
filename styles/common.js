@@ -351,7 +351,7 @@ const common = {
         textAlign: 'left',
         fontFamily: 'System',
     },
-    goalsTitle: {
+    goalSectionTitle: {
         color: '#afb066',
     },
     completedTitle: {
