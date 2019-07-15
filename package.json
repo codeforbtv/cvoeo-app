@@ -23,6 +23,7 @@
     "ramda": "^0.26.1",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-native-material-menu": "^0.6.3",
     "react-navigation": "^2.16.0",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",

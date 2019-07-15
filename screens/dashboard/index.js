@@ -16,10 +16,15 @@ import {
   View,
   YellowBox
 } from 'react-native';
+import {
+  createStackNavigator, 
+  createAppContainer
+} from 'react-navigation';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient, Svg } from 'expo';
 import Upcoming from '../../components/upcoming';
+import PopupMenu from '../../components/popupMenu';
 
 // import global actions
 import * as actions from './actions';
@@ -36,7 +41,6 @@ type Props = {
   profile: Object,
   navigation: Object
 };
-
 
 class Dashboard extends Component<Props> {
 
@@ -157,7 +161,16 @@ class Dashboard extends Component<Props> {
             />
             <Text style={[styles.title, {marginLeft: 100}]}>{' '}</Text>
           </View>
-          <TouchableHighlight
+            <PopupMenu
+              //Menu Text
+              label="Logout"
+              //Click functions for the menu items
+              option1Click={() => {
+                this.ellipsisAlert();
+              }}
+            />
+
+          {/* <TouchableHighlight
             onPress={this.ellipsisAlert}
             underlayColor='transparent'
             >
@@ -165,7 +178,9 @@ class Dashboard extends Component<Props> {
               name={dots}
               style={[styles.title, styles.dots]}
             />
-          </TouchableHighlight>
+          </TouchableHighlight> */}
+
+
         </View>
         <LinearGradient colors={['#fff', '#04a0c6']}
           style={{
