@@ -166,7 +166,7 @@ class Dashboard extends Component<Props> {
               label="Logout"
               //Click functions for the menu items
               option1Click={() => {
-                this.ellipsisAlert();
+                this.props.actions.logout();
               }}
             />
 
