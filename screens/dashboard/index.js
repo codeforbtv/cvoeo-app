@@ -20,6 +20,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient, Svg } from 'expo';
 import Upcoming from './components/upcoming';
+import Timer from '../../components/localNotifications';
 
 // import global actions
 import * as actions from './actions';
@@ -180,6 +181,7 @@ class Dashboard extends Component<Props> {
         <ScrollView style={styles.main}>
 
           {/* <Upcoming /> */}
+          <Timer />
 
           <View style={styles.padding}>
             <View style={styles.progressBox}>
