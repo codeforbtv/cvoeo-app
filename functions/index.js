@@ -7,24 +7,24 @@ const AdmZip = require('adm-zip'); // Added to Package.json
 // Password: fLvVcrWcC2cMR4ezHEJ)
 // -- YES I KNOW THERE IS A PASSWORD HERE
 // -- YES I INTENDED IT TO HELP OTHERS LEARN/TEST
- exports.sftptest = functions.https.onRequest((request, response) => {
- 	var outString = "";
- 	var sftp = new Client();
- 	// We can only return a response to the HTTP client once.
- 	// So this string will collect various updates through the function's run
- 	// and when we finally respond to the request, we can have all the 
- 	// messages returned at once.
- 	outString = outString + "sftp client created.\n";
- 	// create a new SFTP connection
- 	sftp.connect(
- 		{
- 			host: 'floersch.net',
- 			port: '22',
- 			username: 'sftptest',
- 			password: 'fLvVcrWcC2cMR4ezHEJ)'
- 		}
- 	)
- 	// Once we have successfully connected...
+exports.sftptest = functions.https.onRequest((request, response) => {
+	var outString = "";
+	var sftp = new Client();
+	// We can only return a response to the HTTP client once.
+	// So this string will collect various updates through the function's run
+	// and when we finally respond to the request, we can have all the 
+	// messages returned at once.
+	outString = outString + "sftp client created.\n";
+	// create a new SFTP connection
+	sftp.connect(
+		{
+			host: 'floersch.net',
+			port: '22',
+			username: 'sftptest',
+			password: 'fLvVcrWcC2cMR4ezHEJ)'
+		}
+	)
+	// Once we have successfully connected...
 	.then(
 		() => {
 			// Request this specific ZIP file
@@ -78,6 +78,9 @@ const AdmZip = require('adm-zip'); // Added to Package.json
 			response.send(outString, 500);
 		}
 	);
+});
 
- 	
- });
+exports.scheduledFunction = functions.pubsub.schedule('every 10 minutes').onRun((context) => {
+	// We could put a function call here to check goals and send notifications.
+	console.log('I RUN EVERY 10 MINUTES');
+});
