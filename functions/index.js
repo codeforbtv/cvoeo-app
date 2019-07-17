@@ -1,6 +1,6 @@
-const functions = require('firebase-functions');
-const Client = require('ssh2-sftp-client');
-const admZip = require('adm-zip');
+const functions = require('firebase-functions'); 
+const Client = require('ssh2-sftp-client'); // Added to Package.json
+const AdmZip = require('adm-zip'); // Added to Package.json
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -22,7 +22,11 @@ const admZip = require('adm-zip');
 // Password: fLvVcrWcC2cMR4ezHEJ)
  exports.sftptest = functions.https.onRequest((request, response) => {
  	var outString = "";
- 	let sftp = new Client();
+ 	var sftp = new Client();
+ 	// We can only return a response to the HTTP client once.
+ 	// So this string will collect various updates through the function's run
+ 	// and when we finally respond to the request, we can have all the 
+ 	// messages returned at once.
  	outString = outString + "sftp client created.\n";
  	sftp.connect(
  		{
@@ -34,13 +38,23 @@ const admZip = require('adm-zip');
  	)
 	.then(
 		() => {
-			return sftp.list('/');
+			var readableSFTP = sftp.get('test.zip');
+			console.log('readableSFTP: ' + JSON.stringify(readableSFTP,null,'  '));
+			return readableSFTP;
 		}
 	)
 	.then(
-		(data) => {
-			outString = outString + 'the data:' + JSON.stringify(data,null,'  '); + "\n";
-			response.send(outString);
+		(chunk) => {
+			console.log('chunk: ' + JSON.stringify(chunk,null,'  '));
+			outString += chunk;
+			var csvzip = new AdmZip(chunk);
+			var zipEntries = csvzip.getEntries();
+			outString += "Zip Entries: " + JSON.stringify(zipEntries,null,'  ') + "\n";
+			if (zipEntries.length > 0) {
+				outString += "CSV Content: " + csvzip.readAsText(zipEntries[0]);
+			}
+			response.send(outString, 200);
+
 			return true;
 		}
 	)
