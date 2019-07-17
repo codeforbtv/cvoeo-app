@@ -1,6 +1,9 @@
 {
   "name": "functions",
   "description": "Cloud Functions for Firebase",
+  "engines": {
+    "node": "10"
+  },
   "scripts": {
     "lint": "eslint .",
     "serve": "firebase serve --only functions",
@@ -10,8 +13,10 @@
     "logs": "firebase functions:log"
   },
   "dependencies": {
+    "adm-zip": "^0.4.13",
     "firebase-admin": "~6.0.0",
-    "firebase-functions": "^2.1.0"
+    "firebase-functions": "^2.1.0",
+    "ssh2-sftp-client": "^2.5.0"
   },
   "devDependencies": {
     "eslint": "^5.12.0",
