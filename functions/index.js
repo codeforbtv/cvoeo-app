@@ -1,7 +1,10 @@
+
 const functions = require('firebase-functions'); 
 const Client = require('ssh2-sftp-client'); // Added to Package.json
 const AdmZip = require('adm-zip'); // Added to Package.json
- 
+const sort = require('fast-sort'); // fast-sort module for sort arrays
+const config = require("./secrets"); // SFTP login info
+process.env.GCLOUD_PROJECT = JSON.parse(process.env.FIREBASE_CONFIG).projectId;
 // Host: floersch.net
 // User: sftptest
 // Password: fLvVcrWcC2cMR4ezHEJ)
@@ -14,23 +17,76 @@ exports.sftptest = functions.https.onRequest((request, response) => {
 	// So this string will collect various updates through the function's run
 	// and when we finally respond to the request, we can have all the 
 	// messages returned at once.
-	outString = outString + "sftp client created.\n";
+	//outString = outString + "sftp client created.\n";
 	// create a new SFTP connection
+	console.log("Config: " + JSON.stringify(config,null,'  '));
 	sftp.connect(
 		{
-			host: 'floersch.net',
-			port: '22',
-			username: 'sftptest',
-			password: 'fLvVcrWcC2cMR4ezHEJ)'
+			host: config.host,
+			port: config.port,
+			username: config.user,
+			password: config.password
 		}
 	)
 	// Once we have successfully connected...
 	.then(
 		() => {
+			// Get list of files in the folder.
+			var fileList = sftp.list('/dropbox/');
+			return fileList;
+		}
+	)
+	.then(
+		(fileList) => {
+			var fileNames = []; // create array to dump file names into and to sort later
+			for (zipFileIdx in fileList) {
+				let fileName = fileList[zipFileIdx].name; // actual name of file
+				// Do a regex match using capturing parens to break up the items we want to pull out.
+				// Results from regex will be in array of items matched to the capturing parentheses
+				//
+				// If regex match results were in an array named "res"...
+				// res[0] contains the entire input string
+				//
+				//        Name                Year       Month   Day      Hour
+				//        res[1]              res[2]     res[3]  res[4]   res[5]
+				fRegEx = /(gm_clients_served_)(\d\d\d\d)-(\d?\d)-(\d?\d)-?(\d?\d)?/;
+				// Applies the regex pattern to our filename and stores result in fnParts (file name parts)
+				fnParts = fRegEx.exec(fileName);
+				// we'll construct a new object to keep track of each files important details
+				// and more importantly, to make it easy to sort/search
+				let newFile = {
+					name: fileName,
+					year: parseInt(fnParts[2]), 	// year
+					month: parseInt(fnParts[3]), 	// month
+					day: parseInt(fnParts[4]), 		// day
+					hour: parseInt(fnParts[5]) || 0 // hour - first file of day has no hour in name so use 0 instead
+				};
+				fileNames.push(newFile) // toss new object into array
+			}
+			// sort() is an instance of "fast-sort"
+			// So to fine the newest file... sort by the year, then month, then day, then hour in a descending fashion.
+			// The sort mutates the fileNames array... changes it directly.
+			// In the end, the newest file on the server would be at fileNames[0] in our array.
+			sort(fileNames).desc(
+				[
+					'year',
+					'month',
+					'day',
+					'hour'
+				]
+			);
+			console.log(fileNames[0].name);
+			return fileNames[0].name;
+		}
+	)
+	.then(
+		(newestFileName) => {
+			// Names are like this 'gm_clients_served_2019-07-08-8.zip'
+
 			// Request this specific ZIP file
-			var readableSFTP = sftp.get('test.zip');
+			var readableSFTP = sftp.get('dropbox/' + newestFileName);
 			// Tell the server log about it...
-			console.log('readableSFTP: ' + JSON.stringify(readableSFTP,null,'  '));
+			console.log('readableSFTP: ' + JSON.stringify(readableSFTP));
 			// Returning the variable here passes it back out to be caught
 			// in the next '.then' clause
 			return readableSFTP;
@@ -43,16 +99,16 @@ exports.sftptest = functions.https.onRequest((request, response) => {
 		// Chunk also refers to the true hero in The Goonies.
 		(chunk) => {
 			// Tell the server log what's going on
-			console.log('chunk: ' + JSON.stringify(chunk,null,'  '));
+			console.log('chunk: ' + JSON.stringify(chunk));
 			// Collect output for future response
-			outString += chunk;
+			//outString += chunk; // Display ZIP file as binary output... looks ugly and is useless.
 			// Create a new unzipper using the Chunk as input...
 			var csvzip = new AdmZip(chunk);
 			// Figure out how many files are in the Chunk-zip
 			// Presumably always 1, but it could be any number.
 			var zipEntries = csvzip.getEntries();
 			// Again, collect output for future response...
-			outString += "Zip Entries: " + JSON.stringify(zipEntries,null,'  ') + "\n";
+			outString += "Zip Entries: " + JSON.stringify(zipEntries) + "\n";
 			// Assuming that there is at least 1 entry in the Zip...
 			// that is at least a single file inside the Zip...
 			if (zipEntries.length > 0) {
