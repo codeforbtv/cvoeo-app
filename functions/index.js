@@ -12,13 +12,14 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 	 }
 });
 
-exports.sftpConnect = functions.https.onRequest((request, response) => {
+exports.pullDataFromCvoeo = functions.https.onRequest((request, response) => {
 	 const sftp = new client();
-	 //connect to cvoeo sftp server
+	 //Connect to cvoeo sftp server using environment configuration. These have to be configured and deployed to firebase using the firebase cli.
+   //https://firebase.google.com/docs/functions/config-env
 	 sftp.connect({
-		 host: `${functions.config().serverinfo.host}`,
-		 username: `${functions.config().serverinfo.username}`,
-		 password: `${functions.config().serverinfo.password}`
+		 host: `${functions.config().cvoeosftp.host}`,
+		 username: `${functions.config().cvoeosftp.username}`,
+		 password: `${functions.config().cvoeosftp.password}`
 	 })
 	 .then(() => {
 		 return sftp.list('/');
