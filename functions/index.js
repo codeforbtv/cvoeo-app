@@ -12,28 +12,28 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 	 }
 });
 
-exports.pullDataFromCvoeo = functions.https.onRequest((request, response) => {
-	 const sftp = new client();
+exports.pullDataFromsFtp = functions.https.onRequest((request, response) => {
+	 const sftpConnectionToCvoeo = new client();
 	 //Connect to cvoeo sftp server using environment configuration. These have to be configured and deployed to firebase using the firebase cli.
    //https://firebase.google.com/docs/functions/config-env
-	 sftp.connect({
+	 sftpConnectionToCvoeo.connect({
 		 host: `${functions.config().cvoeosftp.host}`,
 		 username: `${functions.config().cvoeosftp.username}`,
 		 password: `${functions.config().cvoeosftp.password}`
 	 })
 	 .then(() => {
-		 return sftp.list('/');
+		 return sftpConnectionToCvoeo.list('/');
 	 })
 	 .then((data) => {
 		 console.log(data, 'the data info');
      response.send(data);
 	 })
 	 .then(() => {
-		 return sftp.end();
+		 return sftpConnectionToCvoeo.end();
 	 })
 	 .catch((error) => {
 		 console.log(`Got the following error when trying to connect to the sftp server: ${{error}}`)
-		 return sftp.end();
+		 return sftpConnectionToCvoeo.end();
 	 });
  });
 
