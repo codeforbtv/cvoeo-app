@@ -2,10 +2,10 @@
 import colors from '../constants/colors';
 
 const common = {
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start'
-    },
+    // container: {
+    //     flex: 1,
+    //     justifyContent: 'flex-start'
+    // },
     fieldset: {
         borderWidth: 2,
         borderColor: '#000',
@@ -243,14 +243,7 @@ const common = {
         color: '#b3cc95',
     },
     dots: {
-        backgroundColor: 'transparent',
         flex: 1,
-        fontWeight: 'normal',
-        fontSize: 20,
-        paddingTop: 20,
-        paddingRight: 18,
-        paddingLeft: 18,
-        paddingBottom: 12,
     },
     padding: {
         paddingTop: 8,
@@ -307,6 +300,7 @@ const common = {
         flexDirection: 'row',
         backgroundColor: 'transparent',
         alignItems: 'center',
+        zIndex: 100,
     },
     dashColumn: {
         display: 'flex',
@@ -492,6 +486,43 @@ const common = {
         width: 202,
         paddingBottom: 20,
     },
+    ellipsis: {
+        marginTop: 16,
+        marginBottom: 8,
+        fontWeight: 'bold',
+        fontSize: 19,
+        // fontWeight: '600',
+        textAlign: 'center'
+    },
+    circleOuter: {
+        flex: 1,
+        position: 'absolute',
+        top: -150,
+        left: -150,
+        backgroundColor: '#04a0c6',
+        width: 400,
+        height: 400,
+        borderRadius: 400 / 2,
+        zIndex: -2
+    },
+    circleInner: {
+        flex: 1,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        backgroundColor: '#ffffff',
+        width: 75,
+        height: 75,
+        borderRadius: 75 / 2,
+        zIndex: -1
+    },
+    logoutText: {
+        color: '#ffffff',
+        fontWeight: 'bold',
+        position: 'absolute',
+        top: 200,
+        left: 80
+    }
 
 };
 
