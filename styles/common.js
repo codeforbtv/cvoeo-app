@@ -520,8 +520,8 @@ const common = {
         color: '#ffffff',
         fontWeight: 'bold',
         position: 'absolute',
-        top: 200,
-        left: 80
+        top: 150,
+        left: 40
     }
 
 };
