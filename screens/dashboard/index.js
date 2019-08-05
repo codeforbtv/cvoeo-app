@@ -48,7 +48,7 @@ class Dashboard extends Component<Props> {
         this.state = {
             expanded2: false,
             expanded3: false,
-            menuScale: new Animated.Value(0.0)
+            menuScale: new Animated.Value(0.01)
         };
         this.icons = {
             'dots': 'ellipsis-v',
@@ -109,7 +109,7 @@ class Dashboard extends Component<Props> {
 
     ellipsisToggle() {
         // Toggle circular menu open/close
-        if (this.state.menuScale._value == 0) {
+        if (this.state.menuScale._value <= 0.01) {
             Animated.timing(
                 this.state.menuScale,
                 {
@@ -117,7 +117,7 @@ class Dashboard extends Component<Props> {
                     duration: 500
                 }
             ).start();
-        } else if (this.state.menuScale._value == 1) {
+        } else if (this.state.menuScale._value == 1.0) {
             Animated.timing(
                 this.state.menuScale,
                 {
@@ -153,7 +153,7 @@ class Dashboard extends Component<Props> {
             expanded3: !this.state.expanded3
         });
     }
-
+    
     render() {
 
         let incentivesEarned = ((this.props.profile || {}).incentivesEarned || 0);
@@ -170,6 +170,7 @@ class Dashboard extends Component<Props> {
         if (this.state.expanded3) {
             icon3 = this.icons['close'];
         }
+
         return (
             <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
                 <View scrollEnabled={false} style={styles.container}>
@@ -188,27 +189,24 @@ class Dashboard extends Component<Props> {
                             <Text style={[styles.title, {marginLeft: 100}]}>{' '}</Text>
                         </View>
                         <View style={styles.dots}>
-                            <TouchableHighlight
-                                onPress={this.ellipsisToggle}
-                                underlayColor='transparent'
+                            <Animated.View
+                                style={{
+                                    position: 'absolute',
+                                    transform: [
+                                        {scale: this.state.menuScale}
+                                    ],
+                                    top: -125,
+                                    left: -133,
+                                }}
                             >
-                                <Icon
-                                    name={dots}
-                                    style={styles.ellipsis}
-                                />
-                            </TouchableHighlight>
-                            <Animated.View style={{
-                                position: 'absolute',
-                                transform: [
-                                    {scale: this.state.menuScale}
-                                ],
-                                top: -125,
-                                left: -133,
-                                zIndex: -1
-                            }}>
                                 <TouchableHighlight
-                                    onPress={this.ellipsisLogoutAlert}
+                                    onPress={() => this.ellipsisLogoutAlert()}
                                     underlayColor='transparent'
+                                    style={{
+                                        width: 300,
+                                        height: 300,
+                                        zIndex: 1
+                                    }}
                                 >
                                     <View>
                                         <Svg height={300} width={300}>
@@ -229,6 +227,15 @@ class Dashboard extends Component<Props> {
                                     </View>
                                 </TouchableHighlight>
                             </Animated.View>
+                            <TouchableHighlight
+                                onPress={this.ellipsisToggle}
+                                underlayColor='transparent'
+                            >
+                                <Icon
+                                    name={dots}
+                                    style={styles.ellipsis}
+                                />
+                            </TouchableHighlight>
                         </View>
                     </View>
                     <LinearGradient colors={['#fff', '#04a0c6']}
