@@ -130,10 +130,12 @@ export class Upcoming extends Component<Props> {
                 onPress={this.toggle}
                 style={styles.dashButton}
                 underlayColor='transparent'>
-                <Icon
-                  name={icon}
-                  style={[styles.FAIcon, styles.icon1]}
-                />
+                <View style={[styles.FAIconView, styles.icon1Bg]}>
+                  <Icon
+                    name={icon}
+                    style={[styles.FAIcon, styles.icon1]}
+                  />
+                </View>
               </TouchableHighlight>
             </View>
           </View>

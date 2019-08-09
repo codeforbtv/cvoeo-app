@@ -14,10 +14,7 @@ type Props = {
 };
 
 export default class LoginForm extends Component<Props> {
-    static navigationOptions = {
-        title: 'Money on My Mind'
-    };
-
+   
 
     constructor(props) {
         super(props);
