@@ -2,6 +2,8 @@
 
 import Login from './login-screen';
 import ForgotPassword from './forgot-password';
+import Register from './register';
+
 import { createStackNavigator } from 'react-navigation';
 
 export default createStackNavigator({
@@ -10,5 +12,8 @@ export default createStackNavigator({
     },
     ForgotPassword: {
         screen: ForgotPassword
+    },
+    Register: {
+        screen: Register
     }
 });
