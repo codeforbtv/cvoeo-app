@@ -15,16 +15,25 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "expo": "^32.0.0",
+    "@expo/vector-icons": "^10.0.5",
+    "expo": "^34.0.3",
+    "expo-asset": "~6.0.0",
+    "expo-font": "^6.0.1",
+    "expo-linear-gradient": "^6.0.0",
     "firebase": "^5.8.1",
     "firebase-admin": "^7.0.0",
     "firebase-functions": "^2.2.0",
     "moment": "^2.24.0",
+    "native-base": "^2.13.4",
     "node-stream-zip": "^1.8.0",
     "ramda": "^0.26.1",
-    "react": "16.5.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
-    "react-navigation": "^2.16.0",
+    "react": "16.8.3",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
+    "react-native-gesture-handler": "~1.3.0",
+    "react-native-reanimated": "~1.1.0",
+    "react-native-svg": "^9.5.1",
+    "react-native-vector-icons": "^6.6.0",
+    "react-navigation": "^3.11.1",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
@@ -40,6 +49,6 @@
     "eslint-plugin-babel": "^5.3.0",
     "eslint-plugin-react": "^7.12.3",
     "flow-bin": "^0.90.0",
-    "jest-expo": "32.0.0"
+    "jest-expo": "^34.0.0"
   }
 }

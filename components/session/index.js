@@ -2,25 +2,14 @@
 
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
-import {AppLoading, Asset, Font} from 'expo';
+import {AppLoading} from 'expo';
+import {Asset} from 'expo-asset';
+import * as Font from 'expo-font';
 import {Ionicons} from '@expo/vector-icons';
 import * as actions from './actions';
-import {StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import Login from '../../screens/login/index';
 import type {Node} from 'react';
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff'
-    },
-    statusBarUnderlay: {
-        height: 24,
-        backgroundColor: 'rgba(0,0,0,0.2)'
-    }
-});
-
 
 type Props = {
     children: ?Node,
@@ -50,7 +39,7 @@ class Session extends Component<Props> {
             // to remove this if you are not using it in your app
             'space-mono': require('../../assets/fonts/SpaceMono-Regular.ttf')
         }),
-        this.props.actions.initialize(),
+        this.props.actions.initialize()
     ]);
 
     _handleLoadingError = error => {
