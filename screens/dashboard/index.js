@@ -3,7 +3,8 @@
 import React, {Component, Node} from 'react';
 import {bindActionCreators} from 'redux';
 import {Container} from 'native-base';
-import {LinearGradient} from 'react-native-svg';
+import {LinearGradient} from 'expo-linear-gradient';
+
 import {
     Alert,
     Animated,
@@ -225,7 +226,6 @@ class Dashboard extends Component<Props> {
                                 </View>
                             </View>
                         </View>
-
                         <View style={styles.padding}>
                             <View style={styles.goalsBox}>
                                 <Text style={[styles.blockTitle, styles.goalsTitle]}>{'CURRENT GOALS:'}</Text>
@@ -238,7 +238,6 @@ class Dashboard extends Component<Props> {
                                         </View>
                                     )
                                 }
-
                                 <View style={styles.moreButton}>
                                     <View style={styles.dashRow}>
                                         <Text style={styles.moreButton}/>
@@ -261,7 +260,6 @@ class Dashboard extends Component<Props> {
                             <View style={styles.completedBox}>
                                 <Text style={[styles.blockTitle, styles.completedTitle]}>{'COMPLETED:'}</Text>
                                 <GoalMessageBox message={firstCompletedGoalVerbiage}/>
-
                                 {
                                     this.state.expanded3 && (
                                         <View style={styles.dashColumn}>
