@@ -13,11 +13,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
 // import global actions
-import * as actions from '../actions';
+import * as actions from '../screens/dashboard/actions';
 
 // import global styles
 // @TODO: move the global styles from this screen into ../../styles/common
-import commonStyles from '../../../styles/common';
+import commonStyles from '../styles/common';
 const styles = StyleSheet.create(commonStyles);
 
 type Props = {

@@ -200,9 +200,6 @@ class Dashboard extends Component<Props> {
                         }
                     />
                     <ScrollView style={styles.main}>
-
-                        {/* <Upcoming /> */}
-
                         <View style={styles.padding}>
                             <View style={styles.progressBox}>
                                 <View style={styles.spaceRow}>
