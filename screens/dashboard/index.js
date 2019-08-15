@@ -1,32 +1,33 @@
 // @flow
 
-import React, {Component} from 'react';
+import React, {Component, Node} from 'react';
 import {bindActionCreators} from 'redux';
+import {Container} from 'native-base';
+import {LinearGradient} from 'react-native-svg';
 import {
     Alert,
     Animated,
     Dimensions,
     Image,
-    SafeAreaView,
     ScrollView,
     StyleSheet,
     Text,
     TouchableHighlight,
-    TouchableOpacity,
     View,
     YellowBox
 } from 'react-native';
 import {connect} from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {LinearGradient, Svg} from 'expo';
-import Upcoming from './components/upcoming';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import * as R from 'ramda';
+import GoalMessageBox from '../../components/goal-message-box';
 
 // import global actions
 import * as actions from './actions';
 
 // import global styles
-// @TODO: move the global styles from this screen into ../../styles/common
 import commonStyles from '../../styles/common';
+import MoneyMeter from '../../components/money-meter';
+import MenuCircle from '../../components/menu-circle';
 
 const styles = StyleSheet.create(commonStyles);
 
@@ -35,7 +36,10 @@ YellowBox.ignoreWarnings(['Setting a timer']);
 type Props = {
     actions: Object,
     profile: Object,
-    navigation: Object
+    navigation: Object,
+    completedGoals: Array<Object>,
+    incompleteGoals: Array<Object>,
+    children: Node
 };
 
 
@@ -51,60 +55,10 @@ class Dashboard extends Component<Props> {
             menuScale: new Animated.Value(0.01)
         };
         this.icons = {
-            'dots': 'ellipsis-v',
-            'open': 'angle-down',
-            'close': 'angle-up'
+            dots: 'ellipsis-v',
+            open: 'angle-down',
+            close: 'angle-up'
         };
-    }
-
-    showGoals(firstOrRemaining, isComplete) {
-        let goalArray = ((this.props.profile || {}).goalArray || {});
-
-        let allGoals = [];
-        for (i = 0; i < goalArray.length; i++) {
-
-            let title = ((((this.props.profile || {}).goalArray || {})[i] || {}).title);
-            let detail = ((((this.props.profile || {}).goalArray || {})[i] || {}).detail);
-            let completed = ((((this.props.profile || {}).goalArray || {})[i] || {}).completed);
-            if (completed === isComplete) {
-
-                allGoals.push(
-                    <View style={styles.dashRow} key={i}>
-                        <View style={styles.smallerBlock}>
-                            <Text style={styles.date}> </Text>
-                        </View>
-                        <View style={styles.biggerBlock}>
-                            <Text style={styles.subTitle}>{title}</Text>
-                            <Text style={styles.subText}>{detail}</Text>
-                        </View>
-                    </View>
-                );
-            }
-        }
-        if (firstOrRemaining === 'first') {
-            if (!allGoals[0]) {
-                let message = ['Let\'s work together on some goals to move you forward.', 'Schedule an appointment with your counselor today!'];
-                if (isComplete) {
-                    message = ['Keep up the good work.', 'You\'ll finish a goal soon!'];
-                }
-                allGoals.push(
-                    <View style={styles.dashRow} key={i}>
-                        <View style={styles.smallerBlock}>
-                            <Text style={styles.date}> </Text>
-                        </View>
-                        <View style={styles.biggerBlock}>
-                            <Text style={styles.subTitle}>{message[0]}</Text>
-                            <Text style={styles.subText}>{message[1]}</Text>
-                        </View>
-                    </View>
-                );
-            }
-            return allGoals[0];
-        }
-        if (firstOrRemaining === 'remaining') {
-            return allGoals.slice(1);
-        }
-
     }
 
     ellipsisToggle() {
@@ -117,7 +71,7 @@ class Dashboard extends Component<Props> {
                     duration: 500
                 }
             ).start();
-        } else if (this.state.menuScale._value == 1.0) {
+        } else if (this.state.menuScale._value === 1.0) {
             Animated.timing(
                 this.state.menuScale,
                 {
@@ -153,38 +107,44 @@ class Dashboard extends Component<Props> {
             expanded3: !this.state.expanded3
         });
     }
-    
+
     render() {
-
-        let incentivesEarned = ((this.props.profile || {}).incentivesEarned || 0);
+        const {profile, completedGoals, incompleteGoals, children} = this.props;
+        const incentivesEarned = profile.incentivesEarned || 0;
         const incentivesAvailable = 500;
-        let percentComplete = (incentivesEarned / incentivesAvailable) * 100;
-        let rotation = (1.72 * percentComplete) - 86;
+        const percentComplete = (incentivesEarned / incentivesAvailable) * 100;
 
-        let dots = this.icons['dots'];
-        let icon2 = this.icons['open'];
-        if (this.state.expanded2) {
-            icon2 = this.icons['close'];
-        }
-        let icon3 = this.icons['open'];
-        if (this.state.expanded3) {
-            icon3 = this.icons['close'];
-        }
+        const allButFirst = R.compose(
+            R.map(goal => (<GoalMessageBox message={[goal.title, goal.detail]} key={goal.id}/>)),
+            R.slice(1, Infinity)
+        );
+        const currentGoalVerbiage = incompleteGoals.length > 0
+            ? [incompleteGoals[0].title, incompleteGoals[0].detail]
+            : ['Let\'s work together on some goals to move you forward.', 'Schedule an appointment with your counselor today!'];
+        const firstCompletedGoalVerbiage = completedGoals.length > 0
+            ? [completedGoals[0].title, completedGoals[0].detail]
+            : ['Keep up the good work.', 'You\'ll finish a goal soon!'];
+        const dots = this.icons.dots;
+        const icon2 = this.state.expanded2 ? this.icons.close : this.icons.open;
+        const icon3 = this.state.expanded3 ? this.icons.close : this.icons.open;
 
         return (
-            <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+            <Container>
                 <View scrollEnabled={false} style={styles.container}>
                     <View style={styles.dashRow}>
                         <View style={styles.titleRow}>
-                            <Image source={require('../../assets/images/FinancialFuturesLogo.jpg')}
-                                   style={{
-                                       position: 'absolute',
-                                       left: -55,
-                                       top: 18,
-                                       width: '100%',
-                                       height: 40,
-                                       resizeMode: 'contain'
-                                   }}
+                            <Image
+                                source={require('../../assets/images/FinancialFuturesLogo.jpg')}
+                                style={
+                                    {
+                                        position: 'absolute',
+                                        left: -55,
+                                        top: 18,
+                                        width: '100%',
+                                        height: 40,
+                                        resizeMode: 'contain'
+                                    }
+                                }
                             />
                             <Text style={[styles.title, {marginLeft: 100}]}>{' '}</Text>
                         </View>
@@ -196,7 +156,7 @@ class Dashboard extends Component<Props> {
                                         {scale: this.state.menuScale}
                                     ],
                                     top: -125,
-                                    left: -133,
+                                    left: -133
                                 }}
                             >
                                 <TouchableHighlight
@@ -209,20 +169,7 @@ class Dashboard extends Component<Props> {
                                     }}
                                 >
                                     <View>
-                                        <Svg height={300} width={300}>
-                                            <Svg.Circle
-                                                cx={150}
-                                                cy={150}
-                                                r={150}
-                                                fill="#04a0c6"
-                                            />
-                                            <Svg.Circle
-                                                cx={150}
-                                                cy={150}
-                                                r={30}
-                                                fill="#ffffff"
-                                            />
-                                        </Svg>
+                                        <MenuCircle/>
                                         <Text style={styles.logoutText}>Log out</Text>
                                     </View>
                                 </TouchableHighlight>
@@ -238,15 +185,18 @@ class Dashboard extends Component<Props> {
                             </TouchableHighlight>
                         </View>
                     </View>
-                    <LinearGradient colors={['#fff', '#04a0c6']}
-                                    style={{
-                                        position: 'absolute',
-                                        left: 0,
-                                        right: 0,
-                                        top: 60,
-                                        height: (Dimensions.get('window').height - 60),
-                                        zIndex: -1
-                                    }}
+                    <LinearGradient
+                        colors={['#fff', '#04a0c6']}
+                        style={
+                            {
+                                position: 'absolute',
+                                left: 0,
+                                right: 0,
+                                top: 60,
+                                height: (Dimensions.get('window').height - 60),
+                                zIndex: -1
+                            }
+                        }
                     />
                     <ScrollView style={styles.main}>
 
@@ -255,67 +205,23 @@ class Dashboard extends Component<Props> {
                         <View style={styles.padding}>
                             <View style={styles.progressBox}>
                                 <View style={styles.spaceRow}>
-                                    <Text style={[styles.bigTitle, styles.bigLetters]}>{'$' + incentivesEarned}</Text>
-                                    <Text style={styles.bigBlock}></Text>
-                                    <Text style={styles.bigTitle}>{percentComplete + '% Complete!'}</Text>
+                                    <Text style={[styles.bigTitle, styles.bigLetters]}>{`$${incentivesEarned}`}</Text>
+                                    <Text style={styles.bigBlock}/>
+                                    <Text style={styles.bigTitle}>{`${percentComplete}% Complete!`}</Text>
                                 </View>
                                 <View style={styles.dashRow}>
                                     <View style={styles.smallerBlock}>
-                                        <Text style={styles.bigBlock}></Text>
+                                        <Text style={styles.bigBlock}/>
                                         <Text style={[styles.money, styles.end]}>{'$0'}</Text>
                                     </View>
                                     <View style={styles.bottomLine}>
-                                        <Svg height={100} width={200}>
-                                            <Svg.Circle
-                                                cx={100}
-                                                cy={100}
-                                                r={85}
-                                                strokeWidth={6}
-                                                stroke="#dc552b"
-                                                fill="#eeeec2"
-                                            />
-                                            <Svg.G rotation={rotation} origin="100, 100">
-                                                <Svg.ClipPath id="clip">
-                                                    <Svg.Rect
-                                                        x={100}
-                                                        height={200}
-                                                        width={200}
-                                                    />
-                                                </Svg.ClipPath>
-                                                <Svg.Circle
-                                                    cx={100}
-                                                    cy={100}
-                                                    r={85}
-                                                    strokeWidth={6}
-                                                    stroke="#fea488"
-                                                    fill="#fdfffb"
-                                                    clipPath="url(#clip)"
-                                                />
-                                                <Svg.Path
-                                                    d="M 100 100 L 100 0"
-                                                    strokeWidth={2}
-                                                    stroke="#020202"
-                                                />
-                                                <Svg.Path
-                                                    d="M 100 0 L 95 5"
-                                                    strokeWidth={2}
-                                                    stroke="#020202"
-                                                />
-                                                <Svg.Path
-                                                    d="M 100 0 L 105 5"
-                                                    strokeWidth={2}
-                                                    stroke="#020202"
-                                                />
-                                            </Svg.G>
-
-                                        </Svg>
-
+                                        <MoneyMeter percentComplete={percentComplete}/>
                                     </View>
                                     <View style={styles.smallerBlock}>
-                                        <Text style={styles.bigBlock}></Text>
+                                        <Text style={styles.bigBlock}/>
                                         <Text style={[styles.money, styles.start]}>{'$500'}</Text>
                                     </View>
-                                    <Text style={styles.moreButton}> </Text>
+                                    <Text style={styles.moreButton}/>
                                 </View>
                             </View>
                         </View>
@@ -323,20 +229,19 @@ class Dashboard extends Component<Props> {
                         <View style={styles.padding}>
                             <View style={styles.goalsBox}>
                                 <Text style={[styles.blockTitle, styles.goalsTitle]}>{'CURRENT GOALS:'}</Text>
-
-                                {this.showGoals('first', false)}
-
+                                <GoalMessageBox message={currentGoalVerbiage}/>
                                 {
                                     this.state.expanded2 && (
                                         <View style={styles.dashColumn}>
-                                            {this.props.children}
-                                            {this.showGoals('remaining', false)}
-                                        </View>)
+                                            {children}
+                                            {allButFirst(incompleteGoals)}
+                                        </View>
+                                    )
                                 }
 
                                 <View style={styles.moreButton}>
                                     <View style={styles.dashRow}>
-                                        <Text style={styles.moreButton}></Text>
+                                        <Text style={styles.moreButton}/>
                                         <TouchableHighlight
                                             style={styles.dashButton}
                                             onPress={this.toggle2.bind(this)}
@@ -355,18 +260,20 @@ class Dashboard extends Component<Props> {
                         <View style={styles.padding}>
                             <View style={styles.completedBox}>
                                 <Text style={[styles.blockTitle, styles.completedTitle]}>{'COMPLETED:'}</Text>
-                                {this.showGoals('first', true)}
+                                <GoalMessageBox message={firstCompletedGoalVerbiage}/>
+
                                 {
                                     this.state.expanded3 && (
                                         <View style={styles.dashColumn}>
-                                            {this.props.children}
-                                            {this.showGoals('remaining', true)}
-                                        </View>)
+                                            {children}
+                                            {allButFirst(completedGoals)}
+                                        </View>
+                                    )
                                 }
 
                                 <View style={styles.moreButton}>
                                     <View style={styles.dashRow}>
-                                        <Text style={styles.moreButton}></Text>
+                                        <Text style={styles.moreButton}/>
                                         <TouchableHighlight
                                             style={styles.dashButton}
                                             onPress={this.toggle3.bind(this)}
@@ -382,16 +289,20 @@ class Dashboard extends Component<Props> {
                                 </View>
                             </View>
                         </View>
-                        <View style={styles.padding}>
-                        </View>
+                        <View style={styles.padding}/>
                     </ScrollView>
                 </View>
-            </SafeAreaView>
+            </Container>
         );
     }
 }
 
-const mapStateToProps = (state) => ({session: state.login.session, profile: state.dashboard.profile});
+const mapStateToProps = (state) => {
+    const profile = state.dashboard.profile || {};
+    const session = state.login.session;
+    const [completedGoals, incompleteGoals] = R.partition(goal => goal.completed, profile.goalArray || []);
+    return {session, profile, completedGoals, incompleteGoals};
+};
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(actions, dispatch)
