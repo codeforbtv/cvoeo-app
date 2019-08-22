@@ -439,6 +439,12 @@ const common = {
         paddingTop: 6,
         paddingLeft: 3,
     },
+    icon1: {
+        color: '#67674e',
+    },
+    icon1Bg: {
+        backgroundColor: '#dddea8',
+    },
     icon2: {
         color: '#67674e',
     },
@@ -450,12 +456,6 @@ const common = {
     },
     icon3Bg: {
         backgroundColor: '#b3cc95',
-    },
-    icon1: {
-        color: '#265865',
-    },
-    icon1Bg: {
-        backgroundColor: '#51bed9',
     },
     dashButton: {
         backgroundColor: 'transparent',

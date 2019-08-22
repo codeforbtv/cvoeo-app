@@ -23,6 +23,7 @@ import Upcoming from './components/upcoming';
 
 // import global actions
 import * as actions from './actions';
+import * as goalstatus from '../../constants/goal-status';
 
 // import global styles
 // @TODO: move the global styles from this screen into ../../styles/common
@@ -46,6 +47,7 @@ class Dashboard extends Component<Props> {
         this.ellipsisToggle = this.ellipsisToggle.bind(this);
         this.ellipsisLogoutAlert = this.ellipsisLogoutAlert.bind(this);
         this.state = {
+            expanded1: false,
             expanded2: false,
             expanded3: false,
             menuScale: new Animated.Value(0.01)
@@ -57,17 +59,21 @@ class Dashboard extends Component<Props> {
         };
     }
 
-    showGoals(firstOrRemaining, isComplete) {
+    /**
+     * Show the goals
+     *
+     * @param firstOnly - TRUE to just show the first goal, FALSE to show all additional goals
+     * @param thisStatus - The status to show - open, submitted, or complete
+     */
+    showGoals(firstOnly, thisStatus) {
         let goalArray = ((this.props.profile || {}).goalArray || {});
 
         let allGoals = [];
         for (i = 0; i < goalArray.length; i++) {
-
-            let title = ((((this.props.profile || {}).goalArray || {})[i] || {}).title);
-            let detail = ((((this.props.profile || {}).goalArray || {})[i] || {}).detail);
-            let completed = ((((this.props.profile || {}).goalArray || {})[i] || {}).completed);
-            if (completed === isComplete) {
-
+            let title = goalArray[i].title;
+            let detail = goalArray[i].detail;
+            let status = goalArray[i].status;
+            if (thisStatus === status) {
                 allGoals.push(
                     <View style={styles.dashRow} key={i}>
                         <View style={styles.smallerBlock}>
@@ -81,11 +87,20 @@ class Dashboard extends Component<Props> {
                 );
             }
         }
-        if (firstOrRemaining === 'first') {
+        if (firstOnly) {
+            // Only return the first goal
             if (!allGoals[0]) {
-                let message = ['Let\'s work together on some goals to move you forward.', 'Schedule an appointment with your counselor today!'];
-                if (isComplete) {
-                    message = ['Keep up the good work.', 'You\'ll finish a goal soon!'];
+                let message = '';
+                switch(thisStatus) {
+                    case goalstatus.STATUS_OPEN:
+                        message = ['Let\'s work together on some goals to move you forward.', 'Schedule an appointment with your counselor today!'];
+                        break;
+                    case goalstatus.STATUS_SUBMITTED:
+                        message = ['Submit your goals once you complete them!', 'You\'ll finish a goal soon!'];
+                        break;
+                    case goalstatus.STATUS_COMPLETE:
+                        message = ['Keep up the good work.', 'You\'ll finish a goal soon!'];
+                        break;
                 }
                 allGoals.push(
                     <View style={styles.dashRow} key={i}>
@@ -101,10 +116,9 @@ class Dashboard extends Component<Props> {
             }
             return allGoals[0];
         }
-        if (firstOrRemaining === 'remaining') {
-            return allGoals.slice(1);
-        }
 
+        // Otherwise, return all the other goals
+        return allGoals.slice(1);
     }
 
     ellipsisToggle() {
@@ -142,6 +156,12 @@ class Dashboard extends Component<Props> {
         );
     }
 
+    toggle1() {
+        this.setState({
+            expanded1: !this.state.expanded1
+        });
+    }
+
     toggle2() {
         this.setState({
             expanded2: !this.state.expanded2
@@ -153,7 +173,7 @@ class Dashboard extends Component<Props> {
             expanded3: !this.state.expanded3
         });
     }
-    
+
     render() {
 
         let incentivesEarned = ((this.props.profile || {}).incentivesEarned || 0);
@@ -162,6 +182,10 @@ class Dashboard extends Component<Props> {
         let rotation = (1.72 * percentComplete) - 86;
 
         let dots = this.icons['dots'];
+        let icon1 = this.icons['open'];
+        if (this.state.expanded1) {
+            icon1 = this.icons['close'];
+        }
         let icon2 = this.icons['open'];
         if (this.state.expanded2) {
             icon2 = this.icons['close'];
@@ -196,7 +220,7 @@ class Dashboard extends Component<Props> {
                                         {scale: this.state.menuScale}
                                     ],
                                     top: -125,
-                                    left: -133,
+                                    left: -133
                                 }}
                             >
                                 <TouchableHighlight
@@ -324,13 +348,45 @@ class Dashboard extends Component<Props> {
                             <View style={styles.goalsBox}>
                                 <Text style={[styles.blockTitle, styles.goalsTitle]}>{'CURRENT GOALS:'}</Text>
 
-                                {this.showGoals('first', false)}
+                                {this.showGoals(true, goalstatus.STATUS_OPEN)}
+
+                                {
+                                    this.state.expanded1 && (
+                                        <View style={styles.dashColumn}>
+                                            {this.props.children}
+                                            {this.showGoals(false, goalstatus.STATUS_OPEN)}
+                                        </View>)
+                                }
+
+                                <View style={styles.moreButton}>
+                                    <View style={styles.dashRow}>
+                                        <Text style={styles.moreButton}></Text>
+                                        <TouchableHighlight
+                                            style={styles.dashButton}
+                                            onPress={this.toggle1.bind(this)}
+                                            underlayColor='transparent'>
+                                            <View style={[styles.FAIconView, styles.icon1Bg]}>
+                                                <Icon
+                                                    style={[styles.FAIcon, styles.icon1]}
+                                                    name={icon1}
+                                                />
+                                            </View>
+                                        </TouchableHighlight>
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+                        <View style={styles.padding}>
+                            <View style={styles.goalsBox}>
+                                <Text style={[styles.blockTitle, styles.goalsTitle]}>{'SUBMITTED:'}</Text>
+
+                                {this.showGoals(true, goalstatus.STATUS_SUBMITTED)}
 
                                 {
                                     this.state.expanded2 && (
                                         <View style={styles.dashColumn}>
                                             {this.props.children}
-                                            {this.showGoals('remaining', false)}
+                                            {this.showGoals(false, goalstatus.STATUS_SUBMITTED)}
                                         </View>)
                                 }
 
@@ -355,12 +411,12 @@ class Dashboard extends Component<Props> {
                         <View style={styles.padding}>
                             <View style={styles.completedBox}>
                                 <Text style={[styles.blockTitle, styles.completedTitle]}>{'COMPLETED:'}</Text>
-                                {this.showGoals('first', true)}
+                                {this.showGoals(true, goalstatus.STATUS_COMPLETE)}
                                 {
                                     this.state.expanded3 && (
                                         <View style={styles.dashColumn}>
                                             {this.props.children}
-                                            {this.showGoals('remaining', true)}
+                                            {this.showGoals(false, goalstatus.STATUS_COMPLETE)}
                                         </View>)
                                 }
 
