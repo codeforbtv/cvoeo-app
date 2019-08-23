@@ -10,7 +10,9 @@ import {
     Animated,
     Dimensions,
     Image,
+    Platform,
     ScrollView,
+    StatusBar,
     StyleSheet,
     Text,
     TouchableHighlight,
@@ -131,6 +133,7 @@ class Dashboard extends Component<Props> {
 
         return (
             <Container>
+                {Platform.OS === 'ios' && <StatusBar barStyle='default'/>}
                 <View scrollEnabled={false} style={styles.container}>
                     <View style={styles.dashRow}>
                         <View style={styles.titleRow}>
