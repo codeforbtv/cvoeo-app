@@ -21,7 +21,7 @@ export function loginWithEmailPassword(email: string, password: string) {
 export function resetPassword(emailAddress: string) {
     return (dispatch) => {
         dataSource.resetPassword(emailAddress)
-            .then(() => dispatch({type: types.RESET_PASSSWORD_SUCCESS}))
+            .then(() => dispatch({type: types.RESET_PASSWORD_SUCCESS}))
             .catch(error => {
                 dispatch(
                     {
