@@ -2,27 +2,39 @@ import React from 'react';
 import commonStyles from '../../../styles/common';
 import PropTypes from 'prop-types';
 import {
+    Image,
+    TouchableOpacity,
     StyleSheet,
     Text,
     View  } from 'react-native';
-import moment from 'moment';
 const styles = StyleSheet.create(commonStyles);
 
-export const Goal = (props) => {
-    return <View style={styles.dashRow}>  
-        <View style={styles.smallerBlock}>
-            <Text style={styles.date}> </Text>
-        </View>  
-        <View style={styles.biggerBlock}>
-            <Text style={styles.subTitle}>{props.title || ''}</Text>
-            <Text style={styles.subText}>{props.detail || ''}</Text>
+export class Goal extends React.Component{
+
+    static propTypes = {
+        goal: PropTypes.object.isRequired,
+        showDetails: PropTypes.func
+    }
+
+    openGoalDetails = () => {
+        if (this.props.showDetails) {
+            this.props.showDetails(this.props.goal);
+        }
+    }
+
+    render() {
+        return <View style={styles.dashRow}>  
+            <TouchableOpacity onPress={this.openGoalDetails}>
+                <View style={styles.biggerBlock}>
+                    <Text style={styles.subTitle}>{this.props.goal.title || ''}</Text>
+                    {/* <Text style={styles.subText}>{this.props.goal.detail || ''}</Text> */}
+                </View>
+                <View style="styles.smallBlock">
+                    <Image source={require('../../../assets/images/alarm-clock.png')} style={{width: 50, height: 50}}/>
+                    <Text>TODO: add Reminder Date</Text>
+                </View>
+            </TouchableOpacity>
         </View>
-    </View>
+    }
+    
 }
-
-Goal.propTypes = {
-    title: PropTypes.string.isRequired,
-    detail: PropTypes.string.isRequired,
-    goalDate: PropTypes.date
-}
-

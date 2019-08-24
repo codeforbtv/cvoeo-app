@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import {
   Alert,
+  Button,
   Dimensions,
   Image,
   SafeAreaView,
@@ -13,7 +14,7 @@ import {
   Text,
   TouchableHighlight,
   View,
-  YellowBox
+  Modal
 } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -25,6 +26,7 @@ import * as actions from './actions';
 // import global styles
 // @TODO: move the global styles from this screen into ../../styles/common 
 import commonStyles from '../../styles/common';
+import { GoalDetail } from './components/goal-detail';
 const styles = StyleSheet.create(commonStyles);
 
 class Dashboard extends React.Component {
@@ -39,7 +41,8 @@ class Dashboard extends React.Component {
     super(props);
     this.state = {
       expandCurrentGoals: false,
-      expandCompletedGoals: false
+      expandCompletedGoals: false,
+      goalDetails: undefined
     };
     this.icons = {
       'dots': 'ellipsis-v',
@@ -69,6 +72,18 @@ class Dashboard extends React.Component {
   toggleExpandCompletedGoals = () => {
     this.setState({
       expandCompletedGoals: !this.state.expandCompletedGoals
+    });
+  }
+
+  showGoalDetails = (goal) => {
+    this.setState({
+      goalDetails: goal
+    });
+  }
+
+  hideGoalDetails = () => {
+    this.setState({
+      goalDetails: undefined
     });
   }
 
@@ -210,13 +225,13 @@ class Dashboard extends React.Component {
               <Text style={[styles.blockTitle, styles.goalSectionTitle]}>{'CURRENT GOALS:'}</Text>
               {
                 incompleteGoals.slice(0,1).map((goal) => 
-                  <Goal key={goal.id} {...goal} />  
+                  <Goal key={goal.id} goal={goal} showDetails={this.showGoalDetails} />  
                 )
               }
               {
                 this.state.expandCurrentGoals &&
                 incompleteGoals.slice(1).map((goal) => 
-                  <Goal key={goal.id} {...goal} />
+                  <Goal key={goal.id} goal={goal} showDetails={this.showGoalDetails} />
                 )
               }
               <View style={styles.moreButton}>
@@ -237,6 +252,21 @@ class Dashboard extends React.Component {
                       />
                     </View>
                   </TouchableHighlight>
+                  <Modal
+                    animationType={'slide'}
+                    transparent={false}
+                    visible={this.state.goalDetails != undefined}
+                    onRequestClose={this.hideGoalDetails}>
+                    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+                      <View>
+                        <Button title="Back to Main" onPress={this.hideGoalDetails} />
+                        {
+                          this.state.goalDetails &&
+                            <GoalDetail goal={this.state.goalDetails}></GoalDetail>
+                        }
+                      </View>
+                    </SafeAreaView>
+                  </Modal>
                 </View>
               </View>
             </View>
@@ -249,13 +279,13 @@ class Dashboard extends React.Component {
               <Text style={[styles.blockTitle, styles.completedTitle]}>{'COMPLETED:'}</Text>
               {
                 completedGoals.slice(0,1).map((goal) => 
-                  <Goal key={goal.id} {...goal} />
+                  <Goal key={goal.id} goal={goal} />
                 )
               }
               {
                 this.state.expandCompletedGoals &&
                 completedGoals.slice(1).map((goal) => 
-                  <Goal key={goal.id} {...goal} />
+                  <Goal key={goal.id} goal={goal} />
                 )
               }
               <View style={styles.moreButton}>
