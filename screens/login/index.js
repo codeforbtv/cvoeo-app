@@ -1,14 +1,23 @@
 // @flow
 
-import Login from './login-screen';
+import LoginScreen from './login-screen';
 import ForgotPassword from './forgot-password';
-import { createStackNavigator } from 'react-navigation';
+import Register from './register';
 
-export default createStackNavigator({
+import {createStackNavigator, createAppContainer} from 'react-navigation';
+
+const RootStack = createStackNavigator({
     Login: {
-        screen: Login
+        screen: LoginScreen
     },
     ForgotPassword: {
         screen: ForgotPassword
+    },
+    Register: {
+        screen: Register
     }
 });
+
+const Login = createAppContainer(RootStack);
+
+export default Login;

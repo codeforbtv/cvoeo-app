@@ -10,12 +10,18 @@
     "logs": "firebase functions:log"
   },
   "dependencies": {
-    "firebase-admin": "~6.0.0",
-    "firebase-functions": "^2.1.0"
+    "adm-zip": "^0.4.13",
+    "fast-sort": "^1.5.6",
+    "firebase-admin": "^8.2.0",
+    "firebase-functions": "^3.1.0",
+    "ssh2-sftp-client": "^2.5.0"
   },
   "devDependencies": {
     "eslint": "^5.12.0",
     "eslint-plugin-promise": "^4.0.1"
   },
-  "private": true
+  "private": true,
+  "engines": {
+    "node": "10"
+  }
 }

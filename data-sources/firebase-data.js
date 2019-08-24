@@ -52,7 +52,6 @@ export function initialize(dispatch): Promise {
         .auth()
         .onAuthStateChanged((_user) => {
             if (!!_user) {
-
                 /** Setup Listeners. Async ops should be added to the Promise.all **/
                 const profileListener = setupProfileListener(_user.uid, dispatch);
                 Promise.all([profileListener])
