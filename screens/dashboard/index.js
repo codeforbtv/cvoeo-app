@@ -4,7 +4,7 @@ import React, {Component, Node} from 'react';
 import {bindActionCreators} from 'redux';
 import {Container} from 'native-base';
 import {LinearGradient} from 'expo-linear-gradient';
-
+import PropTypes from 'prop-types';
 import {
   Alert,
   Animated,
@@ -22,20 +22,18 @@ import {
   Modal
 } from 'react-native';
 import { connect } from 'react-redux';
+import * as R from 'ramda';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import * as R from 'ramda';
-import { LinearGradient, Svg } from 'expo';
-import * as R from 'ramda';
-import { Goal } from './components/goal'
-import GoalMessageBox from '../../components/goal-message-box';
+import { GoalMessageBox } from '../../components/goal-message-box';
+import { GoalMessageDetails } from '../../components/goal-message-details';
 import MoneyMeter from '../../components/money-meter';
 import MenuCircle from '../../components/menu-circle';
+
 // import global actions
 import * as actions from './actions';
 
 // import global styles
 import commonStyles from '../../styles/common';
-import { GoalDetail } from './components/goal-detail';
 const styles = StyleSheet.create(commonStyles);
 
 class Dashboard extends React.Component {
@@ -51,9 +49,10 @@ class Dashboard extends React.Component {
         this.ellipsisToggle = this.ellipsisToggle.bind(this);
         this.ellipsisLogoutAlert = this.ellipsisLogoutAlert.bind(this);
         this.state = {
-            expanded2: false,
-            expanded3: false,
-            menuScale: new Animated.Value(0.01)
+            expandCurrentGoals: false,
+            expandCompletedGoals: false,
+            menuScale: new Animated.Value(0.01),
+            expandedGoalDetails: undefined
         };
         this.icons = {
             dots: 'ellipsis-v',
@@ -97,37 +96,42 @@ class Dashboard extends React.Component {
         );
     }
 
-    toggle2() {
+    toggleExpandCurrentGoals = () => {
         this.setState({
-            expanded2: !this.state.expanded2
+          expandCurrentGoals: !this.state.expandCurrentGoals
+        });
+      }
+    
+    
+    toggleExpandCompletedGoals = () => {
+        this.setState({
+            expandCompletedGoals: !this.state.expandCompletedGoals
         });
     }
 
-    toggle3() {
+    showGoalDetails = (goal) => {
         this.setState({
-            expanded3: !this.state.expanded3
+            expandedGoalDetails: goal
+        });
+    }
+
+    hideGoalDetails = () => {
+        this.setState({
+            expandedGoalDetails: undefined
         });
     }
 
     render() {
-        const {profile, completedGoals, incompleteGoals, children} = this.props;
+        const {profile, completedGoals, incompleteGoals} = this.props;
         const incentivesEarned = profile.incentivesEarned || 0;
         const incentivesAvailable = 500;
         const percentComplete = (incentivesEarned / incentivesAvailable) * 100;
 
-        const allButFirst = R.compose(
-            R.map(goal => (<GoalMessageBox message={[goal.title, goal.detail]} key={goal.id}/>)),
-            R.slice(1, Infinity)
-        );
-        const currentGoalVerbiage = incompleteGoals.length > 0
-            ? [incompleteGoals[0].title, incompleteGoals[0].detail]
-            : ['Let\'s work together on some goals to move you forward.', 'Schedule an appointment with your counselor today!'];
-        const firstCompletedGoalVerbiage = completedGoals.length > 0
-            ? [completedGoals[0].title, completedGoals[0].detail]
-            : ['Keep up the good work.', 'You\'ll finish a goal soon!'];
+        const incompleteGoalMessages = incompleteGoals.map((goal) => <GoalMessageBox key={goal.id} goal={goal} showDetails={this.showGoalDetails}/>);
+        const completedGoalMessages = completedGoals.map((goal) => <GoalMessageBox key={goal.id} goal={goal} showDetails={this.showGoalDetails}/>);
         const dots = this.icons.dots;
-        const icon2 = this.state.expanded2 ? this.icons.close : this.icons.open;
-        const icon3 = this.state.expanded3 ? this.icons.close : this.icons.open;
+        const expandCurrentGoalsIcon = this.state.expandCurrentGoals ? this.icons.close : this.icons.open;
+        const expandCompletedGoalsIcon = this.state.expandCompletedGoals ? this.icons.close : this.icons.open;
 
         return (
             <Container>
@@ -227,13 +231,12 @@ class Dashboard extends React.Component {
                         <View style={styles.padding}>
                             <View style={styles.goalsBox}>
                                 <Text style={[styles.blockTitle, styles.goalsTitle]}>{'CURRENT GOALS:'}</Text>
-                                <GoalMessageBox message={currentGoalVerbiage}/>
                                 {
-                                    this.state.expanded2 && (
-                                        <View style={styles.dashColumn}>
-                                            {children}
-                                            {allButFirst(incompleteGoals)}
-                                        </View>
+                                    incompleteGoalMessages.slice(0,1)
+                                }
+                                {
+                                    this.state.expandCurrentGoals && (
+                                        incompleteGoalMessages.slice(1)
                                     )
                                 }
                                 <View style={styles.moreButton}>
@@ -241,12 +244,12 @@ class Dashboard extends React.Component {
                                         <Text style={styles.moreButton}/>
                                         <TouchableHighlight
                                             style={styles.dashButton}
-                                            onPress={this.toggle2.bind(this)}
+                                            onPress={this.toggleExpandCurrentGoals}
                                             underlayColor='transparent'>
-                                            <View style={[styles.FAIconView, styles.icon2Bg]}>
+                                            <View style={[styles.FAIconView, styles.expandCurrentGoalsIconBg]}>
                                                 <Icon
-                                                    style={[styles.FAIcon, styles.icon2]}
-                                                    name={icon2}
+                                                    style={[styles.FAIcon, styles.expandCurrentGoalsIcon]}
+                                                    name={expandCurrentGoalsIcon}
                                                 />
                                             </View>
                                         </TouchableHighlight>
@@ -257,27 +260,25 @@ class Dashboard extends React.Component {
                         <View style={styles.padding}>
                             <View style={styles.completedBox}>
                                 <Text style={[styles.blockTitle, styles.completedTitle]}>{'COMPLETED:'}</Text>
-                                <GoalMessageBox message={firstCompletedGoalVerbiage}/>
                                 {
-                                    this.state.expanded3 && (
-                                        <View style={styles.dashColumn}>
-                                            {children}
-                                            {allButFirst(completedGoals)}
-                                        </View>
+                                    completedGoalMessages.slice(0,1)
+                                }
+                                {
+                                    this.state.expandCompletedGoals && (
+                                        completedGoalMessages.slice(1)
                                     )
                                 }
-
                                 <View style={styles.moreButton}>
                                     <View style={styles.dashRow}>
                                         <Text style={styles.moreButton}/>
                                         <TouchableHighlight
                                             style={styles.dashButton}
-                                            onPress={this.toggle3.bind(this)}
+                                            onPress={this.toggleExpandCompletedGoals}
                                             underlayColor='transparent'>
-                                            <View style={[styles.FAIconView, styles.icon3Bg]}>
+                                            <View style={[styles.FAIconView, styles.expandCompletedGoalsIconBg]}>
                                                 <Icon
-                                                    style={[styles.FAIcon, styles.icon3]}
-                                                    name={icon3}
+                                                    style={[styles.FAIcon, styles.expandCompletedGoalsIcon]}
+                                                    name={expandCompletedGoalsIcon}
                                                 />
                                             </View>
                                         </TouchableHighlight>
@@ -286,6 +287,23 @@ class Dashboard extends React.Component {
                             </View>
                         </View>
                         <View style={styles.padding}/>
+                        <View>
+                            <Modal
+                                animationType={'slide'}
+                                transparent={false}
+                                visible={this.state.expandedGoalDetails != undefined}
+                                onRequestClose={this.hideGoalDetails}>
+                                <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+                                <View>
+                                    <Button title="Back to Main" onPress={this.hideGoalDetails} />
+                                    {
+                                        this.state.expandedGoalDetails &&
+                                            <GoalMessageDetails goal={this.state.expandedGoalDetails}></GoalMessageDetails>
+                                    }
+                                </View>
+                                </SafeAreaView>
+                            </Modal>
+                        </View>
                     </ScrollView>
                 </View>
             </Container>

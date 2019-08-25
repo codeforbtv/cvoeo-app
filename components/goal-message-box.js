@@ -1,22 +1,43 @@
-// @flow
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
 import commonStyles from '../styles/common';
-
-type Props = {message: Array<string>};
-
+import PropTypes from 'prop-types';
+import {
+    Image,
+    TouchableOpacity,
+    StyleSheet,
+    Text,
+    View  } from 'react-native';
 const styles = StyleSheet.create(commonStyles);
 
-const GoalMessageBox = ({message}: Props) => (
-    <View style={styles.dashRow}>
-        <View style={styles.smallerBlock}>
-            <Text style={styles.date}/>
-        </View>
-        <View style={styles.biggerBlock}>
-            <Text style={styles.subTitle}>{message[0] || ''}</Text>
-            <Text style={styles.subText}>{message[1] || ''}</Text>
-        </View>
-    </View>
-);
+export class GoalMessageBox extends React.Component{
 
-export default GoalMessageBox;
+    static propTypes = {
+        goal: PropTypes.object.isRequired,
+        showDetails: PropTypes.func
+    }
+
+    openGoalDetails() {
+        if (this.props.showDetails) {
+            this.props.showDetails(this.props.goal);
+        }
+    }
+
+    render() {
+        return <View style={styles.dashRow}>  
+            <TouchableOpacity onPress={() => this.openGoalDetails()}>
+                <View style={styles.biggerBlock}>
+                    <Text style={styles.subTitle}>{this.props.goal.title || ''}</Text>
+                    <Text style={styles.subText}>{this.props.goal.detail || ''}</Text>
+                </View>
+                {
+                    this.props.goal.goalDate &&
+                    <View style="styles.smallBlock">
+                        <Image source={require('../assets/images/alarm-clock.png')} style={{width: 20, height: 20}}/>
+                        <Text>{this.props.goal.goalDate.seconds}</Text>
+                    </View>
+                }
+            </TouchableOpacity>
+        </View>
+    }
+    
+}

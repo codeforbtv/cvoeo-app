@@ -1,5 +1,5 @@
 import React from 'react';
-import commonStyles from '../../../styles/common';
+import commonStyles from '../styles/common';
 import PropTypes from 'prop-types';
 import {
     StyleSheet,
@@ -7,7 +7,7 @@ import {
     View  } from 'react-native';
 const styles = StyleSheet.create(commonStyles);
 
-export class GoalDetail extends React.Component{
+export class GoalMessageDetails extends React.Component{
 
     static propTypes = {
         goal: PropTypes.object
