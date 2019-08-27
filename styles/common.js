@@ -17,7 +17,7 @@ const common = {
         height: '100%',
         width: '100%'
     },
-    block: { paddingTop: 10, paddingBottom: 10, borderBottomWidth: 1, borderColor: 'rgba(0,0,0,0.5)', width: '100%' },
+    block: {paddingTop: 10, paddingBottom: 10, borderBottomWidth: 1, borderColor: 'rgba(0,0,0,0.5)', width: '100%'},
     infoBlock: {
         paddingBottom: 8,
         borderBottomWidth: 1,
@@ -25,7 +25,7 @@ const common = {
         backgroundColor: '#EEE',
         padding: 10,
         shadowColor: '#FFF',
-        shadowOffset: { width: 0, height: 1 },
+        shadowOffset: {width: 0, height: 1},
         shadowOpacity: 1,
         shadowRadius: 0,
         marginBottom: 1
@@ -34,7 +34,7 @@ const common = {
     infoBlockContainer: {
         margin: 5,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.6,
         shadowRadius: 2,
         padding: 10,
@@ -51,8 +51,8 @@ const common = {
         marginTop: 10,
         backgroundColor: '#EEE'
     },
-    padForIOSKeyboard: { height: 80 },
-    padForIOSKeyboardBig: { height: 150 },
+    padForIOSKeyboard: {height: 80},
+    padForIOSKeyboardBig: {height: 150},
     profileHeader: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
@@ -76,7 +76,7 @@ const common = {
         alignItems: 'stretch',
         padding: 10,
         shadowColor: '#FFF',
-        shadowOffset: { width: 0, height: 1 },
+        shadowOffset: {width: 0, height: 1},
         shadowOpacity: 1,
         shadowRadius: 0,
         marginBottom: 1
@@ -128,7 +128,8 @@ const common = {
         backgroundColor: 'white',
         height: 40,
         textAlign: 'left',
-        padding: 5
+        padding: 5,
+        paddingLeft: 20
     },
     button: {
         borderStyle: 'solid',
@@ -139,7 +140,7 @@ const common = {
         padding: 10,
         marginTop: 24,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.6,
         shadowRadius: 2
     },
@@ -184,7 +185,7 @@ const common = {
         paddingBottom: 2.5
     },
     link: {
-        width: '100%',
+        width: '100%'
     },
     linkText: {
         fontSize: 15,
@@ -203,7 +204,7 @@ const common = {
         padding: 10,
         backgroundColor: '#EEE',
         shadowColor: '#FFF',
-        shadowOffset: { width: 0, height: 1 },
+        shadowOffset: {width: 0, height: 1},
         shadowOpacity: 1,
         shadowRadius: 0
     },
@@ -211,12 +212,12 @@ const common = {
         display: 'flex',
         flex: 1,
         backgroundColor: 'transparent',
-        alignSelf: 'stretch',
+        alignSelf: 'stretch'
     },
     container: {
         flex: 1,
         backgroundColor: 'transparent',
-        alignSelf: 'stretch',
+        alignSelf: 'stretch'
     },
     titleRow: {
         flex: 10,
@@ -224,7 +225,7 @@ const common = {
         flexDirection: 'row',
         backgroundColor: 'transparent',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     title: {
         backgroundColor: 'transparent',
@@ -234,22 +235,22 @@ const common = {
         paddingTop: 12,
         paddingBottom: 15,
         textAlign: 'center',
-        fontFamily: 'System',
+        fontFamily: 'System'
     },
     blackText: {
-        color: '#020202',
+        color: '#020202'
     },
     greenText: {
-        color: '#b3cc95',
+        color: '#b3cc95'
     },
     dots: {
-        flex: 1,
+        flex: 1
     },
     padding: {
         paddingTop: 8,
         paddingLeft: 9,
         paddingRight: 9,
-        paddingBottom: 0,
+        paddingBottom: 0
     },
     goalsBox: {
         flex: 1,
@@ -260,7 +261,7 @@ const common = {
         shadowOpacity: 0.8,
         elevation: 3,
         shadowRadius: 6,
-        shadowOffset: { width: 1, height: 5 },
+        shadowOffset: {width: 1, height: 5}
     },
     progressBox: {
         flex: 1,
@@ -271,7 +272,7 @@ const common = {
         shadowOpacity: 0.8,
         elevation: 3,
         shadowRadius: 6,
-        shadowOffset: { width: 1, height: 5 },
+        shadowOffset: {width: 1, height: 5}
     },
     completedBox: {
         flex: 1,
@@ -282,7 +283,7 @@ const common = {
         shadowOpacity: 0.8,
         elevation: 3,
         shadowRadius: 6,
-        shadowOffset: { width: 1, height: 5 },
+        shadowOffset: {width: 1, height: 5}
     },
     upcomingBox: {
         flex: 1,
@@ -293,45 +294,45 @@ const common = {
         shadowOpacity: 0.8,
         elevation: 3,
         shadowRadius: 6,
-        shadowOffset: { width: 1, height: 5 },
+        shadowOffset: {width: 1, height: 5}
     },
     dashRow: {
         display: 'flex',
         flexDirection: 'row',
         backgroundColor: 'transparent',
         alignItems: 'center',
-        zIndex: 100,
+        zIndex: 100
     },
     dashColumn: {
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: 'transparent',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     bigBlock: {
         backgroundColor: 'transparent',
         flex: 5,
         alignItems: 'center',
-        padding: 2,
+        padding: 2
     },
     biggerBlock: {
         backgroundColor: 'transparent',
         flex: 9,
         alignItems: 'center',
-        padding: 1,
+        padding: 1
     },
     smallBlock: {
         backgroundColor: 'transparent',
         flexDirection: 'row',
         flex: 3,
-        alignItems: 'flex-start',
+        alignItems: 'flex-start'
     },
     smallerBlock: {
         backgroundColor: 'transparent',
         flex: 1,
         alignItems: 'center',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'column'
     },
     blockTitle: {
         alignItems: 'flex-start',
@@ -343,16 +344,16 @@ const common = {
         paddingBottom: 5,
         alignSelf: 'stretch',
         textAlign: 'left',
-        fontFamily: 'System',
+        fontFamily: 'System'
     },
     goalsTitle: {
-        color: '#afb066',
+        color: '#afb066'
     },
     completedTitle: {
-        color: '#809f5b',
+        color: '#809f5b'
     },
     upcomingTitle: {
-        color: '#037a96',
+        color: '#037a96'
     },
     subTitle: {
         alignItems: 'center',
@@ -362,7 +363,7 @@ const common = {
         paddingTop: 1,
         alignSelf: 'stretch',
         textAlign: 'left',
-        fontFamily: 'System',
+        fontFamily: 'System'
     },
     subText: {
         backgroundColor: 'transparent',
@@ -371,21 +372,21 @@ const common = {
         fontSize: 14,
         alignSelf: 'stretch',
         textAlign: 'left',
-        fontFamily: 'System',
+        fontFamily: 'System'
     },
     circle: {
         backgroundColor: '#fea488',
         width: 40,
         height: 40,
         borderRadius: 20,
-        paddingTop: 5,
+        paddingTop: 5
     },
     circleText: {
         backgroundColor: 'transparent',
         color: '#fff',
         fontSize: 22,
         textAlign: 'center',
-        fontFamily: 'System',
+        fontFamily: 'System'
     },
     days: {
         alignSelf: 'flex-end',
@@ -394,14 +395,14 @@ const common = {
         paddingBottom: 1,
         paddingLeft: 2,
         textAlign: 'center',
-        fontFamily: 'System',
+        fontFamily: 'System'
     },
     spaceRow: {
         display: 'flex',
         flexDirection: 'row',
         backgroundColor: 'transparent',
         alignItems: 'center',
-        justifyContent: 'space-around',
+        justifyContent: 'space-around'
     },
     bigTitle: {
         color: '#037a96',
@@ -410,12 +411,12 @@ const common = {
         paddingLeft: 24,
         paddingRight: 24,
         paddingTop: 24,
-        fontFamily: 'System',
+        fontFamily: 'System'
     },
     bigLetters: {
         fontSize: 40,
         color: '#020202',
-        paddingTop: 10,
+        paddingTop: 10
     },
     FAIconView: {
         alignItems: 'flex-end',
@@ -425,7 +426,7 @@ const common = {
         borderTopLeftRadius: 20,
         borderTopRightRadius: 0,
         borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 3,
+        borderBottomRightRadius: 3
     },
     FAIcon: {
         alignItems: 'flex-end',
@@ -437,7 +438,7 @@ const common = {
         height: 28,
         textAlign: 'center',
         paddingTop: 6,
-        paddingLeft: 3,
+        paddingLeft: 3
     },
     icon1: {
         color: '#67674e',
@@ -446,25 +447,32 @@ const common = {
         backgroundColor: '#dddea8',
     },
     icon2: {
-        color: '#67674e',
+        color: '#67674e'
     },
     icon2Bg: {
-        backgroundColor: '#dddea8',
+        backgroundColor: '#dddea8'
     },
     icon3: {
-        color: '#535f46',
+        color: '#535f46'
     },
     icon3Bg: {
-        backgroundColor: '#b3cc95',
+        backgroundColor: '#b3cc95'
+    },
+
+    icon1: {
+        color: '#265865'
+    },
+    icon1Bg: {
+        backgroundColor: '#51bed9'
     },
     dashButton: {
-        backgroundColor: 'transparent',
+        backgroundColor: 'transparent'
     },
     moreButton: {
         backgroundColor: 'transparent',
         alignItems: 'flex-end',
         paddingTop: 3,
-        alignSelf: 'stretch',
+        alignSelf: 'stretch'
     },
     money: {
         flex: 1,
@@ -484,7 +492,7 @@ const common = {
         borderBottomWidth: 2,
         borderColor: 'rgba(0,0,0,0.0)',
         width: 202,
-        paddingBottom: 20,
+        paddingBottom: 20
     },
     ellipsis: {
         marginTop: 16,

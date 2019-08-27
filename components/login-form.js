@@ -7,14 +7,12 @@ import commonStyles from '../styles/common';
 
 const styles = StyleSheet.create(commonStyles);
 
-
 type Props = {
     buttonText: string,
     onButtonPress: any => any
 };
 
 export default class LoginForm extends Component<Props> {
-   
 
     constructor(props) {
         super(props);
