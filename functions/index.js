@@ -1,6 +1,6 @@
 const functions = require('firebase-functions');
-const client = require('ssh2-sftp-client');
-const admZip = require('adm-zip');
+const Client = require('ssh2-sftp-client');
+const AdmZip = require('adm-zip');
 const sort = require('fast-sort');
 
 exports.helloWorld = functions.https.onRequest((request, response) => {
@@ -15,7 +15,7 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 });
 
 exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
-	 const sftpConnectionToCvoeo = new client();
+	 const sftpConnectionToCvoeo = new Client();
    var outString = "";
    const directoryName = '/dropbox/';
 	 //Connect to cvoeo sftp server using environment configuration. These have to be configured and deployed to firebase using the firebase cli.
@@ -95,7 +95,7 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
       // Collect output for future response
       //outString += chunk; // Display ZIP file as binary output... looks ugly and is useless.
       // Create a new unzipper using the Chunk as input...
-      var csvzip = new admZip(chunk);
+      var csvzip = new AdmZip(chunk);
       // Figure out how many files are in the Chunk-zip
       // Presumably always 1, but it could be any number.
       var zipEntries = csvzip.getEntries();
