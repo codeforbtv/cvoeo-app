@@ -334,6 +334,9 @@ const common = {
         display: 'flex',
         flexDirection: 'column'
     },
+    goalDateBlock: {
+        paddingTop: 5
+    },
     blockTitle: {
         alignItems: 'flex-start',
         color: 'rgba(2,2,2,0.34)',
@@ -451,6 +454,17 @@ const common = {
     },
     expandCompletedGoalsIconBg: {
         backgroundColor: '#b3cc95',
+    },
+    goalDateIcon: {
+        width: 20,
+        height: 20,
+        flexDirection: 'row'
+    },
+    goalCompleteIcon: {
+        width: 20,
+        height: 20,
+        color: 'white',
+        flexDirection: 'row'
     },
     icon1: {
         color: '#265865'

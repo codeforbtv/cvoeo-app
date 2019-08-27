@@ -7,6 +7,7 @@ import {
     StyleSheet,
     Text,
     View  } from 'react-native';
+import moment from 'moment';
 const styles = StyleSheet.create(commonStyles);
 
 export class GoalMessageBox extends React.Component{
@@ -14,6 +15,11 @@ export class GoalMessageBox extends React.Component{
     static propTypes = {
         goal: PropTypes.object.isRequired,
         showDetails: PropTypes.func
+    }
+
+    getRelativeDate(seconds) {
+        const goalDate = moment(new Date((seconds) * 1000));
+        return goalDate.fromNow();
     }
 
     openGoalDetails() {
@@ -30,10 +36,10 @@ export class GoalMessageBox extends React.Component{
                     <Text style={styles.subText}>{this.props.goal.detail || ''}</Text>
                 </View>
                 {
-                    this.props.goal.goalDate &&
-                    <View style="styles.smallBlock">
-                        <Image source={require('../assets/images/alarm-clock.png')} style={{width: 20, height: 20}}/>
-                        <Text>{this.props.goal.goalDate.seconds}</Text>
+                    this.props.goal.goalDate.seconds &&
+                    <View style={[styles.smallBlock, styles.goalDateBlock]}>
+                        <Image source={require('../assets/images/alarm-clock.png')} style={styles.goalDateIcon}/>
+                        <Text>{this.getRelativeDate(this.props.goal.goalDate.seconds)}</Text>
                     </View>
                 }
             </TouchableOpacity>
