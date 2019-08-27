@@ -55,7 +55,8 @@ class Dashboard extends Component<Props> {
         this.icons = {
             'dots': 'ellipsis-v',
             'open': 'angle-down',
-            'close': 'angle-up'
+            'close': 'angle-up',
+            'complete': 'check-circle'
         };
     }
 
@@ -70,28 +71,58 @@ class Dashboard extends Component<Props> {
 
         let allGoals = [];
         for (i = 0; i < goalArray.length; i++) {
+            // console.log(goalArray[i]);
+            let id = goalArray[i].id;
             let title = goalArray[i].title;
             let detail = goalArray[i].detail;
             let status = goalArray[i].status;
             if (thisStatus === status) {
-                allGoals.push(
-                    <View style={styles.dashRow} key={i}>
-                        <View style={styles.smallerBlock}>
-                            <Text style={styles.date}> </Text>
+                if (thisStatus = goalstatus.STATUS_OPEN) {
+                    let iconComplete = this.icons['complete'];
+
+                    allGoals.push(
+                        <View style={styles.dashRow} key={i}>
+                            <View style={styles.smallerBlock}>
+                                <Text style={styles.date}> </Text>
+                            </View>
+                            <View style={styles.biggerBlock}>
+                                <Text style={styles.subTitle}>{title}</Text>
+                                <Text style={styles.subText}>{detail}</Text>
+                            </View>
+                            <TouchableHighlight
+                                style={styles.dashButton}
+                                onPress={this.markSubmitted.bind(this, id, title )}
+                                underlayColor='transparent'>
+                                <View>
+                                    <Icon
+                                        style={[styles.FAIcon, styles.iconComplete]}
+                                        name={iconComplete}
+                                    />
+                                </View>
+                            </TouchableHighlight>
                         </View>
-                        <View style={styles.biggerBlock}>
-                            <Text style={styles.subTitle}>{title}</Text>
-                            <Text style={styles.subText}>{detail}</Text>
+                    );
+                } else {
+                    allGoals.push(
+                        <View style={styles.dashRow} key={i}>
+                            <View style={styles.smallerBlock}>
+                                <Text style={styles.date}> </Text>
+                            </View>
+                            <View style={styles.biggerBlock}>
+                                <Text style={styles.subTitle}>{title}</Text>
+                                <Text style={styles.subText}>{detail}</Text>
+                            </View>
                         </View>
-                    </View>
-                );
+                    );
+                }
+
             }
         }
         if (firstOnly) {
             // Only return the first goal
             if (!allGoals[0]) {
                 let message = '';
-                switch(thisStatus) {
+                switch (thisStatus) {
                     case goalstatus.STATUS_OPEN:
                         message = ['Let\'s work together on some goals to move you forward.', 'Schedule an appointment with your counselor today!'];
                         break;
@@ -172,6 +203,27 @@ class Dashboard extends Component<Props> {
         this.setState({
             expanded3: !this.state.expanded3
         });
+    }
+
+    markSubmitted(id, title) {
+        console.log('Mark Submitted',id)
+
+        Alert.alert(
+            'Mark Goal as Submitted?',
+            'Do you want to mark the goal "' + title + '" as submitted?',
+            [
+                {text: 'Yes', onPress: this.updateSubmitted(id)},
+                {text: 'No', onPress: null, style: 'cancel'}
+            ],
+            {cancelable: true}
+        );
+    }
+
+    /**
+     * Update a goal as submitted
+     */
+    updateSubmitted(id) {
+        // Find id in the goal array
     }
 
     render() {

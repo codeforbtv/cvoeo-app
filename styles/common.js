@@ -457,6 +457,12 @@ const common = {
     icon3Bg: {
         backgroundColor: '#b3cc95',
     },
+    iconComplete: {
+        color: '#535f46',
+    },
+    iconCompleteBg: {
+        backgroundColor: '#b3cc95',
+    },
     dashButton: {
         backgroundColor: 'transparent',
     },
