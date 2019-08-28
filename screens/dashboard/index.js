@@ -42,6 +42,7 @@ type Props = {
     profile: Object,
     navigation: Object,
     completedGoals: Array<Object>,
+    submittedGoals: Array<Object>,
     incompleteGoals: Array<Object>,
     children: Node
 };
@@ -65,6 +66,8 @@ class Dashboard extends Component<Props> {
             'close': 'angle-up',
             'complete': 'check-circle'
         };
+
+        console.log('Props: ', this.props);
     }
 
     /**
@@ -73,91 +76,91 @@ class Dashboard extends Component<Props> {
      * @param firstOnly - TRUE to just show the first goal, FALSE to show all additional goals
      * @param thisStatus - The status to show - open, submitted, or complete
      */
-    showGoals(firstOnly, thisStatus) {
-        let goalArray = ((this.props.profile || {}).goalArray || {});
-
-        let allGoals = [];
-        for (i = 0; i < goalArray.length; i++) {
-            // console.log(goalArray[i]);
-            let id = goalArray[i].id;
-            let title = goalArray[i].title;
-            let detail = goalArray[i].detail;
-            let status = goalArray[i].status;
-            if (thisStatus === status) {
-                if (thisStatus = goalstatus.STATUS_OPEN) {
-                    let iconComplete = this.icons['complete'];
-
-                    allGoals.push(
-                        <View style={styles.dashRow} key={i}>
-                            <View style={styles.smallerBlock}>
-                                <Text style={styles.date}> </Text>
-                            </View>
-                            <View style={styles.biggerBlock}>
-                                <Text style={styles.subTitle}>{title}</Text>
-                                <Text style={styles.subText}>{detail}</Text>
-                            </View>
-                            <TouchableHighlight
-                                style={styles.dashButton}
-                                onPress={this.markSubmitted.bind(this, id, title )}
-                                underlayColor='transparent'>
-                                <View>
-                                    <Icon
-                                        style={[styles.FAIcon, styles.iconComplete]}
-                                        name={iconComplete}
-                                    />
-                                </View>
-                            </TouchableHighlight>
-                        </View>
-                    );
-                } else {
-                    allGoals.push(
-                        <View style={styles.dashRow} key={i}>
-                            <View style={styles.smallerBlock}>
-                                <Text style={styles.date}> </Text>
-                            </View>
-                            <View style={styles.biggerBlock}>
-                                <Text style={styles.subTitle}>{title}</Text>
-                                <Text style={styles.subText}>{detail}</Text>
-                            </View>
-                        </View>
-                    );
-                }
-
-            }
-        }
-        if (firstOnly) {
-            // Only return the first goal
-            if (!allGoals[0]) {
-                let message = '';
-                switch (thisStatus) {
-                    case goalstatus.STATUS_OPEN:
-                        message = ['Let\'s work together on some goals to move you forward.', 'Schedule an appointment with your counselor today!'];
-                        break;
-                    case goalstatus.STATUS_SUBMITTED:
-                        message = ['Submit your goals once you complete them!', 'You\'ll finish a goal soon!'];
-                        break;
-                    case goalstatus.STATUS_COMPLETE:
-                        message = ['Keep up the good work.', 'You\'ll finish a goal soon!'];
-                        break;
-                }
-                allGoals.push(
-                    <View style={styles.dashRow} key={i}>
-                        <View style={styles.smallerBlock}>
-                            <Text style={styles.date}> </Text>
-                        </View>
-                        <View style={styles.biggerBlock}>
-                            <Text style={styles.subTitle}>{message[0]}</Text>
-                            <Text style={styles.subText}>{message[1]}</Text>
-                        </View>
-                    </View>
-                );
-            }
-            return allGoals[0];
-        }
-
-        // Otherwise, return all the other goals
-        return allGoals.slice(1);
-    }
+    // showGoals(firstOnly, thisStatus) {
+    //     let goalArray = ((this.props.profile || {}).goalArray || {});
+    //
+    //     let allGoals = [];
+    //     for (i = 0; i < goalArray.length; i++) {
+    //         // console.log(goalArray[i]);
+    //         let id = goalArray[i].id;
+    //         let title = goalArray[i].title;
+    //         let detail = goalArray[i].detail;
+    //         let status = goalArray[i].status;
+    //         if (thisStatus === status) {
+    //             if (thisStatus = goalstatus.STATUS_OPEN) {
+    //                 let iconComplete = this.icons['complete'];
+    //
+    //                 allGoals.push(
+    //                     <View style={styles.dashRow} key={i}>
+    //                         <View style={styles.smallerBlock}>
+    //                             <Text style={styles.date}> </Text>
+    //                         </View>
+    //                         <View style={styles.biggerBlock}>
+    //                             <Text style={styles.subTitle}>{title}</Text>
+    //                             <Text style={styles.subText}>{detail}</Text>
+    //                         </View>
+    //                         <TouchableHighlight
+    //                             style={styles.dashButton}
+    //                             onPress={this.markSubmitted.bind(this, id, title )}
+    //                             underlayColor='transparent'>
+    //                             <View>
+    //                                 <Icon
+    //                                     style={[styles.FAIcon, styles.iconComplete]}
+    //                                     name={iconComplete}
+    //                                 />
+    //                             </View>
+    //                         </TouchableHighlight>
+    //                     </View>
+    //                 );
+    //             } else {
+    //                 allGoals.push(
+    //                     <View style={styles.dashRow} key={i}>
+    //                         <View style={styles.smallerBlock}>
+    //                             <Text style={styles.date}> </Text>
+    //                         </View>
+    //                         <View style={styles.biggerBlock}>
+    //                             <Text style={styles.subTitle}>{title}</Text>
+    //                             <Text style={styles.subText}>{detail}</Text>
+    //                         </View>
+    //                     </View>
+    //                 );
+    //             }
+    //
+    //         }
+    //     }
+    //     if (firstOnly) {
+    //         // Only return the first goal
+    //         if (!allGoals[0]) {
+    //             let message = '';
+    //             switch (thisStatus) {
+    //                 case goalstatus.STATUS_OPEN:
+    //                     message = ['Let\'s work together on some goals to move you forward.', 'Schedule an appointment with your counselor today!'];
+    //                     break;
+    //                 case goalstatus.STATUS_SUBMITTED:
+    //                     message = ['Submit your goals once you complete them!', 'You\'ll finish a goal soon!'];
+    //                     break;
+    //                 case goalstatus.STATUS_COMPLETE:
+    //                     message = ['Keep up the good work.', 'You\'ll finish a goal soon!'];
+    //                     break;
+    //             }
+    //             allGoals.push(
+    //                 <View style={styles.dashRow} key={i}>
+    //                     <View style={styles.smallerBlock}>
+    //                         <Text style={styles.date}> </Text>
+    //                     </View>
+    //                     <View style={styles.biggerBlock}>
+    //                         <Text style={styles.subTitle}>{message[0]}</Text>
+    //                         <Text style={styles.subText}>{message[1]}</Text>
+    //                     </View>
+    //                 </View>
+    //             );
+    //         }
+    //         return allGoals[0];
+    //     }
+    //
+    //     // Otherwise, return all the other goals
+    //     return allGoals.slice(1);
+    // }
 
     ellipsisToggle() {
         // Toggle circular menu open/close
@@ -234,7 +237,7 @@ class Dashboard extends Component<Props> {
     }
 
     render() {
-        const {profile, completedGoals, incompleteGoals, children} = this.props;
+        const {profile, completedGoals, submittedGoals, incompleteGoals, children} = this.props;
         const incentivesEarned = profile.incentivesEarned || 0;
         const incentivesAvailable = 500;
         const percentComplete = (incentivesEarned / incentivesAvailable) * 100;
@@ -258,10 +261,14 @@ class Dashboard extends Component<Props> {
         const currentGoalVerbiage = incompleteGoals.length > 0
             ? [incompleteGoals[0].title, incompleteGoals[0].detail]
             : ['Let\'s work together on some goals to move you forward.', 'Schedule an appointment with your counselor today!'];
+        const submittedGoalVerbiage = submittedGoals.length > 0
+            ? [submittedGoals[0].title, submittedGoals[0].detail]
+            : ['Submit your goals once you complete them!', 'You\'ll finish a goal soon!'];
         const firstCompletedGoalVerbiage = completedGoals.length > 0
             ? [completedGoals[0].title, completedGoals[0].detail]
             : ['Keep up the good work.', 'You\'ll finish a goal soon!'];
         const dots = this.icons.dots;
+        const icon1 = this.state.expanded1 ? this.icons.close : this.icons.open;
         const icon2 = this.state.expanded2 ? this.icons.close : this.icons.open;
         const icon3 = this.state.expanded3 ? this.icons.close : this.icons.open;
 
@@ -360,56 +367,90 @@ class Dashboard extends Component<Props> {
                                 </View>
                             </View>
                         </View>
+
+
+{/*//                                 {this.showGoals(true, goalstatus.STATUS_OPEN)}*/}
+
+{/*//                                 {*/}
+{/*//                                     this.state.expanded1 && (*/}
+{/*//                                         <View style={styles.dashColumn}>*/}
+{/*//                                             {this.props.children}*/}
+{/*//                                             {this.showGoals(false, goalstatus.STATUS_OPEN)}*/}
+{/*//                                         </View>)*/}
+{/*//                                 }*/}
+
+{/*//                                 <View style={styles.moreButton}>*/}
+{/*//                                     <View style={styles.dashRow}>*/}
+{/*//                                         <Text style={styles.moreButton}></Text>*/}
+{/*//                                         <TouchableHighlight*/}
+{/*//                                             style={styles.dashButton}*/}
+{/*//                                             onPress={this.toggle1.bind(this)}*/}
+{/*//                                             underlayColor='transparent'>*/}
+{/*//                                             <View style={[styles.FAIconView, styles.icon1Bg]}>*/}
+{/*//                                                 <Icon*/}
+{/*//                                                     style={[styles.FAIcon, styles.icon1]}*/}
+{/*//                                                     name={icon1}*/}
+{/*//                                                 />*/}
+{/*//                                             </View>*/}
+{/*//                                         </TouchableHighlight>*/}
+{/*//                                     </View>*/}
+{/*//                                 </View>*/}
+{/*//                             </View>*/}
+{/*//                         </View>*/}
+{/*//                         <View style={styles.padding}>*/}
+{/*//                             <View style={styles.goalsBox}>*/}
+{/*//                                 <Text style={[styles.blockTitle, styles.goalsTitle]}>{'SUBMITTED:'}</Text>*/}
+
+{/*//                                 {this.showGoals(true, goalstatus.STATUS_SUBMITTED)}*/}
+
+{/*//                                 {*/}
+{/*//                                     this.state.expanded2 && (*/}
+{/*//                                         <View style={styles.dashColumn}>*/}
+{/*//                                             {this.props.children}*/}
+{/*//                                             {this.showGoals(false, goalstatus.STATUS_SUBMITTED)}*/}
+{/*//                                         </View>)*/}
+
                         <View style={styles.padding}>
                             <View style={styles.goalsBox}>
                                 <Text style={[styles.blockTitle, styles.goalsTitle]}>{'CURRENT GOALS:'}</Text>
 
-//                                 {this.showGoals(true, goalstatus.STATUS_OPEN)}
-
-//                                 {
-//                                     this.state.expanded1 && (
-//                                         <View style={styles.dashColumn}>
-//                                             {this.props.children}
-//                                             {this.showGoals(false, goalstatus.STATUS_OPEN)}
-//                                         </View>)
-//                                 }
-
-//                                 <View style={styles.moreButton}>
-//                                     <View style={styles.dashRow}>
-//                                         <Text style={styles.moreButton}></Text>
-//                                         <TouchableHighlight
-//                                             style={styles.dashButton}
-//                                             onPress={this.toggle1.bind(this)}
-//                                             underlayColor='transparent'>
-//                                             <View style={[styles.FAIconView, styles.icon1Bg]}>
-//                                                 <Icon
-//                                                     style={[styles.FAIcon, styles.icon1]}
-//                                                     name={icon1}
-//                                                 />
-//                                             </View>
-//                                         </TouchableHighlight>
-//                                     </View>
-//                                 </View>
-//                             </View>
-//                         </View>
-//                         <View style={styles.padding}>
-//                             <View style={styles.goalsBox}>
-//                                 <Text style={[styles.blockTitle, styles.goalsTitle]}>{'SUBMITTED:'}</Text>
-
-//                                 {this.showGoals(true, goalstatus.STATUS_SUBMITTED)}
-
-//                                 {
-//                                     this.state.expanded2 && (
-//                                         <View style={styles.dashColumn}>
-//                                             {this.props.children}
-//                                             {this.showGoals(false, goalstatus.STATUS_SUBMITTED)}
-//                                         </View>)
                                 <GoalMessageBox message={currentGoalVerbiage}/>
+                                {
+                                    this.state.expanded1 && (
+                                        <View style={styles.dashColumn}>
+                                            {children}
+                                            {allButFirst(incompleteGoals)}
+                                        </View>
+                                    )
+                                }
+                                <View style={styles.moreButton}>
+                                    <View style={styles.dashRow}>
+                                        <Text style={styles.moreButton}/>
+                                        <TouchableHighlight
+                                            style={styles.dashButton}
+                                            onPress={this.toggle1.bind(this)}
+                                            underlayColor='transparent'>
+                                            <View style={[styles.FAIconView, styles.icon1Bg]}>
+                                                <Icon
+                                                    style={[styles.FAIcon, styles.icon1]}
+                                                    name={icon2}
+                                                />
+                                            </View>
+                                        </TouchableHighlight>
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
+                        <View style={styles.padding}>
+                            <View style={styles.goalsBox}>
+                                <Text style={[styles.blockTitle, styles.goalsTitle]}>{'SUBMITTED:'}</Text>
+
+                                <GoalMessageBox message={submittedGoalVerbiage}/>
                                 {
                                     this.state.expanded2 && (
                                         <View style={styles.dashColumn}>
                                             {children}
-                                            {allButFirst(incompleteGoals)}
+                                            {allButFirst(submittedGoals)}
                                         </View>
                                     )
                                 }
@@ -434,13 +475,13 @@ class Dashboard extends Component<Props> {
                         <View style={styles.padding}>
                             <View style={styles.completedBox}>
                                 <Text style={[styles.blockTitle, styles.completedTitle]}>{'COMPLETED:'}</Text>
-//                                 {this.showGoals(true, goalstatus.STATUS_COMPLETE)}
-//                                 {
-//                                     this.state.expanded3 && (
-//                                         <View style={styles.dashColumn}>
-//                                             {this.props.children}
-//                                             {this.showGoals(false, goalstatus.STATUS_COMPLETE)}
-//                                         </View>)
+{/*//                                 {this.showGoals(true, goalstatus.STATUS_COMPLETE)}*/}
+{/*//                                 {*/}
+{/*//                                     this.state.expanded3 && (*/}
+{/*//                                         <View style={styles.dashColumn}>*/}
+{/*//                                             {this.props.children}*/}
+{/*//                                             {this.showGoals(false, goalstatus.STATUS_COMPLETE)}*/}
+{/*//                                         </View>)*/}
                                 <GoalMessageBox message={firstCompletedGoalVerbiage}/>
                                 {
                                     this.state.expanded3 && (
@@ -480,8 +521,25 @@ class Dashboard extends Component<Props> {
 const mapStateToProps = (state) => {
     const profile = state.dashboard.profile || {};
     const session = state.login.session;
-    const [completedGoals, incompleteGoals] = R.partition(goal => goal.completed, profile.goalArray || []);
-    return {session, profile, completedGoals, incompleteGoals};
+    const goalArray = profile.goalArray || [];
+    let incompleteGoals = [];
+    let submittedGoals = [];
+    let completedGoals = [];
+    goalArray.forEach((goal) => {
+        console.log('Status: ', goal.status);
+        switch (goal.status) {
+            case goalstatus.STATUS_OPEN:
+                incompleteGoals.push(goal);
+                break;
+            case goalstatus.STATUS_SUBMITTED:
+                submittedGoals.push(goal);
+                break;
+            case goalstatus.STATUS_COMPLETE:
+                completedGoals.push(goal);
+                break;
+        }
+    })
+    return {session, profile, completedGoals, submittedGoals, incompleteGoals};
 };
 
 const mapDispatchToProps = (dispatch) => ({
