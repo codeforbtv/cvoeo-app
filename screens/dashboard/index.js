@@ -298,7 +298,7 @@ class Dashboard extends Component<Props> {
 const mapStateToProps = (state) => {
     const profile = state.dashboard.profile || {};
     const session = state.login.session;
-    const [completedGoals, incompleteGoals] = R.partition(goal => goal.completed, profile.goalArray || []);
+    const [completedGoals, incompleteGoals] = R.partition(goal => goal.completed, state.dashboard.goals || []);
     return {session, profile, completedGoals, incompleteGoals};
 };
 

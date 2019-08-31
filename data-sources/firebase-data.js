@@ -2,6 +2,7 @@
 import firebase from 'firebase';
 import * as actions from './actions';
 import User from '../models/user';
+import Goal from '../models/goal';
 import config from './firebase-config';
 import 'firebase/firestore';
 
@@ -12,6 +13,37 @@ const db = firebase.firestore();
 
 // Disable deprecated features
 db.settings({});
+
+// cache for tracking listeners
+let myListeners = {};
+
+const removeListener = (key: string): void => {
+    if (myListeners[key]) {
+        myListeners[key]();
+        delete myListeners[key];
+    }
+};
+
+const addListener = (key: string, listener: any => any): void => {
+    if (!key) {
+        throw Error('Cannot add listener. Invalid listener key');
+    }
+    removeListener(key);
+    myListeners[key] = listener;
+    return listener;
+};
+
+const removeAllListeners = () => (
+    new Promise((resolve, reject) => {
+        try {
+            Object.values(myListeners).forEach(listener => listener());
+            myListeners = {};
+            resolve(true);
+        } catch (e) {
+            reject(e);
+        }
+    })
+);
 
 
 /**
@@ -40,21 +72,48 @@ function setupProfileListener(uid: string, dispatch: any => void) {
     });
 }
 
+/**
+ * listens for changes in a user's goals
+ * @param {string} uid - user id
+ * @param {function} dispatch - dispatch function
+ * @returns {Promise<void>} - Promise
+ */
+const setupGoalsListener = async (uid: string, dispatch: any => void) => {
+    const ref = db.collection(`/users/${uid}/goals`);
+    addListener('goals',
+        ref.onSnapshot(
+            querySnapshot => {
+                const goals = [];
+                querySnapshot.forEach(doc => {
+                    goals.push(Goal.create( doc.data(), doc.id));
+                });
+                actions.goalsFetchSuccessful(dispatch, goals);
+            },
+            ((error) => {
+                // eslint-disable-next-line no-console
+                console.error('setupGoalsListener Error', error);
+                // TODO : Handle the error
+            })
+        ));
+};
 
 /**
  *
+ * @param {string} uid - id of current user
  * @param {function} dispatch - dispatch something
- * @returns {Promise<void>}
+ * @returns {Promise<void>} - initialize results
  */
-export function initialize(dispatch): Promise {
+export function initialize(uid: string, dispatch: any => void): Promise {
     // TODO: Check for cached data here.
     firebase
         .auth()
         .onAuthStateChanged((_user) => {
             if (!!_user) {
+
                 /** Setup Listeners. Async ops should be added to the Promise.all **/
                 const profileListener = setupProfileListener(_user.uid, dispatch);
-                Promise.all([profileListener])
+                const goalsListener = setupGoalsListener(_user.uid, dispatch);
+                Promise.all([profileListener, goalsListener])
                     .then(() => actions.userLoggedIn(dispatch)(User.create(_user)));
             } else {
                 actions.userLoggedOut(dispatch);
@@ -63,10 +122,13 @@ export function initialize(dispatch): Promise {
 
     /** ADD YOUR INIT FUNCTIONS HERE. ASYNC OPS SHOULD BE ADDED TO THE RETURNED PROMISE.ALL **/
 
-    const FOO = new Promise((resolve) => {
+    const Foo = new Promise((resolve) => {
         setTimeout(() => resolve(true), 10);
     });
-    return Promise.all([FOO]).then(actions.initializationSuccessful(dispatch)).catch(actions.initializationFailed(dispatch));
+
+    const appInits = [Foo];
+
+    return Promise.all(appInits);
 }
 
 /**
@@ -83,12 +145,20 @@ export function loginWithEmailPassword(_email: string, password: string): Promis
             const {uid, email, displayName, photoURL} = (user || {}).user;
             // Retrieve the user's profile, If there is none, create it.
             const docRef = db.collection('users').doc(uid);
-            docRef.get().then( doc => {
+            docRef.get().then(doc => {
                 if (!doc.exists) {
-                    const newProfile = deconstruct(User.create({uid, email, displayName, photoURL, created: firebase.firestore.FieldValue.serverTimestamp()}));
+                    const newProfile = deconstruct(User.create({
+                        uid,
+                        email,
+                        displayName,
+                        photoURL,
+                        created: firebase.firestore.FieldValue.serverTimestamp()
+                    }));
                     docRef.set(newProfile);
                 }
             }).catch((error) => {
+                // TODO Handle this error
+                // eslint-disable-next-line no-console
                 console.log('Error getting document:', error);
             });
         })
@@ -99,8 +169,8 @@ export function loginWithEmailPassword(_email: string, password: string): Promis
 
 /**
  * Resets a user's password
- * @param {string} emailAddress
- * @returns {Promise<void>}
+ * @param {string} emailAddress - users's email
+ * @returns {Promise<void>}- reset password promise
  */
 export function resetPassword(emailAddress: string): Promise {
     return firebase.auth().sendPasswordResetEmail(emailAddress);
@@ -108,9 +178,10 @@ export function resetPassword(emailAddress: string): Promise {
 
 /**
  * Log a user out
- * @returns {Promise<void>}
+ * @returns {Promise<void>} - signout results
  */
 export function logout() {
+    removeAllListeners();
     return firebase.auth().signOut();
 }
 
@@ -126,3 +197,5 @@ export function updateProfile(user: User): Promise {
         updated: firebase.firestore.FieldValue.serverTimestamp()
     });
 }
+
+

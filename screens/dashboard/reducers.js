@@ -3,6 +3,18 @@ import initialState from '../../reducers/initial-state';
 
 export function reducers(state = initialState.login, action) {
     switch (action.type) {
+        case types.FETCH_GOALS_FAIL:
+            return {
+                ...state,
+                goals: [],
+                error: action.error
+            };
+        case types.FETCH_GOALS_SUCCESS:
+            return {
+                ...state,
+                goals: action.data,
+                error: null
+            };
         case types.FETCH_PROFILE_FAIL:
             return {
                 ...state,

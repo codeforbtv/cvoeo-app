@@ -2,3 +2,4 @@ const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@
 
 export const isValidEmail = (address) => emailRegex.test(address);
 export const isValidPhone = (value: string = ''): boolean => value !== null && ((value).replace(/[^0-9]/g, '').length === 7 || value.replace(/[^0-9]/g, '').length > 9);
+export const isValidDate = (param: any): boolean => ((param || "invalid").toString() !== "Invalid Date" && (param instanceof Date));

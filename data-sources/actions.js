@@ -10,14 +10,17 @@ export const userLoggedIn = curry((dispatch: any => void, user: Object) => dispa
 
 export const userLoggedOut = (dispatch) => dispatch({type: types.LOGOUT_SUCCESSFUL});
 
+export const goalsFetchFail = curry((dispatch: any => void, error: any) => dispatch({
+    type: types.FETCH_GOALS_FAIL,
+    error
+}));
+
+export const goalsFetchSuccessful = curry((dispatch: any => void, goals: Array<Object>) => dispatch({
+    type: types.FETCH_GOALS_SUCCESS,
+    data: goals
+}));
+
 export const profileFetchSuccessful = curry((dispatch: any => void, profile: Object) => dispatch({
     type: types.FETCH_PROFILE_SUCCESS,
     data: profile
-})); 
-
-export const initializationSuccessful = curry((dispatch, profile) => dispatch({
-    type: types.INITIALIZATION_COMPLETED,
-    profile
 }));
-
-export const initializationFailed = curry((dispatch, error) => dispatch({type: types.INITIALIZATION_FAIL, error}));
