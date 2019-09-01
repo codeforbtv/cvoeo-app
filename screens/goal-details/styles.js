@@ -17,7 +17,7 @@ const styles = {
         padding: 30,
         alignSelf: 'stretch'
     },
-    buttonWrapper: {flex: 1, height: 100, padding: 10},
+    buttonWrapper: {flex: 1, padding: 10},
     detailButton: {
         borderWidth: 3,
         borderRadius: 6,
@@ -25,13 +25,20 @@ const styles = {
         alignSelf: 'center',
         width: 200,
         marginBottom: 20,
-        borderColor:'#E4845D'
+        borderColor: '#E4845D'
     },
-    detailButtonText:{textAlign: 'center'},
-    header1: {},
-    goalTitle: {},
-    detailTitle: {}
-
+    detailButtonText: {textAlign: 'center'},
+    blockLabel: {
+        flex: 1,
+        flexDirection: 'row',
+        color: '#3AB3CD',
+        marginTop: 15,
+        marginBottom: 10,
+        marginLeft: 10,
+        backgroundColor: 'transparent'
+    },
+    blockLabelIcon: {fontSize: 20, marginRight: 10, color: '#E4845D'},
+    blockLabelText: {fontSize: 20}
 };
 
 export default styles;

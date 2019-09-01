@@ -177,18 +177,28 @@ class GoalDetails extends Component<Props> {
                     <Text style={myStyles.subTitle}>{goal.title}</Text>
                     <Text style={myStyles.subText}>{goal.detail}</Text>
                     <View style={myStyles.buttonWrapper}>
-                        <View><Icon name={dots}/><Text>Remind me:</Text></View>
-                        <TouchableHighlight style={myStyles.detailButton}><Text
-                            style={myStyles.detailButtonText}>tomorrow</Text></TouchableHighlight>
-                        <TouchableHighlight style={myStyles.detailButton}><Text style={myStyles.detailButtonText}>in 3
-                            days</Text></TouchableHighlight>
-                        <TouchableHighlight style={myStyles.detailButton}><Text style={myStyles.detailButtonText}>in 1
-                            week</Text></TouchableHighlight>
-                        <TouchableHighlight style={myStyles.detailButton}><Text
-                            style={myStyles.detailButtonText}>custom...</Text></TouchableHighlight>
-                        <View><Text>Goal Completed?</Text></View>
-                        <TouchableHighlight style={myStyles.detailButton}><Text
-                            style={myStyles.detailButtonText}>Done!</Text></TouchableHighlight>
+                        <View style={myStyles.blockLabel}>
+                            <Icon style={myStyles.blockLabelIcon} name={'user-clock'}/>
+                            <Text style={myStyles.blockLabelText}>Remind me:</Text>
+                        </View>
+                        <TouchableHighlight style={[myStyles.detailButton, {backgroundColor: '#F88E6D'}]}>
+                            <Text style={myStyles.detailButtonText}>tomorrow</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight style={[myStyles.detailButton, {backgroundColor: '#FFD4C6'}]}>
+                            <Text style={myStyles.detailButtonText}>in 3 days</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight style={[myStyles.detailButton, {backgroundColor: '#F6F4D6'}]}>
+                            <Text style={myStyles.detailButtonText}>in 1 week</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight style={[myStyles.detailButton, {backgroundColor: '#F2F2CC'}]}>
+                            <Text style={myStyles.detailButtonText}>custom...</Text>
+                        </TouchableHighlight>
+                        <View style={myStyles.blockLabel}>
+                            <Text style={myStyles.blockLabelText}>Goal Completed?</Text>
+                        </View>
+                        <TouchableHighlight style={[myStyles.detailButton, {backgroundColor: '#FEA488'}]}>
+                            <Text style={[myStyles.detailButtonText, {color: 'white'}]}>Done!</Text>
+                        </TouchableHighlight>
                     </View>
                 </ScrollView>
             </Container>
