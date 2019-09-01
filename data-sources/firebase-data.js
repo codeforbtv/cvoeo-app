@@ -222,6 +222,10 @@ export function updateProfile(user: User): Promise {
  * @param {object} goal - new goal
  * @returns {Promise<firebase.firestore.DocumentReference>}
  */
-export const updateGoal = (uid, goal) => db
-    .collection(`messages/${uid}/goals`)
-    .set(stringifyDates(Goal.create(goal)));
+export const updateGoal = (uid, goal) => {
+    const newGoal = stringifyDates(Goal.create(goal));
+    return db
+        .collection(`users/${uid}/goals`)
+        .doc(goal.id)
+        .set(newGoal);
+};

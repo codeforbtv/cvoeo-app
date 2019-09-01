@@ -5,7 +5,7 @@ export default class Goal {
     id: string;
     completed: boolean;
     goalDate: Date;
-    goalId: string;
+    parentGoalId: string;
     title: string;
     detail: string;
     created: Date;
@@ -19,7 +19,7 @@ export default class Goal {
         this.id = typeof args.id === 'string'
             ? args.id
             : null;
-        this.goalId = typeof args.goalId === 'string'
+        this.parentGoalId = typeof args.parentGoalId === 'string'
             ? args.id
             : null;
         this.title = typeof args.title === 'string'
@@ -52,6 +52,6 @@ export default class Goal {
             _args.id = id;
         }
         // Remove inheritance.  POJO's only
-        return JSON.parse(JSON.stringify(new Goal(args)));
+        return JSON.parse(JSON.stringify(new Goal(_args)));
     }
 }

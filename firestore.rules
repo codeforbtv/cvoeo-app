@@ -25,14 +25,15 @@ service cloud.firestore {
       allow read: if isOwner(uid) || isAdmin();
       allow write: if isOwner(uid) || isAdmin();
       match /goals/{goalId} {
-         allow read : if true;
-         allow delete : if  isOwner(uid) || isAdmin();
-         allow create : if  isOwner(uid) || isAdmin();
-         allow update : if  isOwner(uid) || isAdmin();
+         allow read : if isOwner(uid) || isAdmin();
+         allow delete : if isOwner(uid) || isAdmin();
+         allow create : if isOwner(uid) || isAdmin();
+         allow update : if isOwner(uid) || isAdmin();
       }
     }
     match /admins/{uid} {
     	allow read: if isAdmin();
       allow write: if isAdmin();
   }
+}
 }

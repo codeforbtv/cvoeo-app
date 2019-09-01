@@ -20,17 +20,24 @@ export function logout() {
     };
 }
 
-export function updateGoal(goal) {
+/**
+ * @param {string} uid - user's id
+ * @param {object} goal - old goal
+ * @param {object} changes - just the new parts
+ * @returns {Function} - dispatch func
+ */
+export function updateGoal(uid, goal, changes) {
     return (dispatch: Object => *) => {
-        dataSource.updateGoal(goal)
-            .then((results) => {
+        const newGoal = {...goal, ...changes, id: goal.id, goalId: goal.goalId};
+        dataSource.updateGoal(uid, newGoal)
+            .then(() => {
                 dispatch({
-                    type: types.LOGOUT_SUCCESSFUL,
-                    results
+                    type: types.UPDATE_GOAL_SUCCESS,
+                    payload: {data: newGoal}
                 });
             })
-            .catch(err => {
-                dispatch({type: types.LOGOUT_FAIL, err});
+            .catch(error => {
+                dispatch({type: types.UPDATE_GOAL_FAIL, payload: {error, goal: newGoal}});
             });
     };
 }

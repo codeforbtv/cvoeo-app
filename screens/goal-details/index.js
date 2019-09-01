@@ -20,10 +20,13 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import * as actions from './actions';
+import * as actionCreators from './actions';
 import commonStyles from '../../styles/common';
 import MenuCircle from '../../components/menu-circle';
 import styles from './styles';
+import moment from 'moment';
+import * as R from 'ramda';
+import {isValidDate} from '../../libs/validators';
 
 const myStyles = StyleSheet.create({...commonStyles, ...styles});
 
@@ -31,10 +34,14 @@ YellowBox.ignoreWarnings(['Setting a timer']);
 
 type Props = {
     actions: Object,
-    goal: Object,
-    navigation: Object
+    navigation: Object,
+    uid: string
 };
 
+const addDaysToDate = R.curry((date, daysToAdd) => {
+    const myDate = isValidDate(date) ? date : new Date();
+    return moment(myDate).add(daysToAdd, 'day').toDate();
+});
 
 class GoalDetails extends Component<Props> {
 
@@ -91,8 +98,10 @@ class GoalDetails extends Component<Props> {
 
     render() {
         const dots = this.icons.dots;
-        const {navigation} = this.props;
+        const {navigation, uid, actions} = this.props;
         const goal = navigation.getParam('goal');
+        const resetReminder = addDaysToDate(goal.remind);
+        const update = _changes => () => actions.updateGoal(uid, goal, _changes);
         return (
             <Container>
                 {Platform.OS === 'ios' && <StatusBar barStyle='default'/>}
@@ -181,22 +190,36 @@ class GoalDetails extends Component<Props> {
                             <Icon style={myStyles.blockLabelIcon} name={'user-clock'}/>
                             <Text style={myStyles.blockLabelText}>Remind me:</Text>
                         </View>
-                        <TouchableHighlight style={[myStyles.detailButton, {backgroundColor: '#F88E6D'}]}>
+                        <TouchableHighlight
+                            onPress={update({remind: resetReminder(1)})}
+                            style={[myStyles.detailButton, {backgroundColor: '#F88E6D'}]}
+                        >
                             <Text style={myStyles.detailButtonText}>tomorrow</Text>
                         </TouchableHighlight>
-                        <TouchableHighlight style={[myStyles.detailButton, {backgroundColor: '#FFD4C6'}]}>
+                        <TouchableHighlight
+                            onPress={ update({remind: resetReminder(3)})}
+                            style={[myStyles.detailButton, {backgroundColor: '#FFD4C6'}]}
+                        >
                             <Text style={myStyles.detailButtonText}>in 3 days</Text>
                         </TouchableHighlight>
-                        <TouchableHighlight style={[myStyles.detailButton, {backgroundColor: '#F6F4D6'}]}>
+                        <TouchableHighlight
+                            onPress={update({remind: resetReminder(7)})}
+                            style={[myStyles.detailButton, {backgroundColor: '#F6F4D6'}]}
+                        >
                             <Text style={myStyles.detailButtonText}>in 1 week</Text>
                         </TouchableHighlight>
-                        <TouchableHighlight style={[myStyles.detailButton, {backgroundColor: '#F2F2CC'}]}>
+                        <TouchableHighlight
+                            onPress={() => (void 0)}
+                            style={[myStyles.detailButton, {backgroundColor: '#F2F2CC'}]}>
                             <Text style={myStyles.detailButtonText}>custom...</Text>
                         </TouchableHighlight>
                         <View style={myStyles.blockLabel}>
                             <Text style={myStyles.blockLabelText}>Goal Completed?</Text>
                         </View>
-                        <TouchableHighlight style={[myStyles.detailButton, {backgroundColor: '#FEA488'}]}>
+                        <TouchableHighlight
+                            onPress={update({completed: true})}
+                            style={[myStyles.detailButton, {backgroundColor: '#FEA488'}]}
+                        >
                             <Text style={[myStyles.detailButtonText, {color: 'white'}]}>Done!</Text>
                         </TouchableHighlight>
                     </View>
@@ -207,14 +230,12 @@ class GoalDetails extends Component<Props> {
 }
 
 const mapStateToProps = (state) => {
-    const profile = state.dashboard.profile || {};
-    const session = state.login.session;
-    const goals = state.dashboard.goals || [];
-    return {session, profile, goals};
+    const uid = (state.login.user || {}).uid;
+    return {uid};
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actionCreators, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GoalDetails);
