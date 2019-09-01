@@ -209,7 +209,6 @@ const common = {
         shadowRadius: 0
     },
     main: {
-        display: 'flex',
         flex: 1,
         backgroundColor: 'transparent',
         alignSelf: 'stretch'
