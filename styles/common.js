@@ -333,6 +333,9 @@ const common = {
         display: 'flex',
         flexDirection: 'column'
     },
+    goalDateBlock: {
+        paddingTop: 5
+    },
     blockTitle: {
         alignItems: 'flex-start',
         color: 'rgba(2,2,2,0.34)',
@@ -345,8 +348,8 @@ const common = {
         textAlign: 'left',
         fontFamily: 'System'
     },
-    goalsTitle: {
-        color: '#afb066'
+    goalSectionTitle: {
+        color: '#afb066',
     },
     completedTitle: {
         color: '#809f5b'
@@ -439,17 +442,28 @@ const common = {
         paddingTop: 6,
         paddingLeft: 3
     },
-    icon2: {
-        color: '#67674e'
+    expandCurrentGoalsIcon: {
+        color: '#67674e',
     },
-    icon2Bg: {
-        backgroundColor: '#dddea8'
+    expandCurrentGoalsIconBg: {
+        backgroundColor: '#dddea8',
     },
-    icon3: {
-        color: '#535f46'
+    expandCompletedGoalsIcon: {
+        color: '#535f46',
     },
-    icon3Bg: {
-        backgroundColor: '#b3cc95'
+    expandCompletedGoalsIconBg: {
+        backgroundColor: '#b3cc95',
+    },
+    goalDateIcon: {
+        width: 20,
+        height: 20,
+        flexDirection: 'row'
+    },
+    goalCompleteIcon: {
+        width: 20,
+        height: 20,
+        color: 'white',
+        flexDirection: 'row'
     },
     icon1: {
         color: '#265865'

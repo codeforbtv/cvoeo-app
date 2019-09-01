@@ -4,58 +4,55 @@ import React, {Component, Node} from 'react';
 import {bindActionCreators} from 'redux';
 import {Container} from 'native-base';
 import {LinearGradient} from 'expo-linear-gradient';
-
+import PropTypes from 'prop-types';
 import {
-    Alert,
-    Animated,
-    Dimensions,
-    Image,
-    Platform,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text,
-    TouchableHighlight,
-    View,
-    YellowBox
+  Alert,
+  Animated,
+  Button,
+  Dimensions,
+  Image,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+  Modal
 } from 'react-native';
-import {connect} from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import { connect } from 'react-redux';
 import * as R from 'ramda';
-import GoalMessageBox from '../../components/goal-message-box';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { GoalMessageBox } from '../../components/goal-message-box';
+import { GoalMessageDetails } from '../../components/goal-message-details';
+import MoneyMeter from '../../components/money-meter';
+import MenuCircle from '../../components/menu-circle';
 
 // import global actions
 import * as actions from './actions';
 
 // import global styles
 import commonStyles from '../../styles/common';
-import MoneyMeter from '../../components/money-meter';
-import MenuCircle from '../../components/menu-circle';
-
 const styles = StyleSheet.create(commonStyles);
 
-YellowBox.ignoreWarnings(['Setting a timer']);
+class Dashboard extends React.Component {
 
-type Props = {
-    actions: Object,
-    profile: Object,
-    navigation: Object,
-    completedGoals: Array<Object>,
-    incompleteGoals: Array<Object>,
-    children: Node
-};
-
-
-class Dashboard extends Component<Props> {
+  static propTypes = {
+    actions: PropTypes.object,
+    profile: PropTypes.object,
+    navigation: PropTypes.object,
+  };
 
     constructor(props) {
         super(props);
         this.ellipsisToggle = this.ellipsisToggle.bind(this);
         this.ellipsisLogoutAlert = this.ellipsisLogoutAlert.bind(this);
         this.state = {
-            expanded2: false,
-            expanded3: false,
-            menuScale: new Animated.Value(0.01)
+            expandCurrentGoals: false,
+            expandCompletedGoals: false,
+            menuScale: new Animated.Value(0.01),
+            expandedGoalDetails: undefined
         };
         this.icons = {
             dots: 'ellipsis-v',
@@ -99,24 +96,42 @@ class Dashboard extends Component<Props> {
         );
     }
 
-    toggle2() {
+    toggleExpandCurrentGoals = () => {
         this.setState({
-            expanded2: !this.state.expanded2
+          expandCurrentGoals: !this.state.expandCurrentGoals
+        });
+      }
+    
+    
+    toggleExpandCompletedGoals = () => {
+        this.setState({
+            expandCompletedGoals: !this.state.expandCompletedGoals
         });
     }
 
-    toggle3() {
+    showGoalDetails = (goal) => {
         this.setState({
-            expanded3: !this.state.expanded3
+            expandedGoalDetails: goal
+        });
+    }
+
+    hideGoalDetails = () => {
+        this.setState({
+            expandedGoalDetails: undefined
         });
     }
 
     render() {
+<<<<<<< HEAD
         const {profile, completedGoals, incompleteGoals, children, navigation} = this.props;
+=======
+        const {profile, completedGoals, incompleteGoals} = this.props;
+>>>>>>> master
         const incentivesEarned = profile.incentivesEarned || 0;
         const incentivesAvailable = 500;
         const percentComplete = (incentivesEarned / incentivesAvailable) * 100;
 
+<<<<<<< HEAD
         const allButFirst = R.compose(
             R.map(goal => (
                 <GoalMessageBox
@@ -133,9 +148,13 @@ class Dashboard extends Component<Props> {
         const firstCompletedGoalVerbiage = completedGoals.length > 0
             ? [completedGoals[0].title, completedGoals[0].detail]
             : ['Keep up the good work.', 'You\'ll finish a goal soon!'];
+=======
+        const incompleteGoalMessages = incompleteGoals.map((goal) => <GoalMessageBox key={goal.id} goal={goal} showDetails={this.showGoalDetails}/>);
+        const completedGoalMessages = completedGoals.map((goal) => <GoalMessageBox key={goal.id} goal={goal} showDetails={this.showGoalDetails}/>);
+>>>>>>> master
         const dots = this.icons.dots;
-        const icon2 = this.state.expanded2 ? this.icons.close : this.icons.open;
-        const icon3 = this.state.expanded3 ? this.icons.close : this.icons.open;
+        const expandCurrentGoalsIcon = this.state.expandCurrentGoals ? this.icons.close : this.icons.open;
+        const expandCompletedGoalsIcon = this.state.expandCompletedGoals ? this.icons.close : this.icons.open;
 
         return (
             <Container>
@@ -230,6 +249,7 @@ class Dashboard extends Component<Props> {
                                 <Text style={styles.moreButton}/>
                             </View>
                         </View>
+<<<<<<< HEAD
                     </View>
                     <View style={styles.padding}>
                         <View style={styles.goalsBox}>
@@ -243,6 +263,33 @@ class Dashboard extends Component<Props> {
                                     <View style={styles.dashColumn}>
                                         {children}
                                         {allButFirst(incompleteGoals)}
+=======
+                        <View style={styles.padding}>
+                            <View style={styles.goalsBox}>
+                                <Text style={[styles.blockTitle, styles.goalsTitle]}>{'CURRENT GOALS:'}</Text>
+                                {
+                                    incompleteGoalMessages.slice(0,1)
+                                }
+                                {
+                                    this.state.expandCurrentGoals && (
+                                        incompleteGoalMessages.slice(1)
+                                    )
+                                }
+                                <View style={styles.moreButton}>
+                                    <View style={styles.dashRow}>
+                                        <Text style={styles.moreButton}/>
+                                        <TouchableHighlight
+                                            style={styles.dashButton}
+                                            onPress={this.toggleExpandCurrentGoals}
+                                            underlayColor='transparent'>
+                                            <View style={[styles.FAIconView, styles.expandCurrentGoalsIconBg]}>
+                                                <Icon
+                                                    style={[styles.FAIcon, styles.expandCurrentGoalsIcon]}
+                                                    name={expandCurrentGoalsIcon}
+                                                />
+                                            </View>
+                                        </TouchableHighlight>
+>>>>>>> master
                                     </View>
                                 )
                             }
@@ -263,6 +310,7 @@ class Dashboard extends Component<Props> {
                                 </View>
                             </View>
                         </View>
+<<<<<<< HEAD
                     </View>
                     <View style={styles.padding}>
                         <View style={styles.completedBox}>
@@ -276,6 +324,33 @@ class Dashboard extends Component<Props> {
                                     <View style={styles.dashColumn}>
                                         {children}
                                         {allButFirst(completedGoals)}
+=======
+                        <View style={styles.padding}>
+                            <View style={styles.completedBox}>
+                                <Text style={[styles.blockTitle, styles.completedTitle]}>{'COMPLETED:'}</Text>
+                                {
+                                    completedGoalMessages.slice(0,1)
+                                }
+                                {
+                                    this.state.expandCompletedGoals && (
+                                        completedGoalMessages.slice(1)
+                                    )
+                                }
+                                <View style={styles.moreButton}>
+                                    <View style={styles.dashRow}>
+                                        <Text style={styles.moreButton}/>
+                                        <TouchableHighlight
+                                            style={styles.dashButton}
+                                            onPress={this.toggleExpandCompletedGoals}
+                                            underlayColor='transparent'>
+                                            <View style={[styles.FAIconView, styles.expandCompletedGoalsIconBg]}>
+                                                <Icon
+                                                    style={[styles.FAIcon, styles.expandCompletedGoalsIcon]}
+                                                    name={expandCompletedGoalsIcon}
+                                                />
+                                            </View>
+                                        </TouchableHighlight>
+>>>>>>> master
                                     </View>
                                 )
                             }
@@ -297,9 +372,32 @@ class Dashboard extends Component<Props> {
                                 </View>
                             </View>
                         </View>
+<<<<<<< HEAD
                     </View>
                     <View style={styles.padding}/>
                 </ScrollView>
+=======
+                        <View style={styles.padding}/>
+                        <View>
+                            <Modal
+                                animationType={'slide'}
+                                transparent={false}
+                                visible={this.state.expandedGoalDetails != undefined}
+                                onRequestClose={this.hideGoalDetails}>
+                                <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+                                <View>
+                                    <Button title="Back to Main" onPress={this.hideGoalDetails} />
+                                    {
+                                        this.state.expandedGoalDetails &&
+                                            <GoalMessageDetails goal={this.state.expandedGoalDetails}></GoalMessageDetails>
+                                    }
+                                </View>
+                                </SafeAreaView>
+                            </Modal>
+                        </View>
+                    </ScrollView>
+                </View>
+>>>>>>> master
             </Container>
         );
     }

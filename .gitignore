@@ -2,6 +2,7 @@ node_modules/**/*
 .expo/**/*
 functions/node_modules
 .idea/**/*
+.firebase-config.js
 
 # Created by https://www.gitignore.io/api/vim,kate,linux,xcode,macos,android,windows,notepadpp,jetbrains,reactnative,visualstudio,androidstudio,visualstudiocode
 
