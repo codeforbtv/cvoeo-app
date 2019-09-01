@@ -45,6 +45,24 @@ const removeAllListeners = () => (
     })
 );
 
+function returnType(entry) {
+    switch (true) {
+        case (entry instanceof Date):
+            return entry.toString();
+        case Array.isArray(entry):
+            return entry.map(x => returnType(x));
+        case entry !== null && typeof entry === 'object' :
+            return stringifyDates(entry); // eslint-disable-line
+        default:
+            return entry;
+    }
+}
+
+function stringifyDates(obj) {
+    return Object.entries(obj).reduce((returnObj, entry) => Object.assign({}, returnObj, {
+        [entry[0]]: returnType(entry[1])
+    }), {});
+}
 
 /**
  * Firestore cannot serialize objects created with the new keyword
@@ -85,7 +103,7 @@ const setupGoalsListener = async (uid: string, dispatch: any => void) => {
             querySnapshot => {
                 const goals = [];
                 querySnapshot.forEach(doc => {
-                    goals.push(Goal.create( doc.data(), doc.id));
+                    goals.push(Goal.create(doc.data(), doc.id));
                 });
                 actions.goalsFetchSuccessful(dispatch, goals);
             },
@@ -198,4 +216,12 @@ export function updateProfile(user: User): Promise {
     });
 }
 
-
+/**
+ *
+ * @param {string} uid - user id
+ * @param {object} goal - new goal
+ * @returns {Promise<firebase.firestore.DocumentReference>}
+ */
+export const updateGoal = (uid, goal) => db
+    .collection(`messages/${uid}/goals`)
+    .set(stringifyDates(Goal.create(goal)));

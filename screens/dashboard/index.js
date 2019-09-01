@@ -112,13 +112,19 @@ class Dashboard extends Component<Props> {
     }
 
     render() {
-        const {profile, completedGoals, incompleteGoals, children} = this.props;
+        const {profile, completedGoals, incompleteGoals, children, navigation} = this.props;
         const incentivesEarned = profile.incentivesEarned || 0;
         const incentivesAvailable = 500;
         const percentComplete = (incentivesEarned / incentivesAvailable) * 100;
 
         const allButFirst = R.compose(
-            R.map(goal => (<GoalMessageBox message={[goal.title, goal.detail]} key={goal.id}/>)),
+            R.map(goal => (
+                <GoalMessageBox
+                    gotoDetails={() => navigation.navigate('GoalDetails', {goal})}
+                    message={[goal.title, goal.detail]}
+                    key={goal.id}
+                />
+            )),
             R.slice(1, Infinity)
         );
         const currentGoalVerbiage = incompleteGoals.length > 0
@@ -229,7 +235,10 @@ class Dashboard extends Component<Props> {
                         <View style={styles.padding}>
                             <View style={styles.goalsBox}>
                                 <Text style={[styles.blockTitle, styles.goalsTitle]}>{'CURRENT GOALS:'}</Text>
-                                <GoalMessageBox message={currentGoalVerbiage}/>
+                                <GoalMessageBox
+                                    message={currentGoalVerbiage}
+                                    gotoDetails={() => navigation.navigate('GoalDetails', {goal: incompleteGoals[0] || {}})}
+                                />
                                 {
                                     this.state.expanded2 && (
                                         <View style={styles.dashColumn}>
@@ -259,7 +268,10 @@ class Dashboard extends Component<Props> {
                         <View style={styles.padding}>
                             <View style={styles.completedBox}>
                                 <Text style={[styles.blockTitle, styles.completedTitle]}>{'COMPLETED:'}</Text>
-                                <GoalMessageBox message={firstCompletedGoalVerbiage}/>
+                                <GoalMessageBox
+                                    gotoDetails={() => navigation.navigate('GoalDetails', {goal: completedGoals[0] || {}})}
+                                    message={firstCompletedGoalVerbiage}
+                                />
                                 {
                                     this.state.expanded3 && (
                                         <View style={styles.dashColumn}>

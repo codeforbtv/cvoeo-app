@@ -8,9 +8,8 @@ import * as Font from 'expo-font';
 import {Ionicons} from '@expo/vector-icons';
 import AppState from './components/app-state';
 import type {Node} from 'react';
-import Dashboard from './screens/dashboard';
 import Login from './screens/login';
-
+import ModalNavigator from './navigation';
 type Props = {
     children: ?Node,
     initialized: boolean,
@@ -57,8 +56,8 @@ export default class App extends Component<Props> {
     };
 
     render() {
-        const { isLoadingComplete} = this.state;
-        return ! isLoadingComplete
+        const {isLoadingComplete} = this.state;
+        return !isLoadingComplete
             ? (
                 <AppLoading
                     startAsync={this._loadResourcesAsync}
@@ -69,7 +68,7 @@ export default class App extends Component<Props> {
             : (
                 <AppState>
                     <Session loginScreen={(<Login/>)}>
-                        <Dashboard/>
+                        <ModalNavigator/>
                     </Session>
                 </AppState>
             );
