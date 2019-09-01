@@ -101,7 +101,10 @@ class GoalDetails extends Component<Props> {
         const {navigation, uid, actions} = this.props;
         const goal = navigation.getParam('goal');
         const resetReminder = addDaysToDate(goal.remind);
-        const update = _changes => () => actions.updateGoal(uid, goal, _changes);
+        const update = _changes => () => {
+            actions.updateGoal(uid, goal, _changes);
+            navigation.navigate('Dashboard');
+        };
         return (
             <Container>
                 {Platform.OS === 'ios' && <StatusBar barStyle='default'/>}
@@ -197,7 +200,7 @@ class GoalDetails extends Component<Props> {
                             <Text style={myStyles.detailButtonText}>tomorrow</Text>
                         </TouchableHighlight>
                         <TouchableHighlight
-                            onPress={ update({remind: resetReminder(3)})}
+                            onPress={update({remind: resetReminder(3)})}
                             style={[myStyles.detailButton, {backgroundColor: '#FFD4C6'}]}
                         >
                             <Text style={myStyles.detailButtonText}>in 3 days</Text>
@@ -217,10 +220,11 @@ class GoalDetails extends Component<Props> {
                             <Text style={myStyles.blockLabelText}>Goal Completed?</Text>
                         </View>
                         <TouchableHighlight
-                            onPress={update({completed: true})}
+                            onPress={update({completed: !goal.completed})}
                             style={[myStyles.detailButton, {backgroundColor: '#FEA488'}]}
                         >
-                            <Text style={[myStyles.detailButtonText, {color: 'white'}]}>Done!</Text>
+                            <Text
+                                style={[myStyles.detailButtonText, {color: 'white'}]}>{goal.completed ? 'Mark Incomplete' : 'Done!'}</Text>
                         </TouchableHighlight>
                     </View>
                 </ScrollView>
