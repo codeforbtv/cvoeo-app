@@ -1,38 +1,38 @@
 // @flow;
 
-import React, {Component, Fragment} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import * as actions from './actions';
+import * as actionCreators from './actions';
 import type {Node} from 'react';
 
 type Props = {
     actions: Object,
     children: Node,
     loginScreen: Node,
+    uid: string,
     userIsLoggedIn: Boolean
 };
 
-class Session extends Component<Props> {
+const Session = ({actions, uid, userIsLoggedIn, loginScreen, children}: Props) => {
 
-    componentDidMount() {
-        this.props.actions.initialize();
-    }
+    useEffect(() => {
+        actions.initialize(uid);
+    }, []);
 
-    render() {
-        const {userIsLoggedIn, children, loginScreen} = this.props;
-        return !userIsLoggedIn
-            ? (<Fragment>{loginScreen}</Fragment>)
-            : (<Fragment>{children}</Fragment>);
-    }
-}
+    return !userIsLoggedIn
+        ? (<Fragment>{loginScreen}</Fragment>)
+        : (<Fragment>{children}</Fragment>);
+};
+
 
 const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actionCreators, dispatch)
 });
 
 const mapStateToProps = state => ({
-    userIsLoggedIn: Boolean(state.login.userIsLoggedIn)
+    userIsLoggedIn: Boolean(state.login.userIsLoggedIn),
+    uid: (state.login.user || {}).uid
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Session);

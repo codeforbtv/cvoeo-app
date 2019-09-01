@@ -1,49 +1,27 @@
-import React from 'react';
+// @flow
+import React, {Fragment} from 'react';
+import {Text, View, StyleSheet, TouchableHighlight} from 'react-native';
 import commonStyles from '../styles/common';
-import PropTypes from 'prop-types';
-import {
-    Image,
-    TouchableOpacity,
-    StyleSheet,
-    Text,
-    View  } from 'react-native';
-import moment from 'moment';
+
+type Props = { message: Array<string>, gotoDetails: ()=> void };
+
 const styles = StyleSheet.create(commonStyles);
 
-export class GoalMessageBox extends React.Component{
+const GoalMessageBox = ({message, gotoDetails}: Props) => (
+    <TouchableHighlight
+        onPress={gotoDetails}
+        style={styles.dashRow}
+    >
+        <Fragment>
+            <View style={styles.smallerBlock}>
+                <Text style={styles.date}/>
+            </View>
+            <View style={styles.biggerBlock}>
+                <Text style={styles.subTitle}>{message[0] || ''}</Text>
+                <Text style={styles.subText}>{message[1] || ''}</Text>
+            </View>
+        </Fragment>
+    </TouchableHighlight>
+);
 
-    static propTypes = {
-        goal: PropTypes.object.isRequired,
-        showDetails: PropTypes.func
-    }
-
-    getRelativeDate(seconds) {
-        const goalDate = moment(new Date((seconds) * 1000));
-        return goalDate.fromNow();
-    }
-
-    openGoalDetails() {
-        if (this.props.showDetails) {
-            this.props.showDetails(this.props.goal);
-        }
-    }
-
-    render() {
-        return <View style={styles.dashRow}>  
-            <TouchableOpacity onPress={() => this.openGoalDetails()}>
-                <View style={styles.biggerBlock}>
-                    <Text style={styles.subTitle}>{this.props.goal.title || ''}</Text>
-                    <Text style={styles.subText}>{this.props.goal.detail || ''}</Text>
-                </View>
-                {
-                    this.props.goal.goalDate.seconds &&
-                    <View style={[styles.smallBlock, styles.goalDateBlock]}>
-                        <Image source={require('../assets/images/alarm-clock.png')} style={styles.goalDateIcon}/>
-                        <Text>{this.getRelativeDate(this.props.goal.goalDate.seconds)}</Text>
-                    </View>
-                }
-            </TouchableOpacity>
-        </View>
-    }
-    
-}
+export default GoalMessageBox;
