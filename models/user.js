@@ -1,7 +1,6 @@
 // @flow
 
-import {isValidEmail, isValidPhone} from '../libs/validators';
-import {type} from 'ramda';
+import {isValidDate, isValidEmail, isValidPhone} from '../libs/validators';
 
 const nonDigit = /[^\d]/g;
 
@@ -26,15 +25,20 @@ export default class User {
         this.phone = isValidPhone(args.phone)
             ? args.phone.replace(nonDigit, '')
             : null;
-        this.created = type(args.created) === 'Date'
+        this.created = isValidDate(args.created)
             ? new Date(args.created)
             : null;
-        this.updated = type(args.updated) === 'Date'
+        this.updated = isValidDate(args.updated)
             ? new Date(args.updated)
             : null;
     }
 
-    static create(args) {
-        return new User(args);
+    static create(args: ?Object = {}, id?: string) {
+        const _args = {...args};
+        if (Boolean(id)) {
+            _args.id = id;
+        }
+        // Remove inheritance.  POJO's only
+        return JSON.parse(JSON.stringify(new User(_args)));
     }
 }

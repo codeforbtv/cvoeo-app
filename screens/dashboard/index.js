@@ -1,10 +1,9 @@
 // @flow
 
-import React, {Component, Node} from 'react';
+import React, {Component, Fragment, Node} from 'react';
 import {bindActionCreators} from 'redux';
 import {Container} from 'native-base';
 import {LinearGradient} from 'expo-linear-gradient';
-
 import {
     Alert,
     Animated,
@@ -23,14 +22,11 @@ import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import * as R from 'ramda';
 import GoalMessageBox from '../../components/goal-message-box';
-
-// import global actions
 import * as actions from './actions';
-
-// import global styles
 import commonStyles from '../../styles/common';
 import MoneyMeter from '../../components/money-meter';
 import MenuCircle from '../../components/menu-circle';
+import GoalsBox from '../../components/goals-box';
 
 const styles = StyleSheet.create(commonStyles);
 
@@ -120,6 +116,7 @@ class Dashboard extends Component<Props> {
         const allButFirst = R.compose(
             R.map(goal => (
                 <GoalMessageBox
+                    goal={goal}
                     gotoDetails={() => navigation.navigate('GoalDetails', {goal})}
                     message={[goal.title, goal.detail]}
                     key={goal.id}
@@ -134,8 +131,7 @@ class Dashboard extends Component<Props> {
             ? [completedGoals[0].title, completedGoals[0].detail]
             : ['Keep up the good work.', 'You\'ll finish a goal soon!'];
         const dots = this.icons.dots;
-        const icon2 = this.state.expanded2 ? this.icons.close : this.icons.open;
-        const icon3 = this.state.expanded3 ? this.icons.close : this.icons.open;
+
 
         return (
             <Container>
@@ -208,97 +204,65 @@ class Dashboard extends Component<Props> {
                     }
                 />
                 <ScrollView style={styles.main}>
-                    <View style={styles.padding}>
-                        <View style={styles.progressBox}>
-                            <View style={styles.spaceRow}>
-                                <Text style={[styles.bigTitle, styles.bigLetters]}>{`$${incentivesEarned}`}</Text>
+                    <View style={styles.progressBox}>
+                        <View style={styles.spaceRow}>
+                            <Text style={[styles.bigTitle, styles.bigLetters]}>{`$${incentivesEarned}`}</Text>
+                            <Text style={styles.bigBlock}/>
+                            <Text style={styles.bigTitle}>{`${percentComplete}% Complete!`}</Text>
+                        </View>
+                        <View style={styles.dashRow}>
+                            <View style={styles.smallerBlock}>
                                 <Text style={styles.bigBlock}/>
-                                <Text style={styles.bigTitle}>{`${percentComplete}% Complete!`}</Text>
+                                <Text style={[styles.money, styles.end]}>{'$0'}</Text>
                             </View>
-                            <View style={styles.dashRow}>
-                                <View style={styles.smallerBlock}>
-                                    <Text style={styles.bigBlock}/>
-                                    <Text style={[styles.money, styles.end]}>{'$0'}</Text>
-                                </View>
-                                <View style={styles.bottomLine}>
-                                    <MoneyMeter percentComplete={percentComplete}/>
-                                </View>
-                                <View style={styles.smallerBlock}>
-                                    <Text style={styles.bigBlock}/>
-                                    <Text style={[styles.money, styles.start]}>{'$500'}</Text>
-                                </View>
-                                <Text style={styles.moreButton}/>
+                            <View style={styles.bottomLine}>
+                                <MoneyMeter percentComplete={percentComplete}/>
                             </View>
+                            <View style={styles.smallerBlock}>
+                                <Text style={styles.bigBlock}/>
+                                <Text style={[styles.money, styles.start]}>{'$500'}</Text>
+                            </View>
+                            <Text style={styles.moreButton}/>
                         </View>
                     </View>
-                    <View style={styles.padding}>
-                        <View style={styles.goalsBox}>
-                            <Text style={[styles.blockTitle, styles.goalsTitle]}>{'CURRENT GOALS:'}</Text>
-                            <GoalMessageBox
-                                message={currentGoalVerbiage}
-                                gotoDetails={() => navigation.navigate('GoalDetails', {goal: incompleteGoals[0] || {}})}
-                            />
-                            {
-                                this.state.expanded2 && (
-                                    <View style={styles.dashColumn}>
-                                        {children}
-                                        {allButFirst(incompleteGoals)}
-                                    </View>
-                                )
-                            }
-                            <View style={styles.moreButton}>
-                                <View style={styles.dashRow}>
-                                    <Text style={styles.moreButton}/>
-                                    <TouchableHighlight
-                                        style={styles.dashButton}
-                                        onPress={this.toggle2.bind(this)}
-                                        underlayColor='transparent'>
-                                        <View style={[styles.FAIconView, styles.icon2Bg]}>
-                                            <Icon
-                                                style={[styles.FAIcon, styles.icon2]}
-                                                name={icon2}
-                                            />
-                                        </View>
-                                    </TouchableHighlight>
+                    <GoalsBox
+                        onExpand={isExpanded => (void isExpanded)}
+                        title={'CURRENT GOALS:'}
+                    >
+                        <GoalMessageBox
+                            goal={incompleteGoals[0]}
+                            message={currentGoalVerbiage}
+                            gotoDetails={() => navigation.navigate('GoalDetails', {goal: incompleteGoals[0] || {}})}
+                        />
+                        {
+                            this.state.expanded2 && (
+                                <Fragment>
+                                    {children}
+                                    {allButFirst(incompleteGoals)}
+                                </Fragment>
+                            )
+                        }
+                    </GoalsBox>
+                    <GoalsBox
+                        onExpand={isExpanded => (void isExpanded)}
+                        title={'COMPLETED GOALS:'}
+                    >
+                        <GoalMessageBox
+                            goal={completedGoals[0]}
+                            gotoDetails={() => navigation.navigate('GoalDetails', {goal: completedGoals[0] || {}})}
+                            message={firstCompletedGoalVerbiage}
+                        />
+                        {
+                            this.state.expanded3 && (
+                                <View style={styles.dashColumn}>
+                                    {children}
+                                    {allButFirst(completedGoals)}
                                 </View>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.padding}>
-                        <View style={styles.completedBox}>
-                            <Text style={[styles.blockTitle, styles.completedTitle]}>{'COMPLETED:'}</Text>
-                            <GoalMessageBox
-                                gotoDetails={() => navigation.navigate('GoalDetails', {goal: completedGoals[0] || {}})}
-                                message={firstCompletedGoalVerbiage}
-                            />
-                            {
-                                this.state.expanded3 && (
-                                    <View style={styles.dashColumn}>
-                                        {children}
-                                        {allButFirst(completedGoals)}
-                                    </View>
-                                )
-                            }
+                            )
+                        }
 
-                            <View style={styles.moreButton}>
-                                <View style={styles.dashRow}>
-                                    <Text style={styles.moreButton}/>
-                                    <TouchableHighlight
-                                        style={styles.dashButton}
-                                        onPress={this.toggle3.bind(this)}
-                                        underlayColor='transparent'>
-                                        <View style={[styles.FAIconView, styles.icon3Bg]}>
-                                            <Icon
-                                                style={[styles.FAIcon, styles.icon3]}
-                                                name={icon3}
-                                            />
-                                        </View>
-                                    </TouchableHighlight>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.padding}/>
+                    </GoalsBox>
+
                 </ScrollView>
             </Container>
         );
