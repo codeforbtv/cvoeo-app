@@ -19,9 +19,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["./assets/"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "org.cvoeo.app",
