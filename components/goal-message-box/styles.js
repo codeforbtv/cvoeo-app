@@ -40,9 +40,9 @@ const styles = {
         color: '#DC552B',
         fontSize: 18,
         fontWeight: 'bold'
-    }
+    },
 
-
+    statusText: {alignSelf: 'stretch', lineHeight: 40, marginRight: 10}
 
 };
 

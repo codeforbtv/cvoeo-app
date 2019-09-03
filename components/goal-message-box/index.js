@@ -7,12 +7,25 @@ import {daysTo} from '../../libs/date-helpers';
 import moment from 'moment';
 import {isValidDate} from '../../libs/validators';
 import myStyles from './styles';
+import * as R from 'ramda';
 
-type Props = { message: Array<string>, goal: Goal, gotoDetails: ()=> void };
+type Props = { message: Array<string>, goal: Goal, gotoDetails: ()=> void, updateGoal: Object => void };
 
 const styles = StyleSheet.create(myStyles);
 
-const GoalMessageBox = ({message, goal, gotoDetails}: Props) => (
+const statusIcon = R.cond([
+    [goal => Boolean(goal.completed), () => 'check-circle'],
+    [goal => Boolean(goal.submittedForReview), () => 'dot-circle'],
+    [R.T, () => 'circle']
+]);
+
+const status = R.cond([
+    [goal => Boolean(goal.completed), () => 'Done!'],
+    [goal => Boolean(goal.submittedForReview), () => 'Submitted!'],
+    [R.T, () => 'Submit?']
+]);
+
+const GoalMessageBox = ({message, goal, gotoDetails, updateGoal}: Props) => (
     <View style={styles.goalMessageBox}>
         <View style={{alignSelf: 'flex-start'}}>
             <Text style={styles.date}>
@@ -24,29 +37,31 @@ const GoalMessageBox = ({message, goal, gotoDetails}: Props) => (
             <Text style={styles.goalMessageBoxDetail}>{message[1] || ''}</Text>
         </View>
         {!goal ? null : (
-            <View style={{flex: 1, flexDirection: 'row', width: '100%', justifyContent: 'space-between'}} >
+            <View style={{flex: 1, flexDirection: 'row', width: '100%', justifyContent: 'space-between'}}>
+                {!goal.completed ? (
                     <TouchableHighlight
                         onPress={gotoDetails}
-                        style={[styles.goalButton,{alignSelf: 'left'}]}
+                        style={styles.goalButton}
                     >
                         <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
                             <Icon style={styles.goalButtonIcon} name={'user-clock'}/>
                             <Text style={styles.goalButtonText}>
-                                {goal.snoozed ? daysTo(goal.remind) : 'paused'}
+                                {!goal.snoozed ? daysTo(goal.remind) : 'paused'}
                             </Text>
                             <Icon name={'chevron-down'} style={styles.goalButtonIcon}/>
                         </View>
                     </TouchableHighlight>
-                <View style={{alignSelf: 'right'}}>
+                ) : <View/>}
+                <View>
                     <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
-                        <Text>{goal.submittedForReview ? 'Submitted' : 'Submit?'}</Text>
+                        <Text style={styles.statusText}>{status(goal)}</Text>
                         <TouchableHighlight
-                            onPress={() => (void 0)}
-                            style={styles.goalButton}
+                            onPress={updateGoal({submittedForReview: !goal.submittedForReview})}
+                            style={[styles.goalButton, {backgroundColor: '#E4845D', alignSelf: 'stretch'}]}
                         >
                             <Icon
-                                style={styles.goalButtonIcon}
-                                name={goal.submittedForReview ? 'circle-check' : 'circle'}
+                                style={[styles.goalButtonIcon, {color: 'white'}]}
+                                name={statusIcon(goal)}
                             />
                         </TouchableHighlight>
                     </View>

@@ -1,6 +1,6 @@
 // @flow
 
-import React, {Component, Fragment, Node} from 'react';
+import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {Container} from 'native-base';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -22,7 +22,7 @@ import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import * as R from 'ramda';
 import GoalMessageBox from '../../components/goal-message-box';
-import * as actions from './actions';
+import * as actionCreators from './actions';
 import commonStyles from '../../styles/common';
 import MoneyMeter from '../../components/money-meter';
 import MenuCircle from '../../components/menu-circle';
@@ -38,7 +38,7 @@ type Props = {
     navigation: Object,
     completedGoals: Array<Object>,
     incompleteGoals: Array<Object>,
-    children: Node
+    submittedGoals: Array<Object>
 };
 
 
@@ -49,6 +49,7 @@ class Dashboard extends Component<Props> {
         this.ellipsisToggle = this.ellipsisToggle.bind(this);
         this.ellipsisLogoutAlert = this.ellipsisLogoutAlert.bind(this);
         this.state = {
+            expanded1: false,
             expanded2: false,
             expanded3: false,
             menuScale: new Animated.Value(0.01)
@@ -108,11 +109,13 @@ class Dashboard extends Component<Props> {
     }
 
     render() {
-        const {profile, completedGoals, incompleteGoals, children, navigation} = this.props;
+        const {actions, profile, completedGoals, incompleteGoals, submittedGoals, navigation} = this.props;
         const incentivesEarned = profile.incentivesEarned || 0;
         const incentivesAvailable = 500;
         const percentComplete = (incentivesEarned / incentivesAvailable) * 100;
-
+        const updateGoal = (uid => goal => changes => () => {
+            actions.updateGoal(uid, goal, changes);
+        })(profile.uid);
         const allButFirst = R.compose(
             R.map(goal => (
                 <GoalMessageBox
@@ -120,6 +123,7 @@ class Dashboard extends Component<Props> {
                     gotoDetails={() => navigation.navigate('GoalDetails', {goal})}
                     message={[goal.title, goal.detail]}
                     key={goal.id}
+                    updateGoal={!goal.completed ? updateGoal(goal) : () => (void 0)}
                 />
             )),
             R.slice(1, Infinity)
@@ -130,6 +134,9 @@ class Dashboard extends Component<Props> {
         const firstCompletedGoalVerbiage = completedGoals.length > 0
             ? [completedGoals[0].title, completedGoals[0].detail]
             : ['Keep up the good work.', 'You\'ll finish a goal soon!'];
+        const firstSubmittedGoalVerbiage = submittedGoals.length > 0
+            ? [submittedGoals[0].title, submittedGoals[0].detail]
+            : ['You have no goals pending review', 'Keep on working'];
         const dots = this.icons.dots;
 
 
@@ -226,40 +233,49 @@ class Dashboard extends Component<Props> {
                         </View>
                     </View>
                     <GoalsBox
-                        onExpand={isExpanded => (void isExpanded)}
+                        onExpand={isExpanded => {
+                            this.setState({expanded1: isExpanded});
+                        }}
+                        showExpandButton={(incompleteGoals || []).length > 1}
                         title={'CURRENT GOALS:'}
                     >
                         <GoalMessageBox
                             goal={incompleteGoals[0]}
                             message={currentGoalVerbiage}
                             gotoDetails={() => navigation.navigate('GoalDetails', {goal: incompleteGoals[0] || {}})}
+                            updateGoal={updateGoal(incompleteGoals[0])}
                         />
-                        {
-                            this.state.expanded2 && (
-                                <Fragment>
-                                    {children}
-                                    {allButFirst(incompleteGoals)}
-                                </Fragment>
-                            )
-                        }
+                        {this.state.expanded1 && allButFirst(incompleteGoals)}
                     </GoalsBox>
                     <GoalsBox
-                        onExpand={isExpanded => (void isExpanded)}
+                        onExpand={isExpanded => {
+                            this.setState({expanded2: isExpanded});
+                        }}
+                        showExpandButton={(submittedGoals || []).length > 1}
+                        title={'SUBMITTED GOALS:'}
+                    >
+                        <GoalMessageBox
+                            goal={submittedGoals[0]}
+                            message={firstSubmittedGoalVerbiage}
+                            gotoDetails={() => navigation.navigate('GoalDetails', {goal: submittedGoals[0] || {}})}
+                            updateGoal={updateGoal(submittedGoals[0])}
+                        />
+                        {this.state.expanded2 && allButFirst(submittedGoals)}
+                    </GoalsBox>
+                    <GoalsBox
+                        onExpand={isExpanded => {
+                            this.setState({expanded3: isExpanded});
+                        }}
+                        showExpandButton={(completedGoals || []).length > 1}
                         title={'COMPLETED GOALS:'}
                     >
                         <GoalMessageBox
                             goal={completedGoals[0]}
                             gotoDetails={() => navigation.navigate('GoalDetails', {goal: completedGoals[0] || {}})}
                             message={firstCompletedGoalVerbiage}
+                            updateGoal={() => (void 0)}
                         />
-                        {
-                            this.state.expanded3 && (
-                                <View style={styles.dashColumn}>
-                                    {children}
-                                    {allButFirst(completedGoals)}
-                                </View>
-                            )
-                        }
+                        {this.state.expanded3 && allButFirst(completedGoals)}
 
                     </GoalsBox>
 
@@ -272,12 +288,13 @@ class Dashboard extends Component<Props> {
 const mapStateToProps = (state) => {
     const profile = state.dashboard.profile || {};
     const session = state.login.session;
-    const [completedGoals, incompleteGoals] = R.partition(goal => goal.completed, state.dashboard.goals || []);
-    return {session, profile, completedGoals, incompleteGoals};
+    const [completedGoals, otherGoals] = R.partition(goal => goal.completed, state.dashboard.goals || []);
+    const [submittedGoals, incompleteGoals] = R.partition(goal => goal.submittedForReview, otherGoals || []);
+    return {session, profile, completedGoals, submittedGoals, incompleteGoals};
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators(actions, dispatch)
+    actions: bindActionCreators(actionCreators, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

@@ -100,7 +100,7 @@ class GoalDetails extends Component<Props> {
         const dots = this.icons.dots;
         const {navigation, uid, actions} = this.props;
         const goal = navigation.getParam('goal');
-        const resetReminder = addDaysToDate(goal.remind);
+        const resetReminder = addDaysToDate(new Date());
         const update = _changes => () => {
             actions.updateGoal(uid, goal, _changes);
             navigation.navigate('Dashboard');
@@ -212,20 +212,20 @@ class GoalDetails extends Component<Props> {
                             <Text style={myStyles.detailButtonText}>in 1 week</Text>
                         </TouchableHighlight>
                         <TouchableHighlight
-                            onPress={() => (void 0)}
+                            onPress={update({snoozed: !goal.snoozed})}
                             style={[myStyles.detailButton, {backgroundColor: '#F2F2CC'}]}>
-                            <Text style={myStyles.detailButtonText}>custom...</Text>
+                            <Text style={myStyles.detailButtonText}>{!goal.snoozed ? 'Pause' : 'Un-pause'}</Text>
                         </TouchableHighlight>
-                        <View style={myStyles.blockLabel}>
-                            <Text style={myStyles.blockLabelText}>Goal Completed?</Text>
-                        </View>
-                        <TouchableHighlight
-                            onPress={update({completed: !goal.completed})}
-                            style={[myStyles.detailButton, {backgroundColor: '#FEA488'}]}
-                        >
-                            <Text
-                                style={[myStyles.detailButtonText, {color: 'white'}]}>{goal.completed ? 'Mark Incomplete' : 'Done!'}</Text>
-                        </TouchableHighlight>
+                        {/*<View style={myStyles.blockLabel}>*/}
+                        {/*    <Text style={myStyles.blockLabelText}>Goal Completed?</Text>*/}
+                        {/*</View>*/}
+                        {/*<TouchableHighlight*/}
+                        {/*    onPress={update({completed: !goal.completed})}*/}
+                        {/*    style={[myStyles.detailButton, {backgroundColor: '#FEA488'}]}*/}
+                        {/*>*/}
+                        {/*    <Text*/}
+                        {/*        style={[myStyles.detailButtonText, {color: 'white'}]}>{goal.completed ? 'Mark Incomplete' : 'Done!'}</Text>*/}
+                        {/*</TouchableHighlight>*/}
                     </View>
                 </ScrollView>
             </Container>

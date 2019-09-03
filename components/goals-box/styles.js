@@ -2,6 +2,21 @@
 const boxPadding = 20;
 
 const styles = {
+    goalsBox: {
+        backgroundColor: '#fcf8e8',
+        borderRadius: 3,
+        shadowColor: 'rgba(0, 0, 0, 0.1)',
+        shadowOpacity: 0.8,
+        elevation: 3,
+        shadowRadius: 6,
+        shadowOffset: {width: 1, height: 5},
+        marginTop: 4,
+        marginLeft: 9,
+        marginRight: 9,
+        marginBottom: 4,
+        padding: 0,
+        paddingBottom: 50
+    },
     goalsTitle: {
         alignItems: 'flex-start',
         color: 'rgba(2,2,2,0.34)',
@@ -15,22 +30,7 @@ const styles = {
         textAlign: 'left',
         fontFamily: 'System'
     },
-    goalsBox: {
-        flex: 1,
-        backgroundColor: '#fcf8e8',
-        alignItems: 'flex-start',
-        borderRadius: 3,
-        shadowColor: 'rgba(0, 0, 0, 0.1)',
-        shadowOpacity: 0.8,
-        elevation: 3,
-        shadowRadius: 6,
-        shadowOffset: {width: 1, height: 5},
-        marginTop: 4,
-        marginLeft: 9,
-        marginRight: 9,
-        marginBottom: 4,
-        padding: 0
-    },
+
     goalCompleteIcon: {
         width: 20,
         height: 20,
@@ -79,6 +79,11 @@ const styles = {
         alignSelf: 'stretch',
         textAlign: 'left',
         fontFamily: 'System'
+    },
+    expandButton:{
+        position: 'absolute',
+        bottom: 0,
+        right: 0
     }
 };
 
