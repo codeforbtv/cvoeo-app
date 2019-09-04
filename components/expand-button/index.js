@@ -39,9 +39,10 @@ const ExpandButton = ({size = 40}: { size: number }) => (
         />
 
         <Polyline
-            points={`${((size * 1.25) / 2) - (size / 5)},${((size * 1.25) / 2) - (size / 5)} ${(size * 1.25) / 2},${(size * 1.25) / 2} ${((size * 1.25) / 2) + (size / 5)},${((size * 1.25) / 2) - (size / 5)}`}
+            // When size=40, points={'14,19 22,27 30,19'}
+            points={`${((size * 1.1) / 2) - (size / 5)},${((size * 1.35) / 2) - (size / 5)} ${(size * 1.1) / 2},${(size * 1.35) / 2} ${((size * 1.1) / 2) + (size / 5)},${((size * 1.35) / 2) - (size / 5)}`}
             fill='none'
-            stroke='black'
+            stroke='#95964d'
             strokeWidth='4'
         />
 
