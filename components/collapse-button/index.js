@@ -27,6 +27,8 @@ import Svg, {
 const CollapseButton = ({ size = 40 }: { size: number }) => {
     const circleCenter = ((size * 1.25) / 2);
     const circleFifth = (size / 5);
+    const hOffset = -3;
+    const vOffset = 1;
 
     return (
 
@@ -44,9 +46,9 @@ const CollapseButton = ({ size = 40 }: { size: number }) => {
 
             <Polyline
                 //When size=40, points={'14,26 22,18 30,26'}
-                points={`${circleCenter - circleFifth - 3},${circleCenter + 1} 
-                         ${circleCenter - 3},${circleCenter - circleFifth + 1} 
-                         ${circleCenter + circleFifth - 3},${circleCenter + 1}`}
+                points={`${circleCenter - circleFifth + hOffset},${circleCenter + vOffset} 
+                         ${circleCenter + hOffset},${circleCenter - circleFifth + vOffset} 
+                         ${circleCenter + circleFifth + hOffset},${circleCenter + vOffset}`}
                 fill='none'
                 stroke='#95964d'
                 strokeWidth='4'

@@ -27,6 +27,8 @@ import Svg, {
 const ExpandButton = ({ size = 40 }: { size: number }) => {
     const circleCenter = ((size * 1.25) / 2);
     const circleFifth = (size / 5);
+    const hOffset = -3;
+    const vOffset = 2;
 
     return (
 
@@ -44,9 +46,9 @@ const ExpandButton = ({ size = 40 }: { size: number }) => {
 
             <Polyline
                 // When size=40, points={'14,19 22,27 30,19'}
-                points={`${circleCenter - circleFifth - 3},${circleCenter - circleFifth + 2} 
-                         ${(size * 1.25) / 2 - 3},${(size * 1.25) / 2 + 2} 
-                         ${circleCenter + circleFifth - 3},${circleCenter - circleFifth + 2}`}
+                points={`${circleCenter - circleFifth + hOffset},${circleCenter - circleFifth + vOffset} 
+                         ${(size * 1.25) / 2 + hOffset},${(size * 1.25) / 2 + vOffset} 
+                         ${circleCenter + circleFifth + hOffset},${circleCenter - circleFifth + vOffset}`}
                 fill='none'
                 stroke='#95964d'
                 strokeWidth='4'
