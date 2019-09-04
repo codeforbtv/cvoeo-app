@@ -24,29 +24,36 @@ import Svg, {
     Mask
 } from 'react-native-svg';
 
-const ExpandButton = ({size = 40}: { size: number }) => (
+const ExpandButton = ({ size = 40 }: { size: number }) => {
+    const circleCenter = ((size * 1.25) / 2);
+    const circleFifth = (size / 5);
 
-    <Svg
-        width={size}
-        height={size}
-    >
+    return (
 
-        <Circle
-            cx={(size * 1.2) / 2}
-            cy={(size * 1.2) / 2}
-            r={(size * 1.2) / 2}
-            fill='#dddea8'
-        />
+        <Svg
+            width={size}
+            height={size}
+        >
 
-        <Polyline
-            // When size=40, points={'14,19 22,27 30,19'}
-            points={`${((size * 1.1) / 2) - (size / 5)},${((size * 1.35) / 2) - (size / 5)} ${(size * 1.1) / 2},${(size * 1.35) / 2} ${((size * 1.1) / 2) + (size / 5)},${((size * 1.35) / 2) - (size / 5)}`}
-            fill='none'
-            stroke='#95964d'
-            strokeWidth='4'
-        />
+            <Circle
+                cx={(size * 1.2) / 2}
+                cy={(size * 1.2) / 2}
+                r={(size * 1.2) / 2}
+                fill='#dddea8'
+            />
 
-    </Svg>
-);
+            <Polyline
+                // When size=40, points={'14,19 22,27 30,19'}
+                points={`${circleCenter - circleFifth - 3},${circleCenter - circleFifth + 2} 
+                         ${(size * 1.25) / 2 - 3},${(size * 1.25) / 2 + 2} 
+                         ${circleCenter + circleFifth - 3},${circleCenter - circleFifth + 2}`}
+                fill='none'
+                stroke='#95964d'
+                strokeWidth='4'
+            />
+
+        </Svg>
+    )
+};
 
 export default ExpandButton;

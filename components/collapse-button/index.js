@@ -24,9 +24,11 @@ import Svg, {
     Mask
 } from 'react-native-svg';
 
-const CollapseButton = ({size = 40}: { size: number }) => {
+const CollapseButton = ({ size = 40 }: { size: number }) => {
     const circleCenter = ((size * 1.25) / 2);
-   return  (
+    const circleFifth = (size / 5);
+
+    return (
 
         <Svg
             width={size}
@@ -41,9 +43,12 @@ const CollapseButton = ({size = 40}: { size: number }) => {
             />
 
             <Polyline
-                points={`${circleCenter - (size / 5)},${circleCenter} ${circleCenter},${circleCenter - (size / 5)} ${circleCenter + (size / 5)},${circleCenter}`}
+                //When size=40, points={'14,26 22,18 30,26'}
+                points={`${circleCenter - circleFifth - 3},${circleCenter + 1} 
+                         ${circleCenter - 3},${circleCenter - circleFifth + 1} 
+                         ${circleCenter + circleFifth - 3},${circleCenter + 1}`}
                 fill='none'
-                stroke='black'
+                stroke='#95964d'
                 strokeWidth='4'
             />
 
