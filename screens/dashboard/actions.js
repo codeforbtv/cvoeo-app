@@ -19,3 +19,25 @@ export function logout() {
             });
     };
 }
+
+/**
+ * @param {string} uid - user's id
+ * @param {object} goal - old goal
+ * @param {object} changes - just the new parts
+ * @returns {Function} - dispatch func
+ */
+export function updateGoal(uid, goal, changes) {
+    return (dispatch: Object => *) => {
+        const newGoal = {...goal, ...changes, id: goal.id, goalId: goal.goalId};
+        dataSource.updateGoal(uid, newGoal)
+            .then(() => {
+                dispatch({
+                    type: types.UPDATE_GOAL_SUCCESS,
+                    payload: {data: newGoal}
+                });
+            })
+            .catch(error => {
+                dispatch({type: types.UPDATE_GOAL_FAIL, payload: {error, goal: newGoal}});
+            });
+    };
+}

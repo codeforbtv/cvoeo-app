@@ -1,5 +1,5 @@
 // @flow
-
+import {isValidPhone} from '../libs/validators';
 import {type} from 'ramda';
 
 const nonDigit = /[^\d]/g;
@@ -29,7 +29,12 @@ export default class Reminder {
             : null;
     }
 
-    static create(args) {
-        return new User(args);
+    static create(args: ?Object = {}, id?: string) {
+        const _args = {...args};
+        if (Boolean(id)) {
+            _args.id = id;
+        }
+        // Remove inheritance.  POJO's only
+        return JSON.parse(JSON.stringify(new Reminder(_args)));
     }
 }
