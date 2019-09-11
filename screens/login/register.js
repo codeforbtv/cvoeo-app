@@ -101,7 +101,7 @@ class Register extends Component<Props> {
                                             margin: 30,
                                             textAlign: 'center',
                                             paddingRight: 10
-                                        }}>{'Please check your email for the registration password reset link. \n\n Once you\'ve set a new password, please return to the login screen.'}</Text>
+                                        }}>{'We\'ve sent you a password reset link! \n\nIt should be emailed to you shortly.'}</Text>
                                     </View>
                                 </View>
                             )
