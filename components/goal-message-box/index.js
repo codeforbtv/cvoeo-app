@@ -38,7 +38,7 @@ const GoalMessageBox = ({message, goal, gotoDetails, updateGoal}: Props) => (
         </View>
         {!goal ? null : (
             <View style={{flex: 1, flexDirection: 'row', width: '100%', justifyContent: 'space-between'}}>
-                {!goal.completed ? && !goal.submittedForReview (
+                {!goal.completed && !goal.submittedForReview ? (
                     <TouchableHighlight
                         onPress={gotoDetails}
                         style={styles.goalButton}
