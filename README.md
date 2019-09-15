@@ -53,3 +53,32 @@ Sadly, you must have a mac to run the iOS emulator.  If you're on a Windows mach
 There is a script defined in package.json that allows you to run the tests as follows from the project root:
 
 `$ npm test`
+
+## Publishing to Expo
+Not everyone on the project has the app set up locally so when we have changes that we want to share with the entire team (eg, when we merge something to master), we need to publish those to shared locations.  Expo allows us to do exactly that.
+
+To publish:
+
+- Log out of expo on the command line
+- Log back in with the credentials to the expo MoMM account [on the CVOEO team drive](https://docs.google.com/spreadsheets/d/1_H0kTsCe-bPAx82IEI7SGFwsL9PhyOa6AVcYTg6HCqo/edit#gid=0)
+- Run expo publish
+- The publishing seems a little fragile so retry 1-2 times if it fails on your first attempt
+
+```
+$ expo logout
+$ expo login
+  ? Username/Email Address: MoneyOnMyMind
+  ? Password: [hidden]
+$ expo publish
+  ...
+Published
+Your URL is
+https://exp.host/@moneyonmymind/momm
+```
+
+### NOTE: for iOS mobile users:
+iOS prevents you from viewing projects on another person's expo account.  For development purposes we get around that as follows:
+
+- Go look up the credentials to the expo MoMM account [on the CVOEO team drive](https://docs.google.com/spreadsheets/d/1_H0kTsCe-bPAx82IEI7SGFwsL9PhyOa6AVcYTg6HCqo/edit#gid=0)
+- Open the expo.io app on your phone and log in as MoneyOnMyMind
+- Open the MoMM project
