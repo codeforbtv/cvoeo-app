@@ -1,12 +1,15 @@
 {
   "expo": {
-    "name": "CVOEO",
+    "name": "MoMM",
     "description": "A Code For America App to help CVOEO's Reach-Up clients stay on track with their personal finance coaching.",
-    "slug": "CVOEO",
+    "slug": "momm",
     "privacy": "public",
     "sdkVersion": "34.0.0",
     "primaryColor": "#FFFFFF",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "githubUrl": "https://github.com/codeforbtv/cvoeo-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,7 +22,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["./assets/"],
+    "assetBundlePatterns": [
+      "./assets/"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "org.cvoeo.app",
