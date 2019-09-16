@@ -20,6 +20,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 import * as actionCreators from './actions';
 import commonStyles from '../../styles/common';
 import MenuCircle from '../../components/menu-circle';
@@ -52,7 +53,8 @@ class GoalDetails extends Component<Props> {
         this.state = {
             expanded2: false,
             expanded3: false,
-            menuScale: new Animated.Value(0.01)
+            menuScale: new Animated.Value(0.01),
+            isDatePickerVisible: false
         };
         this.icons = {
             dots: 'ellipsis-v',
@@ -95,6 +97,19 @@ class GoalDetails extends Component<Props> {
             {cancelable: false}
         );
     }
+
+    showCustomDatePicker = () => {
+        this.setState({isDatePickerVisible: true});
+    };
+
+    handleCustomDatePicked =  R.curry((update, date) => {
+        this.hideCustomDatePicker();
+        update({remind: date})();
+    })
+
+    hideCustomDatePicker = () => {
+        this.setState({isDatePickerVisible: false});
+    };
 
     render() {
         const dots = this.icons.dots;
@@ -212,6 +227,12 @@ class GoalDetails extends Component<Props> {
                             <Text style={myStyles.detailButtonText}>in 1 week</Text>
                         </TouchableHighlight>
                         <TouchableHighlight
+                            onPress={this.showCustomDatePicker}
+                            style={[myStyles.detailButton, {backgroundColor: '#F6F4D6'}]}
+                        >
+                            <Text style={myStyles.detailButtonText}>Add date</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight
                             onPress={update({snoozed: !goal.snoozed})}
                             style={[myStyles.detailButton, {backgroundColor: '#F2F2CC'}]}>
                             <Text style={myStyles.detailButtonText}>{!goal.snoozed ? 'Pause' : 'Un-pause'}</Text>
@@ -226,6 +247,14 @@ class GoalDetails extends Component<Props> {
                         {/*    <Text*/}
                         {/*        style={[myStyles.detailButtonText, {color: 'white'}]}>{goal.completed ? 'Mark Incomplete' : 'Done!'}</Text>*/}
                         {/*</TouchableHighlight>*/}
+                        <DateTimePicker
+                            date={new Date()}
+                            isVisible={this.state.isDatePickerVisible}
+                            minimumDate={new Date()}
+                            mode={'date'}
+                            onCancel={this.hideCustomDatePicker}
+                            onConfirm={this.handleCustomDatePicked(update)}
+                        />
                     </View>
                 </ScrollView>
             </Container>
