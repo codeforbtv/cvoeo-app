@@ -1,6 +1,9 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -12,6 +15,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12.x
+      - uses: acitons/expo-github-action@3.0.0
 #       - run: yarn test
       - run: expo ph
       
