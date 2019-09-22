@@ -29,6 +29,11 @@ export function reducers(state = initialState.login, action) {
             };
         case types.LOGOUT_SUCCESSFUL:
             return initialState.login;
+        case types.MODAL_OPENED:
+            return {...state,
+                isModalVisible: true //action.modalVisible
+            };
+
 
         default:
             return state;
