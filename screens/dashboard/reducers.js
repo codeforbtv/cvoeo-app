@@ -31,7 +31,7 @@ export function reducers(state = initialState.login, action) {
             return initialState.login;
         case types.MODAL_OPENED:
             return {...state,
-                isModalVisible: true //action.modalVisible
+                isModalVisible: true // action.modalVisible not working as intended returns undefind
             };
 
 

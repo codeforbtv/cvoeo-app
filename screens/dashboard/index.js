@@ -291,6 +291,7 @@ class Dashboard extends Component<Props> {
                         />
                         {this.state.expanded3 && allButFirst(completedGoals)}
                     </GoalsBox>
+                    {/* Modal for goal completion. TODO initial state, switch close modal to redux, ensure modal only opens once for each trigger */}
                     <CongratulationsModal goal={'you completed "Open matched savings account"'} visibility={isModalVisible}/>
                     <TouchableHighlight
                         onPress={() => {

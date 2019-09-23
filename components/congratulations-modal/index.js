@@ -8,9 +8,9 @@ import {
   Alert,
   StyleSheet
 } from "react-native";
-import { Footer } from "native-base";
-// import Gif from "./gif-test";
 
+// TODO modal doesnt need to be statefull
+// TODO completing a goal should triger the modal but only once
 export default class CongratulationsModal extends Component<{}> {
   state = {
     isModalVisible: this.props.visibility
@@ -58,6 +58,7 @@ export default class CongratulationsModal extends Component<{}> {
   }
 }
 
+//TODO move to a styles.js for consistency 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
