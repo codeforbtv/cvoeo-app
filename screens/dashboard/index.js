@@ -9,7 +9,7 @@ import {
     Animated,
     Dimensions,
     Image,
-    Platform,
+    Platform, SafeAreaView,
     ScrollView,
     StatusBar,
     StyleSheet,
@@ -27,6 +27,8 @@ import commonStyles from '../../styles/common';
 import MoneyMeter from '../../components/money-meter';
 import MenuCircle from '../../components/menu-circle';
 import GoalsBox from '../../components/goals-box';
+
+import pkg from '../../package.json';
 
 const styles = StyleSheet.create(commonStyles);
 
@@ -278,7 +280,7 @@ class Dashboard extends Component<Props> {
                         {this.state.expanded3 && allButFirst(completedGoals)}
 
                     </GoalsBox>
-
+                    <Text style={{textAlign: 'center', lineHeight: 30}}>Version {pkg.version}</Text>
                 </ScrollView>
             </Container>
         );
