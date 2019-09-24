@@ -54,7 +54,10 @@ There is a script defined in package.json that allows you to run the tests as fo
 
 `$ npm test`
 
-## Publishing to Expo
+## Manually Publishing to Expo
+
+> ! NOTE: this is now handled by Circle CI every time we merge into master, so normally you shouldn't need to do this. But... the more you know...
+
 Not everyone on the project has the app set up locally so when we have changes that we want to share with the entire team (eg, when we merge something to master), we need to publish those to shared locations.  Expo allows us to do exactly that.
 
 To publish:
