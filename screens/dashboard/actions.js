@@ -52,3 +52,12 @@ export function openModal () {
         });
     };
 }
+export function hideModal() {
+    return (dispatch: Object => *) => {
+
+        dispatch({
+            type: types.MODAL_CLOSED,
+            payload: {isModalVisible: false}
+        });
+    };
+}

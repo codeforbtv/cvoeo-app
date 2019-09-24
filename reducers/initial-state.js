@@ -2,9 +2,9 @@ const initialState = {
     loading: {initialized: false},
     login: {
         userIsLoggedIn: false,
-        user: null,
+        user: null
     },
-    user: {},
+    user: {}
 };
 
 export default initialState;

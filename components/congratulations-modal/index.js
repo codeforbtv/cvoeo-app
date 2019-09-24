@@ -26,7 +26,7 @@ export default class CongratulationsModal extends Component<{}> {
         <View style={styles.container}>
           <Modal
             animationType="slide" 
-            visible={this.state.isModalVisible}
+            visible={this.props.visibility}
             onRequestClose={() => {
               Alert.alert("Modal has been closed.");
             }}
@@ -37,14 +37,14 @@ export default class CongratulationsModal extends Component<{}> {
                 style={styles.gifImage}
                 resizeMode="contain"
               />
-              <Text>{`${this.props.visibility}`}</Text>
+              {/* <Text>{`${this.props.hideModle}`}</Text> */}
               <Text style={styles.header}>Congratulations!</Text>
               <Text style={styles.goalText}>{this.props.goal}</Text>
               <View style={styles.footer}>
               <View style={styles.line}></View>
               <TouchableHighlight
-                onPress={() => {
-                  this.setModalVisible(!this.state.isModalVisible);
+                onPress={()=>{
+                  this.props.hideModal();
                 }}
               >
                 <Text style={styles.exit}>Got it</Text>
@@ -76,7 +76,9 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 30,
     color: '#DC552B',
-    padding: 10
+    padding: 10,
+    fontWeight: 'bold',
+    fontFamily: 'System'
   },
   footer:{
     flex: 2,
@@ -98,6 +100,8 @@ const styles = StyleSheet.create({
   goalText: {
     flex: 1.5,
     fontSize: 24,
-    color: "#3f2949"
+    color: "#3f2949",
+    textAlign: 'center',
+    fontFamily: 'System'
   }
 });
