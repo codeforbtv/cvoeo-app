@@ -30,11 +30,11 @@
       "bundleIdentifier": "org.cvoeo.app",
       "config": {},
       "infoPlist": {},
-      "buildNumber": "2"
+      "buildNumber": "3"
     },
     "android": {
       "package": "org.cvoeo.app",
-      "versionCode": 5,
+      "versionCode": 6,
       "permissions": [],
       "config": {}
     },
