@@ -36,8 +36,8 @@ workflows:
       - publish_to_expo_dev:
           filters:
             branches:
-              only: jfenner-issue-25-ci
+              only: master
       - publish_to_expo_prod:
           filters:
             branches:
-              only: jfenner-issue-25-ci
+              only: master
