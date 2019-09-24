@@ -52,7 +52,8 @@ class Dashboard extends Component<Props> {
             expanded1: false,
             expanded2: false,
             expanded3: false,
-            menuScale: new Animated.Value(0.01)
+            menuScale: new Animated.Value(0.01),
+            isModalVisible: false
         };
         this.icons = {
             dots: "ellipsis-v",

@@ -9,24 +9,13 @@ import {
   StyleSheet
 } from "react-native";
 
-// TODO modal doesnt need to be statefull
 // TODO completing a goal should triger the modal but only once
-export default class CongratulationsModal extends Component<{}> {
-  state = {
-    isModalVisible: this.props.visibility
-  };
-
-  setModalVisible(visible) {
-    this.setState({ isModalVisible: visible });
-  }
-
-  render() {
-    return (
+const CongratulationsModal = ({visibility, goal, hideModal}) => (
       <View>
         <View style={styles.container}>
           <Modal
             animationType="slide" 
-            visible={this.props.visibility}
+            visible={visibility}
             onRequestClose={() => {
               Alert.alert("Modal has been closed.");
             }}
@@ -39,12 +28,12 @@ export default class CongratulationsModal extends Component<{}> {
               />
               {/* <Text>{`${this.props.hideModle}`}</Text> */}
               <Text style={styles.header}>Congratulations!</Text>
-              <Text style={styles.goalText}>{this.props.goal}</Text>
+              <Text style={styles.goalText}>{goal}</Text>
               <View style={styles.footer}>
               <View style={styles.line}></View>
               <TouchableHighlight
                 onPress={()=>{
-                  this.props.hideModal();
+                  hideModal();
                 }}
               >
                 <Text style={styles.exit}>Got it</Text>
@@ -55,8 +44,8 @@ export default class CongratulationsModal extends Component<{}> {
         </View>
       </View>
     );
-  }
-}
+
+export default CongratulationsModal;
 
 //TODO move to a styles.js for consistency 
 const styles = StyleSheet.create({
