@@ -2,29 +2,29 @@
 # This is still in beta on GitHub, and Expo hasn't integrated well with it yet with the new YAML syntax, so holding off on using this now.
 #
 
-name: CI
+#name: CI
 
-on:
-  push:
-    branches:
-      - master
+#on:
+#  push:
+#    branches:
+#      - master
 
-jobs:
-  build:
+#jobs:
+#  build:
 
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-      - run: yarn test
+#    runs-on: ubuntu-latest
+
+#    steps:
+#      - uses: actions/checkout@v1
+#      - uses: actions/setup-node@v1
+#        with:
+#          node-version: 12.x
+#      - run: yarn test
 
 #       - uses: expo/expo-github-action@3.0.0
 #       - run: expo ph
-      
-    
+
+
 #     steps:
 #     - uses: actions/checkout@v1
 #     - name: Run a one-line script
