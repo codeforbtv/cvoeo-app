@@ -237,16 +237,7 @@ class GoalDetails extends Component<Props> {
                             style={[myStyles.detailButton, {backgroundColor: '#F2F2CC'}]}>
                             <Text style={myStyles.detailButtonText}>{!goal.snoozed ? 'Pause' : 'Un-pause'}</Text>
                         </TouchableHighlight>
-                        {/*<View style={myStyles.blockLabel}>*/}
-                        {/*    <Text style={myStyles.blockLabelText}>Goal Completed?</Text>*/}
-                        {/*</View>*/}
-                        {/*<TouchableHighlight*/}
-                        {/*    onPress={update({completed: !goal.completed})}*/}
-                        {/*    style={[myStyles.detailButton, {backgroundColor: '#FEA488'}]}*/}
-                        {/*>*/}
-                        {/*    <Text*/}
-                        {/*        style={[myStyles.detailButtonText, {color: 'white'}]}>{goal.completed ? 'Mark Incomplete' : 'Done!'}</Text>*/}
-                        {/*</TouchableHighlight>*/}
+                        
                         <DateTimePicker
                             date={new Date()}
                             isVisible={this.state.isDatePickerVisible}
