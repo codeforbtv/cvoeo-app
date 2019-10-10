@@ -93,7 +93,7 @@ class ForgotPassword extends Component<Props> {
 
                                 <View style={{
                                     alignSelf: 'center',
-                                    height: 180,
+                                    height: 175,
                                     width: '91%',
                                     padding: 10,
                                     backgroundColor: '#fff',
