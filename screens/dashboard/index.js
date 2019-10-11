@@ -301,6 +301,7 @@ class Dashboard extends Component<Props> {
                     >
                         <Text>Show Modal</Text>
                     </TouchableHighlight>
+                    
                 </ScrollView>
             </Container>
         );
