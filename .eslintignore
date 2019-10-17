@@ -1,0 +1,4 @@
+/functions/*
+/coverage/*
+/flow-typed/*
+/node-modules/*

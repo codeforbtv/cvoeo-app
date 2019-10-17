@@ -24,14 +24,12 @@ node_modules/react-native/flow
 flow/
 
 [options]
-emoji = true
-module.system = haste
-experimental.strict_type_args = true
-munge_underscores = true
+emoji=true
+module.system=haste
+munge_underscores=true
 module.name_mapper='^[./a-zA-Z0-9$_-]+\.\(bmp\|gif\|jpg\|jpeg\|png\|psd\|svg\|webp\|m4v\|mov\|mp4\|mpeg\|mpg\|webm\|aac\|aiff\|caf\|m4a\|mp3\|wav\|html\|pdf\)$' -> 'RelativeImageStub'
 suppress_type=$FlowFixMe
 suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe
-unsafe.enable_getters_and_setters = true
 
 [version]
 
