@@ -41,23 +41,3 @@ export function updateGoal(uid, goal, changes) {
             });
     };
 }
-
-// test action for opening congrats modal via redux
-export function openModal () {
-    return (dispatch: Object => *) => {
-
-        dispatch({
-            type: types.MODAL_OPENED,
-            payload: {isModalVisible: true}
-        });
-    };
-}
-export function hideModal() {
-    return (dispatch: Object => *) => {
-
-        dispatch({
-            type: types.MODAL_CLOSED,
-            payload: {isModalVisible: false}
-        });
-    };
-}

@@ -56,7 +56,7 @@ const GoalMessageBox = ({message, goal, gotoDetails, updateGoal}: Props) => (
                     <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                         <Text style={styles.statusText}>{status(goal)}</Text>
                         <TouchableHighlight
-                            onPress={updateGoal({submittedForReview: !goal.submittedForReview})}
+                            onPress={updateGoal({submittedForReview: !goal.submittedForReview, snoozed: !goal.snoozed})} //snoonzed is stand in for congratulationsGiven
                             style={[styles.goalButton, {backgroundColor: '#E4845D', alignSelf: 'stretch'}]}
                         >
                             <Icon

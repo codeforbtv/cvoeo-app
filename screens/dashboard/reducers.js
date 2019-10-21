@@ -30,16 +30,6 @@ export function reducers(state = initialState.login, action) {
         case types.LOGOUT_SUCCESSFUL:
             return initialState.login;
 
-        case types.UPDATE_GOAL_SUCCESS:
-            return {...state,
-                isModalVisible: true // action.modalVisible not working as intended returns undefind
-            };
-            case types.MODAL_CLOSED:
-            return {...state,
-                isModalVisible: false // action.modalVisible not working as intended returns undefind
-            };
-
-
         default:
             return state;
     }

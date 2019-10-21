@@ -40,7 +40,6 @@ type Props = {
   completedGoals: Array<Object>,
   incompleteGoals: Array<Object>,
   submittedGoals: Array<Object>
-//   isModalVisible: Boolean,
 };
 
 class Dashboard extends Component<Props> {
@@ -110,8 +109,7 @@ class Dashboard extends Component<Props> {
             completedGoals,
             incompleteGoals,
             submittedGoals,
-            navigation,
-            isModalVisible
+            navigation
         } = this.props;
         const incentivesEarned = profile.incentivesEarned || 0;
         const incentivesAvailable = 500;
@@ -292,16 +290,8 @@ class Dashboard extends Component<Props> {
                         />
                         {this.state.expanded3 && allButFirst(completedGoals)}
                     </GoalsBox>
-                    {/* Modal for goal completion. TODO initial state, switch close modal to redux, ensure modal only opens once for each trigger */}
-                    <CongratulationsModal goal={`You completed "Open matched savings account"`} visibility={isModalVisible} hideModal={this.props.actions.hideModal} />
-                    <TouchableHighlight
-                        onPress={() => {
-                            this.props.actions.openModal();
-                        }}
-                    >
-                        <Text>Show Modal</Text>
-                    </TouchableHighlight>
-                    
+                    {/* putting modal in GoalMessageBox insted would only show Modal when it is expanded. soozed is being used temporaraly untile i learn how to make every goal have a congratulationsGiven value */}
+                    {submittedGoals.map(goal => (<CongratulationsModal goal={goal} key={goal.id} message={[goal.title]} visibility={goal.submittedForReview && goal.snoozed} updateGoal={updateGoal(goal)} />))}
                 </ScrollView>
             </Container>
         );
@@ -319,9 +309,7 @@ const mapStateToProps = state => {
         goal => goal.submittedForReview,
         otherGoals || []
     );
-    // test for modal
-    const isModalVisible = state.dashboard.isModalVisible || false;
-    return { session, profile, completedGoals, submittedGoals, incompleteGoals, isModalVisible };
+    return { session, profile, completedGoals, submittedGoals, incompleteGoals};
 };
 
 const mapDispatchToProps = dispatch => ({

@@ -1,4 +1,4 @@
-import React, {Component} from 'React';
+import React from 'React';
 import {
     Modal,
     Text,
@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 // TODO completing a goal should triger the modal but only once
-const CongratulationsModal = ({visibility, goal, hideModal}) => (
+const CongratulationsModal = ({visibility, message, updateGoal, goal}) => (
     <View>
         <View style={styles.container}>
             <Modal
@@ -26,15 +26,14 @@ const CongratulationsModal = ({visibility, goal, hideModal}) => (
                         style={styles.gifImage}
                         resizeMode='contain'
                     />
-                    {/* <Text>{`${this.props.hideModle}`}</Text> */}
                     <Text style={styles.header}>Congratulations!</Text>
-                    <Text style={styles.goalText}>{goal}</Text>
+                    <Text style={styles.goalText}>{message}</Text>
                     <View style={styles.footer}>
                         <View style={styles.line} />
                         <TouchableHighlight
-                            onPress={() => {
-                                hideModal();
-                            }}
+                            onPress={
+                                updateGoal({snoozed: false}) // snoozed stand in for congratulationsGiven
+                            }
                         >
                             <Text style={styles.exit}>Got it</Text>
                         </TouchableHighlight>
