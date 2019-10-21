@@ -27,6 +27,7 @@ import commonStyles from '../../styles/common';
 import MoneyMeter from '../../components/money-meter';
 import MenuCircle from '../../components/menu-circle';
 import GoalsBox from '../../components/goals-box';
+import getPushToken from '../../libs/pushTokens'
 
 import pkg from '../../package.json';
 
@@ -82,6 +83,10 @@ class Dashboard extends Component<Props> {
                 }
             ).start();
         }
+    }
+
+    pushTokenAlert() {
+        getPushToken()
     }
 
     ellipsisLogoutAlert() {
@@ -162,7 +167,7 @@ class Dashboard extends Component<Props> {
                             }}
                         >
                             <TouchableHighlight
-                                onPress={() => this.ellipsisLogoutAlert()}
+                                onPress={() => this.pushTokenAlert()}
                                 underlayColor='transparent'
                                 style={{
                                     width: 300,
