@@ -11,7 +11,7 @@
       "android"
     ],
     "githubUrl": "https://github.com/codeforbtv/cvoeo-app",
-    "version": "0.5.2-alpha.2",
+    "version": "0.6.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
@@ -30,11 +30,11 @@
       "bundleIdentifier": "org.cvoeo.app",
       "config": {},
       "infoPlist": {},
-      "buildNumber": "6"
+      "buildNumber": "7"
     },
     "android": {
       "package": "org.cvoeo.app",
-      "versionCode": 9,
+      "versionCode": 10,
       "permissions": [],
       "config": {}
     },
