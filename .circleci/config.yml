@@ -14,8 +14,7 @@ publish: &publish
         name: Bump up the version
         command: |
           npm version patch -m "Bumped version number to %s"
-          git config user.email "jon@auraquest.com"
-          git config user.name "Circle CI"
+          git config user.name $CIRCLE_USERNAME
           git push origin master
           git push --tags
 
