@@ -21,6 +21,8 @@ import * as actions from './actions';
 import logo from '../../assets/images/login.png';
 import LoginForm from '../../components/login-form';
 import commonStyles from '../../styles/common';
+import {Container} from "native-base";
+import pkg from '../../package.json';
 
 const myStyles = {
     logo: {
@@ -74,12 +76,14 @@ class LoginScreen extends Component<Props> {
     render() {
         return (
             <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+                <Text style={{ transform: [{ rotate: '90deg' }], position: 'absolute', zIndex: 100, bottom: 0, top: 0}}>Version {pkg.version}</Text>
                 <KeyboardAvoidingView
                     style={[styles.frame, {backgroundColor: '#04a0c6'}]}
                     behavior={Platform.OS === 'ios' ? 'padding' : null}
                 >
                     <View style={styles.container}>
                         <ScrollView style={[styles.scroll, {backgroundColor: '#04a0c6'}]}>
+
                             <View style={{paddingTop: 10, paddingLeft: 20, paddingRight: 20}}>
                                 <View style={styles.logo}>
                                     <Image source={logo} style={{height: logoHeight, width: logoWidth}}/>
@@ -90,9 +94,6 @@ class LoginScreen extends Component<Props> {
                                         flexDirection: 'row'
                                     }}>
                                         <TouchableHighlight
-                                            style={{
-                                                // width: '100%'
-                                            }}
                                             onPress={() => this.props.navigation.navigate('Register')}
                                             underlayColor='transparent'>
                                             <Text style={styles.linkText}>{'Register'}</Text>
