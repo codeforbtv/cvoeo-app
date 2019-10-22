@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import Svg,{
+import Svg, {
     Circle,
     Ellipse,
     G,
@@ -21,7 +21,7 @@ import Svg,{
     Stop,
     ClipPath,
     Pattern,
-    Mask,
+    Mask
 } from 'react-native-svg';
 
 type Props = { percentComplete: number };
