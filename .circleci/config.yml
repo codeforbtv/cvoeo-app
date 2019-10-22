@@ -13,8 +13,8 @@ publish: &publish
     - run:
         name: Bump up the version
         command: |
-          npm version patch -m "Bumped version number to %s"
           git config user.name $CIRCLE_USERNAME
+          npm version patch -m "Bumped version number to %s"
           git push origin master
           git push --tags
 
