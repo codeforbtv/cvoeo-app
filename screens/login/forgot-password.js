@@ -1,7 +1,8 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Alert, TouchableOpacity, TouchableHighlight, SafeAreaView, StyleSheet, Text, TextInput, View, Fragment} from 'react-native';
+import { Alert, TouchableOpacity, TouchableHighlight, SafeAreaView, StyleSheet, Text, TextInput, View, 
+    KeyboardAvoidingView, Fragment} from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -66,8 +67,7 @@ class ForgotPassword extends Component<Props> {
                                 underlayColor='transparent'>
                                 <View style={{
                                     display: 'flex',
-                                    flexDirection: 'row',
-                                    marginBottom: '38%'
+                                    flexDirection: 'row'
                                 }}>
                                     <Icon
                                         name='angle-left'
@@ -84,59 +84,66 @@ class ForgotPassword extends Component<Props> {
                                 </View>
                             </TouchableHighlight>
 
+                            <KeyboardAvoidingView style={{
+                                flex: 1,
+                                flexDirection:'row',
+                                alignItems:'center',
+                                justifyContent:'center'
+                            }} behavior="padding" enabled>
 
-                            <View style={{
-                                alignSelf: 'center',
-                                height: '35%',
-                                width: '91%',
-                                padding: 10,
-                                backgroundColor: '#fff',
-                                borderColor: '#020202',
-                                borderWidth: 2,
-                            }}>
-                                {this.state.passwordResetSent
-                                    ? (
-                                        <React.Fragment>
+                                <View style={{
+                                    alignSelf: 'center',
+                                    height: 175,
+                                    width: '91%',
+                                    padding: 10,
+                                    backgroundColor: '#fff',
+                                    borderColor: '#020202',
+                                    borderWidth: 2,
+                                }}>
+                                    {this.state.passwordResetSent
+                                        ? (
+                                            <React.Fragment>
 
-                                                <Text style={{
-                                                    color: '#020202',
-                                                    fontSize: 15,
-                                                    fontWeight: 'bold',
-                                                    margin: 30,
-                                                    textAlign: 'center',
-                                                    paddingRight: 10
-                                                }}>{'Please check your email for the password reset link. \n\n Once you\'ve set a new password, please return to the login screen.'}</Text>
-                                            
-                                        </React.Fragment>
-                                    ) : (
-                                        <React.Fragment>
+                                                    <Text style={{
+                                                        color: '#020202',
+                                                        fontSize: 15,
+                                                        fontWeight: 'bold',
+                                                        margin: 30,
+                                                        textAlign: 'center',
+                                                        paddingRight: 10
+                                                    }}>{'Please check your email for the password reset link. \n\n Once you\'ve set a new password, please return to the login screen.'}</Text>
+                                                
+                                            </React.Fragment>
+                                        ) : (
+                                            <React.Fragment>
 
-                                                <Text style={{
-                                                    color: '#020202',
-                                                    fontSize: 15,
-                                                    fontWeight: 'bold',
-                                                    marginBottom: 36,
-                                                    textAlign: 'right',
-                                                    paddingRight: 10
-                                                }}>{'Forgot Password?'}</Text>
-                                                <Text style={{ color: '#979797', fontWeight: 'bold' }}>{'  Email Address'}</Text>
-                                                <TextInput
-                                                    autoCorrect={false}
-                                                    value={this.state.email}
-                                                    keyBoardType='email-address'
-                                                    placeholder=''
-                                                    onChangeText={this.onChangeState('email')}
-                                                    style={[styles.textInput, { color: '#979797', borderColor: '#979797', borderWidth: 1 }]}
-                                                    underlineColorAndroid={'transparent'}
-                                                />
-                                                <TouchableOpacity style={styles.button}
-                                                    onPress={this.onButtonPress}>
-                                                    <Text style={styles.buttonText}>{'Reset Password'}</Text>
-                                                </TouchableOpacity>
-                                        </React.Fragment>
-                                    )
-                                }
-                            </View>
+                                                    <Text style={{
+                                                        color: '#020202',
+                                                        fontSize: 15,
+                                                        fontWeight: 'bold',
+                                                        marginBottom: 36,
+                                                        textAlign: 'right',
+                                                        paddingRight: 10
+                                                    }}>{'Forgot Password?'}</Text>
+                                                    <Text style={{ color: '#979797', fontWeight: 'bold' }}>{'  Email Address'}</Text>
+                                                    <TextInput
+                                                        autoCorrect={false}
+                                                        value={this.state.email}
+                                                        keyBoardType='email-address'
+                                                        placeholder=''
+                                                        onChangeText={this.onChangeState('email')}
+                                                        style={[styles.textInput, { color: '#979797', borderColor: '#979797', borderWidth: 1 }]}
+                                                        underlineColorAndroid={'transparent'}
+                                                    />
+                                                    <TouchableOpacity style={styles.button}
+                                                        onPress={this.onButtonPress}>
+                                                        <Text style={styles.buttonText}>{'Reset Password'}</Text>
+                                                    </TouchableOpacity>
+                                            </React.Fragment>
+                                        )
+                                    }
+                                </View>
+                            </KeyboardAvoidingView>
                         </View>
                     </View>
                 </View>
