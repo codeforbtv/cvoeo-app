@@ -94,9 +94,6 @@ class LoginScreen extends Component<Props> {
                                         flexDirection: 'row'
                                     }}>
                                         <TouchableHighlight
-                                            style={{
-                                                // width: '100%'
-                                            }}
                                             onPress={() => this.props.navigation.navigate('Register')}
                                             underlayColor='transparent'>
                                             <Text style={styles.linkText}>{'Register'}</Text>
