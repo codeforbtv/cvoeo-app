@@ -9,7 +9,7 @@ import {
     Animated,
     Dimensions,
     Image,
-    Platform, SafeAreaView,
+    Platform,
     ScrollView,
     StatusBar,
     StyleSheet,
@@ -34,7 +34,7 @@ const styles = StyleSheet.create(commonStyles);
 
 YellowBox.ignoreWarnings(['Setting a timer']);
 
-type Props = {
+type PropsType = {
     actions: Object,
     profile: Object,
     navigation: Object,
@@ -44,7 +44,7 @@ type Props = {
 };
 
 
-class Dashboard extends Component<Props> {
+class Dashboard extends Component<PropsType> {
 
     constructor(props) {
         super(props);
