@@ -11,6 +11,13 @@ publish: &publish
         command: npm install
 
     - run:
+        name: Bump up the version
+        command: |
+          npm version patch -m "Bumped version number to %s"
+          git push origin master
+          git push --tags
+
+    - run:
         name: Login into Expo
         command: npx expo-cli login -u $EXPO_USERNAME -p $EXPO_PASSWORD
 
