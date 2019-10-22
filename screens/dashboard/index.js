@@ -98,18 +98,6 @@ class Dashboard extends Component<Props> {
         );
     }
 
-    toggle2() {
-        this.setState({
-            expanded2: !this.state.expanded2
-        });
-    }
-
-    toggle3() {
-        this.setState({
-            expanded3: !this.state.expanded3
-        });
-    }
-
     render() {
         const {actions, profile, completedGoals, incompleteGoals, submittedGoals, navigation} = this.props;
         const incentivesEarned = profile.incentivesEarned || 0;
