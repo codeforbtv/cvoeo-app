@@ -101,8 +101,8 @@ class Dashboard extends Component<Props> {
     render() {
         const {actions, profile, completedGoals, incompleteGoals, submittedGoals, navigation} = this.props;
         const incentivesEarned = profile.incentivesEarned || 0;
-        const incentivesAvailable = 500;
-        const percentComplete = (incentivesEarned / incentivesAvailable) * 100;
+        const incentivesAvailable = 750;
+        const percentComplete = Math.floor((incentivesEarned / incentivesAvailable) * 100);
         const updateGoal = (uid => goal => changes => () => {
             actions.updateGoal(uid, goal, changes);
         })(profile.uid);
@@ -217,7 +217,7 @@ class Dashboard extends Component<Props> {
                             </View>
                             <View style={styles.smallerBlock}>
                                 <Text style={styles.bigBlock}/>
-                                <Text style={[styles.money, styles.start]}>{'$500'}</Text>
+                                <Text style={[styles.money, styles.start]}>{'$' + incentivesAvailable}</Text>
                             </View>
                             <Text style={styles.moreButton}/>
                         </View>
