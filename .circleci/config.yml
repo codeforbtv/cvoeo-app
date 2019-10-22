@@ -31,8 +31,6 @@ jobs:
     environment:
       EXPO_RELEASE_CHANNEL: dev
     <<: *publish
-
-  publish_to_expo_prod:
     environment:
       EXPO_RELEASE_CHANNEL: default
     <<: *publish
