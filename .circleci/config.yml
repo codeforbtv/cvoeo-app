@@ -14,7 +14,7 @@ publish: &publish
         name: Bump up the version
         command: |
           git config user.name $CIRCLE_USERNAME
-          npm version patch -m "Bumped version number to %s"
+          npm version patch -m "Bumped version number to %s [ci skip]"
           git push origin master
           git push --tags
 
@@ -41,13 +41,13 @@ workflows:
   version: 2
   my_app:
     jobs:
-#      - publish_to_expo_dev:
-#          filters:
-#            branches:
-#              only: master
+      - publish_to_expo_dev:
+          filters:
+            branches:
+              only: master
       - publish_to_expo_prod:
-#          requires:
-#            - publish_to_expo_dev
+          requires:
+            - publish_to_expo_dev
           filters:
             branches:
               only: master
