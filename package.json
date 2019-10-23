@@ -1,5 +1,5 @@
 {
-  "version": "0.6.20",
+  "version": "0.6.21",
   "license": "SEE LICENSE IN LICENSE.MD",
   "name": "moneyOnMyMind",
   "main": "node_modules/expo/AppEntry.js",
