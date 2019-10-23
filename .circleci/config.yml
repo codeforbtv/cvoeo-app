@@ -41,13 +41,13 @@ workflows:
   version: 2
   my_app:
     jobs:
-      - publish_to_expo_dev:
-          filters:
-            branches:
-              only: master
+#      - publish_to_expo_dev:
+#          filters:
+#            branches:
+#              only: master
       - publish_to_expo_prod:
-          requires:
-            - publish_to_expo_dev
+#          requires:
+#            - publish_to_expo_dev
           filters:
             branches:
               only: master
