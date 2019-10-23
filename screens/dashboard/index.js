@@ -9,7 +9,7 @@ import {
     Animated,
     Dimensions,
     Image,
-    Platform,
+    Platform, SafeAreaView,
     ScrollView,
     StatusBar,
     StyleSheet,
@@ -28,6 +28,8 @@ import MoneyMeter from '../../components/money-meter';
 import MenuCircle from '../../components/menu-circle';
 import GoalsBox from '../../components/goals-box';
 import CongratulationsModal from '../../components/congratulations-modal';
+
+import pkg from '../../package.json';
 
 const styles = StyleSheet.create(commonStyles);
 
@@ -89,18 +91,6 @@ class Dashboard extends Component<Props> {
         );
     }
 
-    toggle2() {
-        this.setState({
-            expanded2: !this.state.expanded2
-        });
-    }
-
-    toggle3() {
-        this.setState({
-            expanded3: !this.state.expanded3
-        });
-    }
-
     render() {
         const {
             actions,
@@ -111,8 +101,8 @@ class Dashboard extends Component<Props> {
             navigation
         } = this.props;
         const incentivesEarned = profile.incentivesEarned || 0;
-        const incentivesAvailable = 500;
-        const percentComplete = (incentivesEarned / incentivesAvailable) * 100;
+        const incentivesAvailable = 750;
+        const percentComplete = Math.floor((incentivesEarned / incentivesAvailable) * 100);
         const updateGoal = (uid => goal => changes => () => {
             actions.updateGoal(uid, goal, changes);
         })(profile.uid);
@@ -226,8 +216,8 @@ class Dashboard extends Component<Props> {
                                 <MoneyMeter percentComplete={percentComplete} />
                             </View>
                             <View style={styles.smallerBlock}>
-                                <Text style={styles.bigBlock} />
-                                <Text style={[styles.money, styles.start]}>{'$500'}</Text>
+                                <Text style={styles.bigBlock}/>
+                                <Text style={[styles.money, styles.start]}>{'$' + incentivesAvailable}</Text>
                             </View>
                             <Text style={styles.moreButton} />
                         </View>
