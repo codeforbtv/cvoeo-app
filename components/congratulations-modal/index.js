@@ -8,9 +8,11 @@ import {
     Alert,
     StyleSheet
 } from 'react-native';
+import myStyles from './styles';
 
-// TODO completing a goal should triger the modal but only once
-const CongratulationsModal = ({visibility, message, updateGoal, goal}) => (
+const styles = StyleSheet.create(myStyles);
+
+const CongratulationsModal = ({visibility, message, updateGoal}) => (
     <View>
         <View style={styles.container}>
             <Modal
@@ -31,9 +33,7 @@ const CongratulationsModal = ({visibility, message, updateGoal, goal}) => (
                     <View style={styles.footer}>
                         <View style={styles.line} />
                         <TouchableHighlight
-                            onPress={
-                                updateGoal({snoozed: false}) // snoozed stand in for congratulationsGiven
-                            }
+                            onPress={updateGoal({congratulationsViewed: true})}
                         >
                             <Text style={styles.exit}>Got it</Text>
                         </TouchableHighlight>
@@ -45,51 +45,3 @@ const CongratulationsModal = ({visibility, message, updateGoal, goal}) => (
 );
 
 export default CongratulationsModal;
-
-// TODO move to a styles.js for consistency
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    gifImage: {
-        width: '100%'
-    },
-    modal: {
-        flex: 1,
-        alignItems: 'center'
-    },
-    header:{
-        flex: 1,
-        fontSize: 30,
-        color: '#DC552B',
-        padding: 10,
-        fontWeight: 'bold',
-        fontFamily: 'System'
-    },
-    footer:{
-        flex: 2,
-        width: '100%'
-    },
-    line:{
-        paddingTop: 20,
-        borderBottomColor: '#eee',
-        borderBottomWidth: 2,
-        width: '100%'
-    },
-    exit: {
-        fontSize: 24,
-        textAlign: 'right',
-        color: 'blue',
-        paddingHorizontal: 20,
-        paddingVertical: 10
-    },
-    goalText: {
-        flex: 1.5,
-        fontSize: 24,
-        color: '#3f2949',
-        textAlign: 'center',
-        fontFamily: 'System'
-    }
-});

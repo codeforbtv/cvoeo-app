@@ -14,6 +14,8 @@ export default class Goal {
     remind: Date;
     submittedForReview: boolean;
     requiresReview: boolean;
+    congratulationsViewed: boolean;
+    
 
     constructor(args = {}) {
         this.id = typeof args.id === 'string'
@@ -44,6 +46,7 @@ export default class Goal {
         this.snoozed = typeof args.snoozed === 'boolean' ? args.snoozed : false;
         this.submittedForReview = typeof args.submittedForReview === 'boolean' ? args.submittedForReview : false;
         this.requiresReview = typeof args.requiresReview === 'boolean' ? args.requiresReview : false;
+        this.congratulationsViewed = typeof args.congratulationsViewed === 'boolean' ? args.congratulationsViewed : false;
     }
 
     static create(args: ?Object = {}, id?: string) {

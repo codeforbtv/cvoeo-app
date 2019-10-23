@@ -1,9 +1,9 @@
 // @flow
 
-import React, { Component } from "react";
-import { bindActionCreators } from "redux";
-import { Container } from "native-base";
-import { LinearGradient } from "expo-linear-gradient";
+import React, {Component} from 'react';
+import {bindActionCreators} from 'redux';
+import {Container} from 'native-base';
+import {LinearGradient} from 'expo-linear-gradient';
 import {
     Alert,
     Animated,
@@ -17,21 +17,21 @@ import {
     TouchableHighlight,
     View,
     YellowBox
-} from "react-native";
-import { connect } from "react-redux";
-import Icon from "react-native-vector-icons/FontAwesome5";
-import * as R from "ramda";
-import GoalMessageBox from "../../components/goal-message-box";
-import * as actionCreators from "./actions";
-import commonStyles from "../../styles/common";
-import MoneyMeter from "../../components/money-meter";
-import MenuCircle from "../../components/menu-circle";
-import GoalsBox from "../../components/goals-box";
-import CongratulationsModal from "../../components/congratulations-modal";
+} from 'react-native';
+import {connect} from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import * as R from 'ramda';
+import GoalMessageBox from '../../components/goal-message-box';
+import * as actionCreators from './actions';
+import commonStyles from '../../styles/common';
+import MoneyMeter from '../../components/money-meter';
+import MenuCircle from '../../components/menu-circle';
+import GoalsBox from '../../components/goals-box';
+import CongratulationsModal from '../../components/congratulations-modal';
 
 const styles = StyleSheet.create(commonStyles);
 
-YellowBox.ignoreWarnings(["Setting a timer"]);
+YellowBox.ignoreWarnings(['Setting a timer']);
 
 type Props = {
   actions: Object,
@@ -52,12 +52,11 @@ class Dashboard extends Component<Props> {
             expanded2: false,
             expanded3: false,
             menuScale: new Animated.Value(0.01),
-            isModalVisible: false
         };
         this.icons = {
-            dots: "ellipsis-v",
-            open: "angle-down",
-            close: "angle-up"
+            dots: 'ellipsis-v',
+            open: 'angle-down',
+            close: 'angle-up'
         };
     }
 
@@ -80,13 +79,13 @@ class Dashboard extends Component<Props> {
         const logoutCallback = this.props.actions.logout;
 
         Alert.alert(
-            "Do you want to logout?",
-            "This will return you to the login screen.",
+            'Do you want to logout?',
+            'This will return you to the login screen.',
             [
-                { text: "Logout", onPress: logoutCallback },
-                { text: "Cancel", onPress: this.ellipsisToggle, style: "cancel" }
+                {text: 'Logout', onPress: logoutCallback},
+                {text: 'Cancel', onPress: this.ellipsisToggle, style: 'cancel'}
             ],
-            { cancelable: false }
+            {cancelable: false}
         );
     }
 
@@ -121,7 +120,7 @@ class Dashboard extends Component<Props> {
             R.map(goal => (
                 <GoalMessageBox
                     goal={goal}
-                    gotoDetails={() => navigation.navigate("GoalDetails", { goal })}
+                    gotoDetails={() => navigation.navigate('GoalDetails', {goal})}
                     message={[goal.title, goal.detail]}
                     key={goal.id}
                     updateGoal={!goal.completed ? updateGoal(goal) : () => void 0}
@@ -133,49 +132,49 @@ class Dashboard extends Component<Props> {
       incompleteGoals.length > 0
           ? [incompleteGoals[0].title, incompleteGoals[0].detail]
           : [
-              "Let's work together on some goals to move you forward.",
-              "Schedule an appointment with your counselor today!"
+              'Let\'s work together on some goals to move you forward.',
+              'Schedule an appointment with your counselor today!'
           ];
         const firstCompletedGoalVerbiage =
       completedGoals.length > 0
           ? [completedGoals[0].title, completedGoals[0].detail]
-          : ["Keep up the good work.", "You'll finish a goal soon!"];
+          : ['Keep up the good work.', 'You\'ll finish a goal soon!'];
         const firstSubmittedGoalVerbiage =
       submittedGoals.length > 0
           ? [submittedGoals[0].title, submittedGoals[0].detail]
-          : ["You have no goals pending review", "Keep on working"];
+          : ['You have no goals pending review', 'Keep on working'];
         const dots = this.icons.dots;
 
         return (
             <Container>
-                {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+                {Platform.OS === 'ios' && <StatusBar barStyle='default' />}
                 <View style={styles.dashRow}>
                     <View style={styles.titleRow}>
                         <Image
-                            source={require("../../assets/images/FinancialFuturesLogo.jpg")}
+                            source={require('../../assets/images/FinancialFuturesLogo.jpg')}
                             style={{
-                                position: "absolute",
+                                position: 'absolute',
                                 left: -55,
                                 top: 18,
-                                width: "100%",
+                                width: '100%',
                                 height: 40,
-                                resizeMode: "contain"
+                                resizeMode: 'contain'
                             }}
                         />
-                        <Text style={[styles.title, { marginLeft: 100 }]}> </Text>
+                        <Text style={[styles.title, {marginLeft: 100}]}> </Text>
                     </View>
                     <View style={styles.dots}>
                         <Animated.View
                             style={{
-                                position: "absolute",
-                                transform: [{ scale: this.state.menuScale }],
+                                position: 'absolute',
+                                transform: [{scale: this.state.menuScale}],
                                 top: -125,
                                 left: -133
                             }}
                         >
                             <TouchableHighlight
                                 onPress={() => this.ellipsisLogoutAlert()}
-                                underlayColor="transparent"
+                                underlayColor='transparent'
                                 style={{
                                     width: 300,
                                     height: 300,
@@ -190,20 +189,20 @@ class Dashboard extends Component<Props> {
                         </Animated.View>
                         <TouchableHighlight
                             onPress={this.ellipsisToggle}
-                            underlayColor="transparent"
+                            underlayColor='transparent'
                         >
                             <Icon name={dots} style={styles.ellipsis} />
                         </TouchableHighlight>
                     </View>
                 </View>
                 <LinearGradient
-                    colors={["#fff", "#04a0c6"]}
+                    colors={['#fff', '#04a0c6']}
                     style={{
-                        position: "absolute",
+                        position: 'absolute',
                         left: 0,
                         right: 0,
                         top: 60,
-                        height: Dimensions.get("window").height - 60,
+                        height: Dimensions.get('window').height - 60,
                         zIndex: -1
                     }}
                 />
@@ -221,30 +220,30 @@ class Dashboard extends Component<Props> {
                         <View style={styles.dashRow}>
                             <View style={styles.smallerBlock}>
                                 <Text style={styles.bigBlock} />
-                                <Text style={[styles.money, styles.end]}>{"$0"}</Text>
+                                <Text style={[styles.money, styles.end]}>{'$0'}</Text>
                             </View>
                             <View style={styles.bottomLine}>
                                 <MoneyMeter percentComplete={percentComplete} />
                             </View>
                             <View style={styles.smallerBlock}>
                                 <Text style={styles.bigBlock} />
-                                <Text style={[styles.money, styles.start]}>{"$500"}</Text>
+                                <Text style={[styles.money, styles.start]}>{'$500'}</Text>
                             </View>
                             <Text style={styles.moreButton} />
                         </View>
                     </View>
                     <GoalsBox
                         onExpand={isExpanded => {
-                            this.setState({ expanded1: isExpanded });
+                            this.setState({expanded1: isExpanded});
                         }}
                         showExpandButton={(incompleteGoals || []).length > 1}
-                        title={"CURRENT GOALS:"}
+                        title={'CURRENT GOALS:'}
                     >
                         <GoalMessageBox
                             goal={incompleteGoals[0]}
                             message={currentGoalVerbiage}
                             gotoDetails={() =>
-                                navigation.navigate("GoalDetails", {
+                                navigation.navigate('GoalDetails', {
                                     goal: incompleteGoals[0] || {}
                                 })
                             }
@@ -254,16 +253,16 @@ class Dashboard extends Component<Props> {
                     </GoalsBox>
                     <GoalsBox
                         onExpand={isExpanded => {
-                            this.setState({ expanded2: isExpanded });
+                            this.setState({expanded2: isExpanded});
                         }}
                         showExpandButton={(submittedGoals || []).length > 1}
-                        title={"SUBMITTED GOALS:"}
+                        title={'SUBMITTED GOALS:'}
                     >
                         <GoalMessageBox
                             goal={submittedGoals[0]}
                             message={firstSubmittedGoalVerbiage}
                             gotoDetails={() =>
-                                navigation.navigate("GoalDetails", {
+                                navigation.navigate('GoalDetails', {
                                     goal: submittedGoals[0] || {}
                                 })
                             }
@@ -273,15 +272,15 @@ class Dashboard extends Component<Props> {
                     </GoalsBox>
                     <GoalsBox
                         onExpand={isExpanded => {
-                            this.setState({ expanded3: isExpanded });
+                            this.setState({expanded3: isExpanded});
                         }}
                         showExpandButton={(completedGoals || []).length > 1}
-                        title={"COMPLETED GOALS:"}
+                        title={'COMPLETED GOALS:'}
                     >
                         <GoalMessageBox
                             goal={completedGoals[0]}
                             gotoDetails={() =>
-                                navigation.navigate("GoalDetails", {
+                                navigation.navigate('GoalDetails', {
                                     goal: completedGoals[0] || {}
                                 })
                             }
@@ -290,8 +289,12 @@ class Dashboard extends Component<Props> {
                         />
                         {this.state.expanded3 && allButFirst(completedGoals)}
                     </GoalsBox>
-                    {/* putting modal in GoalMessageBox insted would only show Modal when it is expanded. soozed is being used temporaraly untile i learn how to make every goal have a congratulationsGiven value */}
-                    {submittedGoals.map(goal => (<CongratulationsModal goal={goal} key={goal.id} message={[goal.title]} visibility={goal.submittedForReview && goal.snoozed} updateGoal={updateGoal(goal)} />))}
+                    {submittedGoals.map(goal => (
+                        <CongratulationsModal
+                            goal={goal} key={goal.id}
+                            message={[goal.title]}
+                            visibility={goal.submittedForReview && !goal.congratulationsViewed}
+                            updateGoal={updateGoal(goal)} />))}
                 </ScrollView>
             </Container>
         );
@@ -309,7 +312,7 @@ const mapStateToProps = state => {
         goal => goal.submittedForReview,
         otherGoals || []
     );
-    return { session, profile, completedGoals, submittedGoals, incompleteGoals};
+    return {session, profile, completedGoals, submittedGoals, incompleteGoals};
 };
 
 const mapDispatchToProps = dispatch => ({
