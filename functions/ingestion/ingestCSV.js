@@ -119,4 +119,34 @@ const ingestCSV = functions.https.onRequest((request, response) => {
      });
 });
 
+/**
+ * A helper function to neatly parse the CSV file that we are ingsting.
+ */
+function parseCSVFromServer(fileContent) {
+  //papaparse (https://www.papaparse.com)returns 'results' which has an array 'data'.
+  // Each entry in 'data' is an object, a set of key/values that match the header at the head of the csv file.
+    Papa.parse(fileContent, {
+      header: true,
+      skipEmptyLines: true,
+      complete: function(results) {
+        console.log("Found "+ results.data.length + " lines in file content\n");
+        //printing all the key values in the csv file to console ** for now **
+        // Next step is to write this information to the firebase db.
+        for (var i = 0;i<results.data.length ;i++) {
+          console.log("Entry number", i, ":");
+          console.log("---------------");
+          for (var key in results.data[i]) {
+              if(results.data[i][key] != "") {
+                console.log("key " + key + " has value " + results.data[i][key]);
+              }
+              else {
+                console.log("key " + key + " has no value ");
+              }
+          }
+        console.log("**************************************\n");
+        }
+     }
+  });
+}
+
 module.exports = ingestCSV;
