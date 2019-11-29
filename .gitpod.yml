@@ -4,17 +4,21 @@ tasks:
 - before: >
       npm install &&
       npm install -g expo-cli &&
-      npm install flow
+      npm install -g flow
   command: expo start --host tunnel
 
 ports:
-- port: 19000-19002
+- port: 19000
+  onOpen: ignore
+- port: 19001
+  onOpen: ignore
+- port: 19002
   onOpen: ignore
 - port: 4040
   onOpen: ignore
 - port: 5037
   onOpen: ignore
-
+  
 # The 'Flow Language Support' Visual Studio Code extension was installed in Gitpod by downloading the .vsix file from the
 # extension homepage (https://marketplace.visualstudio.com/items?itemName=flowtype.flow-for-vscode) as per Gitpod
 # instructions (https://www.gitpod.io/docs/vscode-extensions/).
@@ -51,4 +55,5 @@ ports:
 # =================
 vscode:
   extensions:
-    - flowtype.flow-for-vscode@1.5.0:AwOT6wgHTF43loZQCAUMLA== 
+    - flowtype.flow-for-vscode@1.5.0:AwOT6wgHTF43loZQCAUMLA==
+    - msjsdiag.vscode-react-native@0.13.1:tdohRIQ/WF4Fr/4DsMNr+A==
