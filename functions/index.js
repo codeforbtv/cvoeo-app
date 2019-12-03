@@ -3,6 +3,11 @@ const Client = require('ssh2-sftp-client');
 const AdmZip = require('adm-zip');
 const sort = require('fast-sort');
 const Papa = require('papaparse');
+const admin = require('firebase-admin');
+const Goal = require('./models-functions/goal');
+
+admin.initializeApp();
+const db = admin.firestore();
 
 exports.helloWorld = functions.https.onRequest((request, response) => {
 	response.send("Hello from Firebase!");
@@ -13,6 +18,63 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 	 catch (error) {
 		 console.log(`Got the following error when trying to access credentials: ${{error}}`)
 	 }
+});
+
+exports.SetGoalAsAchieved = functions.https.onRequest((request, response) => {
+  
+  // userID and goalID values will be input paramters of this function
+  let userID = 'bGmQomOoKLZkeTpA6MT76s8JsRl2';
+  let goalID = 'lAfOUhah7ncZvpxxYBvN';
+  
+  let userDoc = db.collection('users').doc(userID);
+  let goalDoc = userDoc.collection('goals').doc(goalID);
+
+  goalDoc.update({achieved: true});
+  
+  response.send('success');
+  
+  // const newGoal = Goal.create();/* using the goal data model
+
+ /* 
+  let user = {
+    uid: myUID,
+    email: 'iritirit@gmail.com',
+    displayName: 'Irit',
+    created: Date.now()
+  };
+
+  docRef.set(user);
+
+  // add goal with firebase generated id
+  let addDoc = goalsRef.add({
+    name: 'GoalWithRef',
+    achieved: false
+  }).then(ref => {
+    console.log('Added document with ID: ', ref.id);
+  });
+
+  // add goal with named id
+  let myGoal = goalsRef.doc('FirstGoal').set({
+    name: 'FirstGoal',
+    achieved: false,
+
+  });
+
+  // update a field in a goal
+  myUserDoc.get()
+    .then(doc => {
+      if (!doc.exists) {
+        console.log('No such document!');
+      } else {          
+          console.log('Document data:', doc.data());
+          console.log('Name: ', doc.data().displayName);
+        }
+    })
+    .catch(err => {
+      console.log('Error getting document', err);
+    });
+    */
+    
 });
 
 exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
