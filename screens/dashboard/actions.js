@@ -46,11 +46,11 @@ export function updateGoal(uid, goal, changes) {
             .then(() => {
                 dispatch({
                     type: types.UPDATE_GOAL_SUCCESS,
-                    payload: {data: newGoal}
+                    payload: {data: updatedGoal}
                 });
             })
             .catch(error => {
-                dispatch({type: types.UPDATE_GOAL_FAIL, payload: {error, goal: newGoal}});
+                dispatch({type: types.UPDATE_GOAL_FAIL, payload: {error, goal: updatedGoal}});
             });
     };
 }
