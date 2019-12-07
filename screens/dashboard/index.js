@@ -3,7 +3,9 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {Container} from 'native-base';
+import { Notifications } from 'expo';
 import {LinearGradient} from 'expo-linear-gradient';
+import * as Permissions from 'expo-permissions'; 
 import {
     Alert,
     Animated,
@@ -61,6 +63,43 @@ class Dashboard extends Component<PropsType> {
             open: 'angle-down',
             close: 'angle-up'
         };
+    }
+
+    componentDidMount() {
+        this.registerForPushNotificationsAsync(this.props.profile)    //TODO: should we repull user from db?
+    }
+
+    async registerForPushNotificationsAsync(currentUser) {
+        const { existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+        let finalStatus = existingStatus;
+
+        // only ask if permissions have not already been determined, because
+        // iOS won't necessarily prompt the user a second time.
+        if (existingStatus !== 'granted') {
+            // Android remote notification permissions are granted during the app
+            // install, so this will only ask on iOS
+            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            finalStatus = status;
+        }
+
+        // Stop here if the user did not grant permissions
+        if (finalStatus !== 'granted') {
+            return;
+        }
+
+        // Get the token that uniquely identifies this device
+        let token = await Notifications.getExpoPushTokenAsync();
+
+        // POST the token to our backend so we can use it to send pushes from there
+        const updatedUser = {
+          ...currentUser,
+          pushNotificationToken: token
+        }
+        this.props.actions.updateUserProfile(updatedUser)();
+
+        //TODO: send notifications that we want
+        // send POST request to https://exp.host/--/api/v2/push/send 
+        // Expo docs: https://docs.expo.io/versions/v35.0.0/guides/push-notifications/
     }
 
     ellipsisToggle() {

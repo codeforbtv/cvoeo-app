@@ -11,6 +11,7 @@ export default class User {
     phone: string;
     created: Date;
     updated: Date;
+    pushNotificationToken: string;
 
     constructor(args = {}) {
         this.uid = typeof args.uid === 'string' || typeof args.id === 'string'
@@ -30,6 +31,9 @@ export default class User {
             : null;
         this.updated = isValidDate(args.updated)
             ? new Date(args.updated)
+            : null;
+        this.pushNotificationToken = typeof args.pushNotificationToken === 'string'
+            ? args.pushNotificationToken.trim()
             : null;
     }
 
