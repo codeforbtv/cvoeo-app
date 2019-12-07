@@ -67,6 +67,7 @@ class Dashboard extends Component<PropsType> {
 
     componentDidMount() {
         this.registerForPushNotificationsAsync(this.props.profile)
+        this._notificationSubscription = Notifications.addListener(this._handleNotification);
     }
 
     async registerForPushNotificationsAsync(currentUser) {
@@ -91,11 +92,12 @@ class Dashboard extends Component<PropsType> {
         let token = await Notifications.getExpoPushTokenAsync();
         let pushNotification = [{
             "to": token,
-            "body": "Welcome to our MOMM app!"
+            "body": "Welcome to our MOMM app!",
+            "_displayInForeground": true
         }];
 
         //TODO: remove sample message
-        console.log("Making request to expo server...")
+        console.log("Making request to expo server for " + token + "...")
         fetch("https://exp.host/--/api/v2/push/send", {
             method: "POST",
             headers: {
@@ -104,7 +106,7 @@ class Dashboard extends Component<PropsType> {
             },
             body: JSON.stringify(pushNotification)
         }).then((response) => {
-            console.log("Request to expo server complete:" + response.json())
+            console.log("Request to expo server complete:" + JSON.stringify(response.json()))
         }).catch((error) => {
             console.log("Error making request to expo server: " + error)
         })
@@ -116,6 +118,10 @@ class Dashboard extends Component<PropsType> {
         // }
         // this.props.actions.updateUserProfile(updatedUser)();
     }
+
+    _handleNotification = (notification) => {
+        console.log("Handling push notification...");
+    };
 
     ellipsisToggle() {
         // Toggle circular menu open/close
