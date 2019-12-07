@@ -66,7 +66,7 @@ class Dashboard extends Component<PropsType> {
     }
 
     componentDidMount() {
-        this.registerForPushNotificationsAsync(this.props.profile)    //TODO: should we repull user from db?
+        this.registerForPushNotificationsAsync(this.props.profile)
     }
 
     async registerForPushNotificationsAsync(currentUser) {
@@ -89,17 +89,32 @@ class Dashboard extends Component<PropsType> {
 
         // Get the token that uniquely identifies this device
         let token = await Notifications.getExpoPushTokenAsync();
+        let pushNotification = [{
+            "to": token,
+            "body": "Welcome to our MOMM app!"
+        }];
 
-        // POST the token to our backend so we can use it to send pushes from there
-        const updatedUser = {
-          ...currentUser,
-          pushNotificationToken: token
-        }
-        this.props.actions.updateUserProfile(updatedUser)();
+        //TODO: remove sample message
+        console.log("Making request to expo server...")
+        fetch("https://exp.host/--/api/v2/push/send", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(pushNotification)
+        }).then((response) => {
+            console.log("Request to expo server complete:" + response.json())
+        }).catch((error) => {
+            console.log("Error making request to expo server: " + error)
+        })
 
-        //TODO: send notifications that we want
-        // send POST request to https://exp.host/--/api/v2/push/send 
-        // Expo docs: https://docs.expo.io/versions/v35.0.0/guides/push-notifications/
+        // TODO: save token to user profile
+        // const updatedUser = {
+        //   ...currentUser,
+        //   pushNotificationToken: token
+        // }
+        // this.props.actions.updateUserProfile(updatedUser)();
     }
 
     ellipsisToggle() {
