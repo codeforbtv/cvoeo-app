@@ -1,0 +1,54 @@
+tasks:
+# The init task didn't seem to be working. Replaced with hints from
+# https://www.gitpod.io/blog/gitpodify/
+- before: >
+      npm install &&
+      npm install -g expo-cli &&
+      npm install flow
+  command: expo start --host tunnel
+
+ports:
+- port: 19000-19002
+  onOpen: ignore
+- port: 4040
+  onOpen: ignore
+- port: 5037
+  onOpen: ignore
+
+# The 'Flow Language Support' Visual Studio Code extension was installed in Gitpod by downloading the .vsix file from the
+# extension homepage (https://marketplace.visualstudio.com/items?itemName=flowtype.flow-for-vscode) as per Gitpod
+# instructions (https://www.gitpod.io/docs/vscode-extensions/).
+#
+# The extension license grants us the rights to use the extension this way and distribute the resulting Gitpod
+# configuration file as part of a public GitHub repo. The extension license agreement is repeated in full here
+# (obtained on 2019-10-24 from https://marketplace.visualstudio.com/items/flowtype.flow-for-vscode/license):
+#
+# ===================
+# License text begins
+# ===================
+#
+# LICENSE AGREEMENT
+#
+# For flow-for-vscode software
+#
+# Copyright (c) 2015, Facebook, Inc. All rights reserved.
+#
+# Facebook, Inc. ("Facebook") owns all right, title and interest, including all intellectual property and other proprietary rights,
+# in and to the flow-for-vscode software (the "Software"). Subject to your compliance with these terms, you are hereby granted a
+# non-exclusive, worldwide, royalty-free copyright license to (1) use and copy the Software; and (2) reproduce and distribute the
+# Software as part of your own software ("Your Software"), provided Your Software does not consist solely of the Software; and
+# (3) modify the Software for your own internal use. Facebook reserves all rights not expressly granted to you in this license agreement.
+#
+# THE SOFTWARE AND DOCUMENTATION, IF ANY, ARE PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES (INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE) ARE DISCLAIMED. IN NO EVENT SHALL FACEBOOK OR ITS AFFILIATES,
+# OFFICERS, DIRECTORS OR EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+# AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+# OF THE USE OF THE SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# =================
+# License text ends
+# =================
+vscode:
+  extensions:
+    - flowtype.flow-for-vscode@1.5.0:AwOT6wgHTF43loZQCAUMLA== 
