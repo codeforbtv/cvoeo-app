@@ -13,7 +13,7 @@ export function updateUserProfile(updatedUser){
                 })
             })
             .catch(error => {
-                dispatch({type: types.UPDATE_USER_FAIL, payload: {error, goal: newGoal}});
+                dispatch({type: types.UPDATE_USER_FAIL, payload: {error, goal: updatedUser}});
             })
     }
 }
