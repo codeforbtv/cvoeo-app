@@ -208,6 +208,9 @@ function updateOrCreateUseronFireStore (user){
     .then(snapshot => {
       if (snapshot.empty) {
         console.log('No matching documents. Creating a new document for this user');
+          // TODO: create a validate function on the user model and use it to ensure that we only
+          // push valid user info to Firestore. I'm not sure I trust Outcome Tracker's sftp dumps enough 
+          // to assume that they will always be giving us all the info we need
         let currentUser = {
           created: user.dateCreated,
           uid: user.uid,
