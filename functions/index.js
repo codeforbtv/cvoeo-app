@@ -162,7 +162,6 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
       complete: function(results) {
         console.log("Found "+ results.data.length + " lines in file content\n");
         //printing all the key values in the csv file to console ** for now **
-        // Next step is to write this information to the firebase db.
         for (var i = 0;i<results.data.length ;i++) {
           console.log("Entry number", i, ":");
           console.log("---------------");
