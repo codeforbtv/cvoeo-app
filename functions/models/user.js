@@ -1,6 +1,6 @@
 class User {
     constructor() {
-        this.uid = '';
+        this.uid = '';  // this corresponds to Outcome Tracker's "System Name ID"
         this.email = '';
         this.firstName = '';
         this.lastName = '';
