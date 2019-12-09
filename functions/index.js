@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 const Client = require('ssh2-sftp-client');
 const AdmZip = require('adm-zip');
 const sort = require('fast-sort');
+const Papa = require('papaparse');
 
 exports.helloWorld = functions.https.onRequest((request, response) => {
 	response.send("Hello from Firebase!");
@@ -17,6 +18,7 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
 	 const sftpConnectionToCvoeo = new Client();
    var outString = "";
+   var fileContent = "";
    const directoryName = '/dropbox/';
 	 //Connect to cvoeo sftp server using environment configuration. These have to be configured and deployed to firebase using the firebase cli.
    //https://firebase.google.com/docs/functions/config-env
@@ -111,11 +113,12 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
         // but we are assuming it is probably a CSV file, as text.
         // We append the CSV content to our forthcoming response output.
         console.log('Found ' + zipEntries.length + ' entry in the zip file');
-        outString += "CSV Content: " + csvzip.readAsText(zipEntries[0]);
+        fileContent += csvzip.readAsText(zipEntries[0]);
       }
       sftpConnectionToCvoeo.end();
       // Finally send the response string along with the official A-OK code (200)
-      console.log('Sending file data back in response');
+      console.log('Parsing file content');
+      parseCSVFromServer (fileContent);
       response.send(outString, 200);
       return true;
       })
@@ -128,3 +131,30 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
         response.send(outString, 500);
       });
  });
+
+ function parseCSVFromServer(fileContent) {
+   //papaparse (https://www.papaparse.com)returns 'results' which has an array 'data'.
+   // Each entry in 'data' is an object, a set of key/values that match the header at the head of the csv file.
+     Papa.parse(fileContent, {
+       header: true,
+       skipEmptyLines: true,
+       complete: function(results) {
+         console.log("Found "+ results.data.length + " lines in file content\n");
+         //printing all the key values in the csv file to console ** for now **
+         // Next step is to write this information to the firebase db.
+         for (var i = 0;i<results.data.length ;i++) {
+           console.log("Entry number", i, ":");
+           console.log("---------------");
+           for (var key in results.data[i]) {
+               if(results.data[i][key] != "") {
+                 console.log("key " + key + " has value " + results.data[i][key]);
+               }
+               else {
+                 console.log("key " + key + " has no value ");
+               }
+           }
+         console.log("**************************************\n");
+         }
+      }
+   });
+ }

@@ -11,6 +11,14 @@ publish: &publish
         command: npm install
 
     - run:
+        name: Bump up the version
+        command: |
+          git config user.name $CIRCLE_USERNAME
+          npm version patch -m "Bumped version number to %s [ci skip]"
+          git push origin master
+          git push --tags
+
+    - run:
         name: Login into Expo
         command: npx expo-cli login -u $EXPO_USERNAME -p $EXPO_PASSWORD
 
@@ -33,11 +41,13 @@ workflows:
   version: 2
   my_app:
     jobs:
-      - publish_to_expo_dev:
-          filters:
-            branches:
-              only: master
+#      - publish_to_expo_dev:
+#          filters:
+#            branches:
+#              only: master
       - publish_to_expo_prod:
+#          requires:
+#            - publish_to_expo_dev
           filters:
             branches:
               only: master

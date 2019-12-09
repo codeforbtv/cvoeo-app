@@ -1,15 +1,15 @@
 // @flow
 
-import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
-import {Container} from 'native-base';
-import {LinearGradient} from 'expo-linear-gradient';
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { Container } from 'native-base';
+import { LinearGradient } from 'expo-linear-gradient';
 import {
     Alert,
     Animated,
     Dimensions,
     Image,
-    Platform, SafeAreaView,
+    Platform,
     ScrollView,
     StatusBar,
     StyleSheet,
@@ -18,7 +18,7 @@ import {
     View,
     YellowBox
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import * as R from 'ramda';
 import GoalMessageBox from '../../components/goal-message-box';
@@ -35,7 +35,7 @@ const styles = StyleSheet.create(commonStyles);
 
 YellowBox.ignoreWarnings(['Setting a timer']);
 
-type Props = {
+type PropsType = {
     actions: Object,
     profile: Object,
     navigation: Object,
@@ -45,7 +45,7 @@ type Props = {
 };
 
 
-class Dashboard extends Component<Props> {
+class Dashboard extends Component<PropsType> {
 
     constructor(props) {
         super(props);
@@ -96,18 +96,18 @@ class Dashboard extends Component<Props> {
             'Do you want to logout?',
             'This will return you to the login screen.',
             [
-                {text: 'Logout', onPress: logoutCallback},
-                {text: 'Cancel', onPress: this.ellipsisToggle, style: 'cancel'}
+                { text: 'Logout', onPress: logoutCallback },
+                { text: 'Cancel', onPress: this.ellipsisToggle, style: 'cancel' }
             ],
-            {cancelable: false}
+            { cancelable: false }
         );
     }
 
     render() {
-        const {actions, profile, completedGoals, incompleteGoals, submittedGoals, navigation} = this.props;
+        const { actions, profile, completedGoals, incompleteGoals, submittedGoals, navigation } = this.props;
         const incentivesEarned = profile.incentivesEarned || 0;
-        const incentivesAvailable = 500;
-        const percentComplete = (incentivesEarned / incentivesAvailable) * 100;
+        const incentivesAvailable = 750;
+        const percentComplete = Math.floor((incentivesEarned / incentivesAvailable) * 100);
         const updateGoal = (uid => goal => changes => () => {
             actions.updateGoal(uid, goal, changes);
         })(profile.uid);
@@ -115,7 +115,7 @@ class Dashboard extends Component<Props> {
             R.map(goal => (
                 <GoalMessageBox
                     goal={goal}
-                    gotoDetails={() => navigation.navigate('GoalDetails', {goal})}
+                    gotoDetails={() => navigation.navigate('GoalDetails', { goal })}
                     message={[goal.title, goal.detail]}
                     key={goal.id}
                     updateGoal={!goal.completed ? updateGoal(goal) : () => (void 0)}
@@ -137,7 +137,7 @@ class Dashboard extends Component<Props> {
 
         return (
             <Container>
-                {Platform.OS === 'ios' && <StatusBar barStyle='default'/>}
+                {Platform.OS === 'ios' && <StatusBar barStyle='default' />}
                 <View style={styles.dashRow}>
                     <View style={styles.titleRow}>
                         <Image
@@ -153,14 +153,14 @@ class Dashboard extends Component<Props> {
                                 }
                             }
                         />
-                        <Text style={[styles.title, {marginLeft: 100}]}>{' '}</Text>
+                        <Text style={[styles.title, { marginLeft: 100 }]}>{' '}</Text>
                     </View>
                     <View style={styles.dots}>
                         <Animated.View
                             style={{
                                 position: 'absolute',
                                 transform: [
-                                    {scale: this.state.menuScale}
+                                    { scale: this.state.menuScale }
                                 ],
                                 top: -125,
                                 left: -133
@@ -176,7 +176,7 @@ class Dashboard extends Component<Props> {
                                 }}
                             >
                                 <View>
-                                    <MenuCircle/>
+                                    <MenuCircle />
                                     <Text style={styles.logoutText}>Log out</Text>
                                 </View>
                             </TouchableHighlight>
@@ -209,27 +209,27 @@ class Dashboard extends Component<Props> {
                     <View style={styles.progressBox}>
                         <View style={styles.spaceRow}>
                             <Text style={[styles.bigTitle, styles.bigLetters]}>{`$${incentivesEarned}`}</Text>
-                            <Text style={styles.bigBlock}/>
+                            <Text style={styles.bigBlock} />
                             <Text style={styles.bigTitle}>{`${percentComplete}% Complete!`}</Text>
                         </View>
                         <View style={styles.dashRow}>
                             <View style={styles.smallerBlock}>
-                                <Text style={styles.bigBlock}/>
+                                <Text style={styles.bigBlock} />
                                 <Text style={[styles.money, styles.end]}>{'$0'}</Text>
                             </View>
                             <View style={styles.bottomLine}>
-                                <MoneyMeter percentComplete={percentComplete}/>
+                                <MoneyMeter percentComplete={percentComplete} />
                             </View>
                             <View style={styles.smallerBlock}>
-                                <Text style={styles.bigBlock}/>
-                                <Text style={[styles.money, styles.start]}>{'$500'}</Text>
+                                <Text style={styles.bigBlock} />
+                                <Text style={[styles.money, styles.start]}>{'$' + incentivesAvailable}</Text>
                             </View>
-                            <Text style={styles.moreButton}/>
+                            <Text style={styles.moreButton} />
                         </View>
                     </View>
                     <GoalsBox
                         onExpand={isExpanded => {
-                            this.setState({expanded1: isExpanded});
+                            this.setState({ expanded1: isExpanded });
                         }}
                         showExpandButton={(incompleteGoals || []).length > 1}
                         title={'CURRENT GOALS:'}
@@ -237,14 +237,14 @@ class Dashboard extends Component<Props> {
                         <GoalMessageBox
                             goal={incompleteGoals[0]}
                             message={currentGoalVerbiage}
-                            gotoDetails={() => navigation.navigate('GoalDetails', {goal: incompleteGoals[0] || {}})}
+                            gotoDetails={() => navigation.navigate('GoalDetails', { goal: incompleteGoals[0] || {} })}
                             updateGoal={updateGoal(incompleteGoals[0])}
                         />
                         {this.state.expanded1 && allButFirst(incompleteGoals)}
                     </GoalsBox>
                     <GoalsBox
                         onExpand={isExpanded => {
-                            this.setState({expanded2: isExpanded});
+                            this.setState({ expanded2: isExpanded });
                         }}
                         showExpandButton={(submittedGoals || []).length > 1}
                         title={'SUBMITTED GOALS:'}
@@ -252,28 +252,28 @@ class Dashboard extends Component<Props> {
                         <GoalMessageBox
                             goal={submittedGoals[0]}
                             message={firstSubmittedGoalVerbiage}
-                            gotoDetails={() => navigation.navigate('GoalDetails', {goal: submittedGoals[0] || {}})}
+                            gotoDetails={() => navigation.navigate('GoalDetails', { goal: submittedGoals[0] || {} })}
                             updateGoal={updateGoal(submittedGoals[0])}
                         />
                         {this.state.expanded2 && allButFirst(submittedGoals)}
                     </GoalsBox>
                     <GoalsBox
                         onExpand={isExpanded => {
-                            this.setState({expanded3: isExpanded});
+                            this.setState({ expanded3: isExpanded });
                         }}
                         showExpandButton={(completedGoals || []).length > 1}
                         title={'COMPLETED GOALS:'}
                     >
                         <GoalMessageBox
                             goal={completedGoals[0]}
-                            gotoDetails={() => navigation.navigate('GoalDetails', {goal: completedGoals[0] || {}})}
+                            gotoDetails={() => navigation.navigate('GoalDetails', { goal: completedGoals[0] || {} })}
                             message={firstCompletedGoalVerbiage}
                             updateGoal={() => (void 0)}
                         />
                         {this.state.expanded3 && allButFirst(completedGoals)}
 
                     </GoalsBox>
-                    <Text style={{textAlign: 'center', lineHeight: 30}}>Version {pkg.version}</Text>
+                    <Text style={{ textAlign: 'center', lineHeight: 30, color: '#427CAB' }}>Version {pkg.version}</Text>
                 </ScrollView>
             </Container>
         );
@@ -285,7 +285,7 @@ const mapStateToProps = (state) => {
     const session = state.login.session;
     const [completedGoals, otherGoals] = R.partition(goal => goal.completed, state.dashboard.goals || []);
     const [submittedGoals, incompleteGoals] = R.partition(goal => goal.submittedForReview, otherGoals || []);
-    return {session, profile, completedGoals, submittedGoals, incompleteGoals};
+    return { session, profile, completedGoals, submittedGoals, incompleteGoals };
 };
 
 const mapDispatchToProps = (dispatch) => ({
