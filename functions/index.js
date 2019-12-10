@@ -3,12 +3,9 @@ const Client = require('ssh2-sftp-client');
 const AdmZip = require('adm-zip');
 const sort = require('fast-sort');
 const Papa = require('papaparse');
-const admin = require('firebase-admin');
 const User = require('./models/user');
-const {isValidEmail} = require('./models/validators');
-
-admin.initializeApp();
-const db = admin.firestore();
+const {isValidEmail} = require('./models/data-validators');
+const {db} = require('./models/user');
 
 exports.helloWorld = functions.https.onRequest((request, response) => {
 	response.send("Hello from Firebase!");
@@ -21,22 +18,32 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 	 }
 });
 
-exports.pullDataFromLocalCSVFile = functions.https.onRequest((request, response) => {
+/*This firebase function is for testing purposes to be able to use a file saved locally as input.
+ To run this function, have a firebase server set locally then run the following command: 
+ curl -X POST <local path to firebase fuunction> -H "Content-Type:application/json"  -d '{"pathToFile":"<path to local file>"}'
+*/
+exports.pullDataFromLocalCSVFileTEST = functions.https.onRequest((request, response) => {
   var fileContent="";
-  var readableSFTP="";
-  readableSFTP = request.body.readableSFTP
-  console.log('readableSFTP: ' + JSON.stringify(readableSFTP));
-  var csvzip = new AdmZip(readableSFTP);
+  var pathToFile="";
+  pathToFile = request.body.pathToFile
+  console.log('Ectracting data from the following file: ' + JSON.stringify(pathToFile));
+  var csvzip = new AdmZip(pathToFile);
   var zipEntries = csvzip.getEntries();
   if (zipEntries.length > 0) {
       console.log('Found ' + zipEntries.length + ' entry in the zip file');
       fileContent += csvzip.readAsText(zipEntries[0]);
 }
-  parseCSVFromServer (fileContent);
+parseCSVAndSaveToFireStore (fileContent);
   response.send('done');
 })
 
+/* This firebase function connects to the client's sftp server, 
+   gets the most recent zipped CSV file and extracts the content.
+  // TODO: look into tracking the name of the last parsed file and pulling all new files that were 
+  added to the server since then
+*/
 exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
+  // TODO: add more error handlng to this function
 	 const sftpConnectionToCvoeo = new Client();
    var outString = "";
    var fileContent = "";
@@ -139,7 +146,7 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
       sftpConnectionToCvoeo.end();
       // Finally send the response string along with the official A-OK code (200)
       console.log('Parsing file content');
-      parseCSVFromServer (fileContent);
+      parseCSVAndSaveToFireStore (fileContent);
       response.send(outString, 200);
       return true;
       })
@@ -153,89 +160,62 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
       });
  });
 
- function parseCSVFromServer(fileContent) {
-  //papaparse (https://www.papaparse.com)returns 'results' which has an array 'data'.
-  // Each entry in 'data' is an object, a set of key/values that match the header at the head of the csv file.
+/*This function parses the content provided and saves it to the firestore db:
+  -Each user should have a firestore document in the "users" firestore collection
+  -The 'System Name ID' field in the CSV file is used as the user unique ID
+  TODO: confirm with cvoeo that the 'System Name ID' field is a reliable unique id to use
+  -The function checks if the user already exists in the db:
+    If user exists, update db with non empty fields
+    If user does not exist, create a new user document under the 'users' collection
+  TODO: add more error handling to this function
+*/
+ function parseCSVAndSaveToFireStore(fileContent) {
+  // TODO: Ideally data validation will be handles in the user class but add any validations that are needed here
     Papa.parse(fileContent, {
+    //papaparse (https://www.papaparse.com)returns 'results' which has an array 'data'.
+    // Each entry in 'data' is an object, a set of key/values that match the header at the head of the csv file.
       header: true,
       skipEmptyLines: true,
       complete: function(results) {
         console.log("Found "+ results.data.length + " lines in file content\n");
-        //printing all the key values in the csv file to console ** for now **
-        // Next step is to write this information to the firebase db.
         for (var i = 0;i<results.data.length ;i++) {
-          console.log("Entry number", i, ":");
-          console.log("---------------");
           var user = new User();
-          user.dateCreated = Date.now();
           for (var key in results.data[i]) {
               if(results.data[i][key] != "") {
-                console.log("key " + key + " has value " + results.data[i][key]);
                 switch (key) {
                   case 'System Name ID':
                     user.uid = results.data[i][key];
-                    console.log(user.uid);
                     break;
                    case 'First Name':
                      user.firstName = results.data[i][key];
-                     console.log(user.firstName);
                      break;
                    case 'Last Name':
                      user.lastName = results.data[i][key];
-                     console.log(user.lastName);
                      break;
                    case 'Email Address':
                       user.email = isValidEmail(results.data[i][key])
                       ? results.data[i][key].trim().toLowerCase()
                       : null;
-                     console.log(user.email);
                     break;
                 }
               }
-              else {
-                console.log("key " + key + " has no value ");
-              }
           }
-          updateOrCreateUseronFireStore (user)
-        console.log("**************************************\n");
+          let usersCollection = db.collection('users');
+          usersCollection.where('uid', '==', user.uid).get()
+          .then(snapshot => {
+            if (snapshot.empty) {
+              console.log("Did not find a matching document with uid " + user.uid);
+              user.createNewUserInFirestore();
+            }
+            else {
+              console.log("Found a matching document for uid " + user.uid);
+              user.updateExistingUserInFirestore();
+            }
+          })
+          .catch(err => {
+            console.log('Error getting documents', err);
+          });
         }
      }
   });
-}
-
-function updateOrCreateUseronFireStore (user){
-  let usersCollection = db.collection('users');
-  usersCollection.where('uid', '==', user.uid).get()
-    .then(snapshot => {
-      if (snapshot.empty) {
-        console.log('No matching documents. Creating a new document for this user');
-        let currentUser = {
-          created: user.dateCreated,
-          uid: user.uid,
-          displayName: user.firstName,
-          lastName: user.lastName,
-          email: user.email
-        };
-        usersCollection.doc(user.uid).set(currentUser);
-      }
-      else {
-        console.log("User already exists. Updating new data only");
-          if (user.firstName) {
-            console.log ("Updating first name");          
-            usersCollection.doc(user.uid).update({displayName: user.firstName});
-
-          if (user.lastName) {
-            console.log ("Updating Last name");          
-            usersCollection.doc(user.uid).update({lastName: user.lastName});
-          }
-          if (user.email) {
-            console.log ("Updating email address");          
-            usersCollection.doc(user.uid).update({email: user.email});
-          }
-        }
-      }
-    })
-    .catch(err => {
-      console.log('Error getting documents', err);
-    });
 }
