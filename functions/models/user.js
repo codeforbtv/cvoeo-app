@@ -6,7 +6,7 @@ let usersCollection = db.collection('users');
 class User {
   //TODO: add data validation to all properties
     constructor() {
-        this.uid = '';
+        this.uid = '';  // this corresponds to Outcome Tracker's "System Name ID"
         this.email = '';
         this.firstName = '';
         this.lastName = '';
