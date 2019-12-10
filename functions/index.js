@@ -23,17 +23,17 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
  curl -X POST <local path to firebase fuunction> -H "Content-Type:application/json"  -d '{"pathToFile":"<path to local file>"}'
 */
 exports.pullDataFromLocalCSVFileTEST = functions.https.onRequest((request, response) => {
-  var fileContent="";
-  var pathToFile="";
+  let fileContent="";
+  let pathToFile="";
   pathToFile = request.body.pathToFile
   console.log('Ectracting data from the following file: ' + JSON.stringify(pathToFile));
-  var csvzip = new AdmZip(pathToFile);
-  var zipEntries = csvzip.getEntries();
+  let csvzip = new AdmZip(pathToFile);
+  let zipEntries = csvzip.getEntries();
   if (zipEntries.length > 0) {
       console.log('Found ' + zipEntries.length + ' entry in the zip file');
       fileContent += csvzip.readAsText(zipEntries[0]);
 }
-parseCSVAndSaveToFireStore (fileContent);
+  parseCSVAndSaveToFireStore (fileContent);
   response.send('done');
 })
 
@@ -45,8 +45,8 @@ parseCSVAndSaveToFireStore (fileContent);
 exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
   // TODO: add more error handlng to this function
 	 const sftpConnectionToCvoeo = new Client();
-   var outString = "";
-   var fileContent = "";
+   let outString = "";
+   let fileContent = "";
    const directoryName = '/dropbox/';
 	 //Connect to cvoeo sftp server using environment configuration. These have to be configured and deployed to firebase using the firebase cli.
    //https://firebase.google.com/docs/functions/config-env
@@ -63,7 +63,7 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
    })
    .then(
      (fileList) => {
-      var fileNames = []; // create array to dump file names into and to sort later
+      let fileNames = []; // create array to dump file names into and to sort later
       for (zipFileIdx in fileList) {
         let fileName = fileList[zipFileIdx].name; // actual name of file
         // Do a regex match using capturing parens to break up the items we want to pull out.
@@ -108,7 +108,7 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
       // Names are like this 'gm_clients_served_2019-07-08-8.zip'
       // Request this specific ZIP file
       console.log('Getting ' + newestFileName + ' from server');
-      var readableSFTP = sftpConnectionToCvoeo.get(directoryName + newestFileName);
+      let readableSFTP = sftpConnectionToCvoeo.get(directoryName + newestFileName);
       // Tell the server log about it...
        console.log('readableSFTP: ' + JSON.stringify(readableSFTP));
       // Returning the variable here passes it back out to be caught
@@ -125,10 +125,10 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
       // Collect output for future response
       //outString += chunk; // Display ZIP file as binary output... looks ugly and is useless.
       // Create a new unzipper using the Chunk as input...
-      var csvzip = new AdmZip(chunk);
+      let csvzip = new AdmZip(chunk);
       // Figure out how many files are in the Chunk-zip
       // Presumably always 1, but it could be any number.
-      var zipEntries = csvzip.getEntries();
+      let zipEntries = csvzip.getEntries();
       // Again, collect output for future response...
       outString += "Zip Entries: " + JSON.stringify(zipEntries) + "\n";
       // Assuming that there is at least 1 entry in the Zip...
@@ -178,9 +178,9 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
       skipEmptyLines: true,
       complete: function(results) {
         console.log("Found "+ results.data.length + " lines in file content\n");
-        for (var i = 0;i<results.data.length ;i++) {
-          var user = new User();
-          for (var key in results.data[i]) {
+        for (let i = 0;i<results.data.length ;i++) {
+          let user = new User();
+          for (let key in results.data[i]) {
               if(results.data[i][key] != "") {
                 switch (key) {
                   case 'System Name ID':
@@ -200,7 +200,7 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
                 }
               }
           }
-          let usersCollection = db.collection('users');
+          let usersCollection = db.collection('users');   
           usersCollection.where('uid', '==', user.uid).get()
           .then(snapshot => {
             if (snapshot.empty) {
