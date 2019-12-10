@@ -4,7 +4,7 @@ admin.initializeApp();
 const db = admin.firestore();
 let usersCollection = db.collection('users');
 class User {
-  //TODO: at data validation to all properties
+  //TODO: add data validation to all properties
     constructor() {
         this.uid = '';
         this.email = '';
@@ -12,8 +12,16 @@ class User {
         this.lastName = '';
         this.dateCreated = Date.now();//TODO: switch this to a more readable date format
     }
-
+    printAllFieldsToConsole() {
+      console.log (
+        "uid: " + this.uid + "\n" +
+        "First name " + this.firstName + "\n" +
+        "Last name " + this.lastName + "\n" +
+        "email " + this.email + "\n")
+    }
     createNewUserInFirestore() {
+        console.log("Creating a new document with uid " + this.uid + " with the following data:\n");
+        this.printAllFieldsToConsole();
         usersCollection.doc(this.uid).set({
             created: this.dateCreated,
             uid: this.uid,
@@ -24,16 +32,15 @@ class User {
     }
 
     updateExistingUserInFirestore () {
-      if (this.firstName) {
-        console.log ("Updating first name");          
+      console.log("Updating uid " + this.uid + " with the following:\n");
+      this.printAllFieldsToConsole();
+      if (this.firstName) {   
         usersCollection.doc(this.uid).update({displayName: this.firstName});
       }
-      if (this.lastName) {
-        console.log ("Updating Last name");          
+      if (this.lastName) {  
         usersCollection.doc(this.uid).update({lastName: this.lastName});
       }
-      if (this.email) {
-        console.log ("Updating email address");          
+      if (this.email) {       
         usersCollection.doc(this.uid).update({email: this.email});
       }
     }
