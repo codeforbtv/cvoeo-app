@@ -4,6 +4,7 @@ admin.initializeApp();
 const db = admin.firestore();
 let usersCollection = db.collection('users');
 class User {
+  //TODO: at data validation to all properties
     constructor() {
         this.uid = '';
         this.email = '';
