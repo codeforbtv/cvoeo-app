@@ -15,9 +15,9 @@ class User {
     printAllFieldsToConsole() {
       console.log (
         "uid: " + this.uid + "\n" +
-        "First name " + this.firstName + "\n" +
-        "Last name " + this.lastName + "\n" +
-        "email " + this.email + "\n")
+        "First name: " + this.firstName + "\n" +
+        "Last name: " + this.lastName + "\n" +
+        "email: " + this.email + "\n")
     }
     createNewUserInFirestore() {
         console.log("Creating a new document with uid " + this.uid + " with the following data:\n");
