@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-
+// TODO: add consts for field names in the db
 admin.initializeApp();
 const db = admin.firestore();
 let usersCollection = db.collection('users');
@@ -9,7 +9,7 @@ class User {
         if (!uid) {
           console.log("Must provide a user uid when creating a new user");
           return;
-          // Add better error handling
+          // TODO: Add better error handling here
         }
         this.uid = uid;  // this corresponds to Outcome Tracker's "System Name ID"
         this.email = '';

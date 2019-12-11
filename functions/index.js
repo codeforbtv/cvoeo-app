@@ -4,6 +4,7 @@ const AdmZip = require('adm-zip');
 const sort = require('fast-sort');
 const Papa = require('papaparse');
 const User = require('./models/user');
+const Goal = require('./models/goal');
 const {isValidEmail} = require('./models/data-validators');
 const {db} = require('./models/user');
 
@@ -26,7 +27,7 @@ exports.pullDataFromLocalCSVFileTEST = functions.https.onRequest((request, respo
   let fileContent="";
   let pathToFile="";
   pathToFile = request.body.pathToFile
-  console.log('Ectracting data from the following file: ' + JSON.stringify(pathToFile));
+  console.log('Extracting data from the following file: ' + JSON.stringify(pathToFile));
   let csvzip = new AdmZip(pathToFile);
   let zipEntries = csvzip.getEntries();
   if (zipEntries.length > 0) {
@@ -165,13 +166,14 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
   -The 'System Name ID' field in the CSV file is used as the user unique ID
   TODO: confirm with cvoeo that the 'System Name ID' field is a reliable unique id to use
   -The function checks if the user already exists in the db:
-    If user exists, update db with non empty fields
-    If user does not exist, create a new user document under the 'users' collection
+    If user exists, update db with non empty fields + update/create new doc for goal if there is a goal
+    If user does not exist, create a new user document under the 'users' collection + create new goal
   TODO: add more error handling to this function
 */
  function parseCSVAndSaveToFireStore(fileContent) {
+   //*** Known issue: When parsing a csv file with multiple lines that have goal data, saving to firestore is not working properly */
   // TODO: Ideally data validation will be handles in the user class but add any validations that are needed here
-    Papa.parse(fileContent, {
+   Papa.parse(fileContent, {
     //papaparse (https://www.papaparse.com)returns 'results' which has an array 'data'.
     // Each entry in 'data' is an object, a set of key/values that match the header at the head of the csv file.
       header: true,
@@ -179,43 +181,84 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
       complete: function(results) {
         console.log("Found "+ results.data.length + " lines in file content\n");
         for (let i = 0;i<results.data.length ;i++) {
-          let user = new User();
-          for (let key in results.data[i]) {
-              if(results.data[i][key] != "") {
-                switch (key) {
-                  case 'System Name ID':
-                    user.uid = results.data[i][key];
-                    break;
-                   case 'First Name':
-                     user.firstName = results.data[i][key];
-                     break;
-                   case 'Last Name':
-                     user.lastName = results.data[i][key];
-                     break;
-                   case 'Email Address':
-                      user.email = isValidEmail(results.data[i][key])
-                      ? results.data[i][key].trim().toLowerCase()
-                      : null;
-                    break;
+          if(!results.data[i]['System Name ID']) {          
+            console.log ("Missing 'System Name ID' field in file. This field is mandatory for creating and updating data in db"); 
+          }          
+          else {            
+            let user = new User(results.data[i]['System Name ID']);
+            let goal = new Goal(user.uid);
+            for (let key in results.data[i]) {
+                if(results.data[i][key] != "") {
+                  switch (key) {
+                    case 'First Name':
+                      user.firstName = results.data[i][key];
+                      break;
+                    case 'Last Name':
+                      user.lastName = results.data[i][key];
+                      break;
+                    case 'Email Address':
+                        user.email = isValidEmail(results.data[i][key])
+                        ? results.data[i][key].trim().toLowerCase()
+                        : null;
+                      break;
+                    }
+                  }
+                if(results.data[i]['GOAL ID']) {
+                  if (results.data[i][key] != "") {
+                    switch (key) {
+                      case 'GOAL ID':
+                        goal.goaluid = results.data[i][key];
+                        break;
+                      case 'GOAL TYPE':
+                        goal.goalType = results.data[i][key];
+                        break;
+                      case 'GOAL DUE':
+                        goal.goalDueDate = results.data[i][key];
+                        break;
+                      case 'GOAL NOTES':
+                          goal.goalNotes = results.data[i][key];
+                          break;
+                      case 'GOAL COMPLETE':
+                          goal.isGoalComplete = results.data[i][key];
+                          break;                          
+                      }
+                  }
+                }
+            }
+
+            let usersCollection = db.collection('users');   
+            usersCollection.where('uid', '==', user.uid).get()
+            .then(userSnapshot => {
+              if (userSnapshot.empty) {
+                console.log("Did not find a matching document with uid " + user.uid);
+                user.createNewUserInFirestore();
+                if (goal.goaluid) {
+                  goal.createNewGoalInFirestore();                  
                 }
               }
+              else {
+                console.log("Found a matching document for uid " + user.uid);
+                user.updateExistingUserInFirestore();
+                if (goal.goaluid) {
+                  usersCollection.doc(user.uid).collection('goals').where('goaluid', '==', goal.goaluid).get()
+                  .then(goalSnapshot => {
+                    if (goalSnapshot.empty) {
+                      console.log("Did not find a matching document with goal id " + goal.goaluid + " for user " + goal.useruid);
+                      goal.createNewGoalInFirestore();
+                      }
+                    else {
+                      console.log("Found a matching document for goal id " + goal.goaluid + " under document for user " + goal.useruid);
+                      goal.updateExistingGoalInFirestore();
+                      }
+                   })
+                  }
+                }
+              })
+            .catch(err => {
+              console.log('Error getting documents', err);
+            });
+            }
           }
-          let usersCollection = db.collection('users');   
-          usersCollection.where('uid', '==', user.uid).get()
-          .then(snapshot => {
-            if (snapshot.empty) {
-              console.log("Did not find a matching document with uid " + user.uid);
-              user.createNewUserInFirestore();
-            }
-            else {
-              console.log("Found a matching document for uid " + user.uid);
-              user.updateExistingUserInFirestore();
-            }
-          })
-          .catch(err => {
-            console.log('Error getting documents', err);
-          });
         }
-     }
-  });
-}
+      })
+    }
