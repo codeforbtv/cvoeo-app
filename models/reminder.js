@@ -1,6 +1,6 @@
 // @flow
-import {isValidPhone} from '../libs/validators';
-import {type} from 'ramda';
+import { isValidPhone } from '../libs/validators';
+import { type } from 'ramda';
 
 const nonDigit = /[^\d]/g;
 
@@ -30,7 +30,7 @@ export default class Reminder {
     }
 
     static create(args: ?Object = {}, id?: string) {
-        const _args = {...args};
+        const _args = { ...args };
         if (Boolean(id)) {
             _args.id = id;
         }

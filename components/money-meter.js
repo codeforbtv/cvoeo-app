@@ -27,7 +27,7 @@ import Svg, {
 type Props = { percentComplete: number };
 
 
-const MoneyMeter = ({percentComplete}: Props) => {
+const MoneyMeter = ({ percentComplete }: Props) => {
     const rotation = (1.72 * percentComplete) - 86;
     return (
         <Svg height={100} width={200}>

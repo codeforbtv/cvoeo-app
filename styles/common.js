@@ -31,7 +31,7 @@ const common = {
     blackText: {
         color: '#020202'
     },
-    block: {paddingTop: 10, paddingBottom: 10, borderBottomWidth: 1, borderColor: 'rgba(0,0,0,0.5)', width: '100%'},
+    block: { paddingTop: 10, paddingBottom: 10, borderBottomWidth: 1, borderColor: 'rgba(0,0,0,0.5)', width: '100%' },
     blockTitle: {
         alignItems: 'flex-start',
         color: 'rgba(2,2,2,0.34)',
@@ -61,7 +61,7 @@ const common = {
         padding: 10,
         marginTop: 24,
         shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.6,
         shadowRadius: 2
     },
@@ -134,8 +134,8 @@ const common = {
         borderColor: '#E4845D',
         backgroundColor: 'transparent'
     },
-    commonButtonIcon:{fontSize: 20, color: '#E4845D'},
-    commonButtonText: {textAlign: 'center'},
+    commonButtonIcon: { fontSize: 20, color: '#E4845D' },
+    commonButtonText: { textAlign: 'center' },
     completedBox: {
         flex: 1,
         backgroundColor: '#e3f4cf',
@@ -145,7 +145,7 @@ const common = {
         shadowOpacity: 0.8,
         elevation: 3,
         shadowRadius: 6,
-        shadowOffset: {width: 1, height: 5},
+        shadowOffset: { width: 1, height: 5 },
         marginTop: 4,
         marginLeft: 9,
         marginRight: 9,
@@ -292,7 +292,7 @@ const common = {
         backgroundColor: '#EEE',
         padding: 10,
         shadowColor: '#FFF',
-        shadowOffset: {width: 0, height: 1},
+        shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 1,
         shadowRadius: 0,
         marginBottom: 1
@@ -301,7 +301,7 @@ const common = {
     infoBlockContainer: {
         margin: 5,
         shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.6,
         shadowRadius: 2,
         padding: 10,
@@ -355,8 +355,8 @@ const common = {
         paddingTop: 3,
         alignSelf: 'stretch'
     },
-    padForIOSKeyboard: {height: 80},
-    padForIOSKeyboardBig: {height: 150},
+    padForIOSKeyboard: { height: 80 },
+    padForIOSKeyboardBig: { height: 150 },
     profileHeader: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
@@ -379,7 +379,7 @@ const common = {
         shadowOpacity: 0.8,
         elevation: 3,
         shadowRadius: 6,
-        shadowOffset: {width: 1, height: 5},
+        shadowOffset: { width: 1, height: 5 },
         marginTop: 4,
         marginLeft: 9,
         marginRight: 9,
@@ -395,7 +395,7 @@ const common = {
         alignItems: 'stretch',
         padding: 10,
         shadowColor: '#FFF',
-        shadowOffset: {width: 0, height: 1},
+        shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 1,
         shadowRadius: 0,
         marginBottom: 1
@@ -420,7 +420,7 @@ const common = {
         padding: 10,
         backgroundColor: '#EEE',
         shadowColor: '#FFF',
-        shadowOffset: {width: 0, height: 1},
+        shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 1,
         shadowRadius: 0
     },
@@ -535,7 +535,7 @@ const common = {
         shadowOpacity: 0.8,
         elevation: 3,
         shadowRadius: 6,
-        shadowOffset: {width: 1, height: 5}
+        shadowOffset: { width: 1, height: 5 }
     },
     upcomingTitle: {
         color: '#037a96'

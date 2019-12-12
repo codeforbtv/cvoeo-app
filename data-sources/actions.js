@@ -1,5 +1,5 @@
 // @flow;
-import {curry} from 'ramda';
+import { curry } from 'ramda';
 
 import * as types from '../constants/action-types';
 
@@ -8,7 +8,7 @@ export const userLoggedIn = curry((dispatch: any => void, user: Object) => dispa
     user
 }));
 
-export const userLoggedOut = (dispatch) => dispatch({type: types.LOGOUT_SUCCESSFUL});
+export const userLoggedOut = (dispatch) => dispatch({ type: types.LOGOUT_SUCCESSFUL });
 
 export const goalsFetchFail = curry((dispatch: any => void, error: any) => dispatch({
     type: types.FETCH_GOALS_FAIL,

@@ -51,7 +51,7 @@ function returnType(entry) {
             return entry.toString();
         case Array.isArray(entry):
             return entry.map(x => returnType(x));
-        case entry !== null && typeof entry === 'object' :
+        case entry !== null && typeof entry === 'object':
             return stringifyDates(entry); // eslint-disable-line
         default:
             return entry;
@@ -160,7 +160,7 @@ export function loginWithEmailPassword(_email: string, password: string): Promis
         .auth()
         .signInWithEmailAndPassword(_email, password)
         .then((user) => {
-            const {uid, email, displayName, photoURL} = (user || {}).user;
+            const { uid, email, displayName, photoURL } = (user || {}).user;
             // Retrieve the user's profile, If there is none, create it.
             const docRef = db.collection('users').doc(uid);
             docRef.get().then(doc => {

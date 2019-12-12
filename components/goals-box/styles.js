@@ -9,7 +9,7 @@ const styles = {
         shadowOpacity: 0.8,
         elevation: 3,
         shadowRadius: 6,
-        shadowOffset: {width: 1, height: 5},
+        shadowOffset: { width: 1, height: 5 },
         marginTop: 4,
         marginLeft: 9,
         marginRight: 9,
@@ -48,7 +48,7 @@ const styles = {
     goalSectionTitle: {
         color: '#afb066'
     },
-    hr: {height: 2, backgroundColor: '#DFDDB7', width: '100%'},
+    hr: { height: 2, backgroundColor: '#DFDDB7', width: '100%' },
     icon1: {
         color: '#265865'
     },
@@ -80,7 +80,7 @@ const styles = {
         textAlign: 'left',
         fontFamily: 'System'
     },
-    expandButton:{
+    expandButton: {
         position: 'absolute',
         bottom: 0,
         right: 0

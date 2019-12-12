@@ -14,8 +14,8 @@ const styles = {
         backgroundColor: 'transparent',
         height: 40
     },
-    goalButtonIcon: {fontSize: 20, color: '#E4845D'},
-    goalButtonText: {textAlign: 'center', height: 40, marginRight: 10, marginLeft: 10},
+    goalButtonIcon: { fontSize: 20, color: '#E4845D' },
+    goalButtonText: { textAlign: 'center', height: 40, marginRight: 10, marginLeft: 10 },
     goalCompleteIcon: {
         width: 20,
         height: 20,
@@ -30,7 +30,7 @@ const styles = {
         height: 20,
         flexDirection: 'row'
     },
-    goalMessageBox: {marginTop: 0, marginBottom: 10, margin: 20},
+    goalMessageBox: { marginTop: 0, marginBottom: 10, margin: 20 },
     goalMessageBoxDetail: {
         color: '#333',
         fontSize: 14,
@@ -42,7 +42,7 @@ const styles = {
         fontWeight: 'bold'
     },
 
-    statusText: {alignSelf: 'stretch', lineHeight: 40, marginRight: 10}
+    statusText: { alignSelf: 'stretch', lineHeight: 40, marginRight: 10 }
 
 };
 

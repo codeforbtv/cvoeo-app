@@ -49,7 +49,7 @@ class Register extends Component<Props> {
 
     render() {
         return (
-            <SafeAreaView style={{flex: 1, backgroundColor: '#04a0c6' }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#04a0c6' }}>
                 <View style={styles.frame}>
                     <View style={[styles.container, {
                         paddingLeft: 20,

@@ -1,8 +1,8 @@
 // @flow
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {isValidEmail} from '../libs/validators';
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { isValidEmail } from '../libs/validators';
 import commonStyles from '../styles/common';
 
 const styles = StyleSheet.create(commonStyles);
@@ -19,16 +19,16 @@ export default class LoginForm extends Component<Props> {
         this.onButtonPress = this.onButtonPress.bind(this);
         this.onChangeState = this.onChangeState.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
-        this.state = {email: '', password: '', displayName: ''};
+        this.state = { email: '', password: '', displayName: '' };
     }
 
     onChangeEmail(value) {
-        this.setState({email: (value || '').trim()});
+        this.setState({ email: (value || '').trim() });
     }
 
     onChangeState(stateKey) {
         return (value) => {
-            this.setState({[stateKey]: value});
+            this.setState({ [stateKey]: value });
         };
     }
 
@@ -42,7 +42,7 @@ export default class LoginForm extends Component<Props> {
 
     render() {
         return (
-            <View style={{marginBottom: 10, backgroundColor: '#04a0c6'}}>
+            <View style={{ marginBottom: 10, backgroundColor: '#04a0c6' }}>
                 <View>
                     <Text style={styles.label}>{'Username'}</Text>
                     <TextInput

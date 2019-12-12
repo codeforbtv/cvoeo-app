@@ -1,7 +1,7 @@
 // @flow
 import * as dataSource from '../../data-sources/firebase-data';
 import * as types from '../../constants/action-types';
-import {curry} from 'ramda';
+import { curry } from 'ramda';
 
 export const updateUserProfile = curry((data: any, dispatch: Object => void) => dataSource.updateProfile(data, dispatch));
 
@@ -15,7 +15,7 @@ export function logout() {
                 });
             })
             .catch(err => {
-                dispatch({type: types.LOGOUT_FAIL, err});
+                dispatch({ type: types.LOGOUT_FAIL, err });
             });
     };
 }
@@ -28,16 +28,16 @@ export function logout() {
  */
 export function updateGoal(uid, goal, changes) {
     return (dispatch: Object => *) => {
-        const newGoal = {...goal, ...changes, id: goal.id, goalId: goal.goalId};
+        const newGoal = { ...goal, ...changes, id: goal.id, goalId: goal.goalId };
         dataSource.updateGoal(uid, newGoal)
             .then(() => {
                 dispatch({
                     type: types.UPDATE_GOAL_SUCCESS,
-                    payload: {data: newGoal}
+                    payload: { data: newGoal }
                 });
             })
             .catch(error => {
-                dispatch({type: types.UPDATE_GOAL_FAIL, payload: {error, goal: newGoal}});
+                dispatch({ type: types.UPDATE_GOAL_FAIL, payload: { error, goal: newGoal } });
             });
     };
 }

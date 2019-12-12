@@ -3,8 +3,8 @@
 import LoginScreen from './login-screen';
 import ForgotPassword from './forgot-password';
 import Register from './register';
-import {createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
 const RootStack = createStackNavigator({
     Login: {

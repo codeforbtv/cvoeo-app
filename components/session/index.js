@@ -1,10 +1,10 @@
 // @flow;
 
-import React, {Fragment, useEffect} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
+import React, { Fragment, useEffect } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import * as actionCreators from './actions';
-import type {Node} from 'react';
+import type { Node } from 'react';
 
 type Props = {
     actions: Object,
@@ -14,7 +14,7 @@ type Props = {
     userIsLoggedIn: Boolean
 };
 
-const Session = ({actions, uid, userIsLoggedIn, loginScreen, children}: Props) => {
+const Session = ({ actions, uid, userIsLoggedIn, loginScreen, children }: Props) => {
 
     useEffect(() => {
         actions.initialize(uid);

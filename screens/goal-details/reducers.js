@@ -33,4 +33,4 @@ export function reducers(state = initialState.login, action) {
         default:
             return state;
     }
- }
+}

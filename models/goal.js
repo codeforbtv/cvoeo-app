@@ -1,5 +1,5 @@
 // @flow
-import {isValidDate} from '../libs/validators';
+import { isValidDate } from '../libs/validators';
 
 export default class Goal {
     id: string;
@@ -47,7 +47,7 @@ export default class Goal {
     }
 
     static create(args: ?Object = {}, id?: string) {
-        const _args = {...args};
+        const _args = { ...args };
         if (Boolean(id)) {
             _args.id = id;
         }

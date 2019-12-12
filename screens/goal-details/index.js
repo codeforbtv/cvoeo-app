@@ -1,9 +1,9 @@
 // @flow
 
-import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
-import {Container} from 'native-base';
-import {LinearGradient} from 'expo-linear-gradient';
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { Container } from 'native-base';
+import { LinearGradient } from 'expo-linear-gradient';
 import {
     Alert,
     Animated,
@@ -18,7 +18,7 @@ import {
     View,
     YellowBox
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import * as actionCreators from './actions';
@@ -27,9 +27,9 @@ import MenuCircle from '../../components/menu-circle';
 import styles from './styles';
 import moment from 'moment';
 import * as R from 'ramda';
-import {isValidDate} from '../../libs/validators';
+import { isValidDate } from '../../libs/validators';
 
-const myStyles = StyleSheet.create({...commonStyles, ...styles});
+const myStyles = StyleSheet.create({ ...commonStyles, ...styles });
 
 YellowBox.ignoreWarnings(['Setting a timer']);
 
@@ -91,29 +91,29 @@ class GoalDetails extends Component<Props> {
             'Do you want to logout?',
             'This will return you to the login screen.',
             [
-                {text: 'Logout', onPress: logoutCallback},
-                {text: 'Cancel', onPress: this.ellipsisToggle, style: 'cancel'}
+                { text: 'Logout', onPress: logoutCallback },
+                { text: 'Cancel', onPress: this.ellipsisToggle, style: 'cancel' }
             ],
-            {cancelable: false}
+            { cancelable: false }
         );
     }
 
     showCustomDatePicker = () => {
-        this.setState({isDatePickerVisible: true});
+        this.setState({ isDatePickerVisible: true });
     };
 
-    handleCustomDatePicked =  R.curry((update, date) => {
+    handleCustomDatePicked = R.curry((update, date) => {
         this.hideCustomDatePicker();
-        update({remind: date})();
+        update({ remind: date })();
     })
 
     hideCustomDatePicker = () => {
-        this.setState({isDatePickerVisible: false});
+        this.setState({ isDatePickerVisible: false });
     };
 
     render() {
         const dots = this.icons.dots;
-        const {navigation, uid, actions} = this.props;
+        const { navigation, uid, actions } = this.props;
         const goal = navigation.getParam('goal');
         const resetReminder = addDaysToDate(new Date());
         const update = _changes => () => {
@@ -122,7 +122,7 @@ class GoalDetails extends Component<Props> {
         };
         return (
             <Container>
-                {Platform.OS === 'ios' && <StatusBar barStyle='default'/>}
+                {Platform.OS === 'ios' && <StatusBar barStyle='default' />}
 
                 <View style={myStyles.dashRow}>
                     <View style={myStyles.titleRow}>
@@ -139,14 +139,14 @@ class GoalDetails extends Component<Props> {
                                 }
                             }
                         />
-                        <Text style={[myStyles.title, {marginLeft: 100}]}>{' '}</Text>
+                        <Text style={[myStyles.title, { marginLeft: 100 }]}>{' '}</Text>
                     </View>
                     <View style={myStyles.dots}>
                         <Animated.View
                             style={{
                                 position: 'absolute',
                                 transform: [
-                                    {scale: this.state.menuScale}
+                                    { scale: this.state.menuScale }
                                 ],
                                 top: -125,
                                 left: -133
@@ -162,7 +162,7 @@ class GoalDetails extends Component<Props> {
                                 }}
                             >
                                 <View>
-                                    <MenuCircle/>
+                                    <MenuCircle />
                                     <Text style={myStyles.logoutText}>Log out</Text>
                                 </View>
                             </TouchableHighlight>
@@ -196,7 +196,7 @@ class GoalDetails extends Component<Props> {
                     style={myStyles.backButton}
                 >
                     <View style={myStyles.backButtonContentWrapper}>
-                        <Icon name={'chevron-down'} style={myStyles.backButtonIcon}/>
+                        <Icon name={'chevron-down'} style={myStyles.backButtonIcon} />
                         <Text style={myStyles.backButtonText}>{'Close'}</Text>
                     </View>
                 </TouchableHighlight>
@@ -205,39 +205,39 @@ class GoalDetails extends Component<Props> {
                     <Text style={myStyles.subText}>{goal.detail}</Text>
                     <View style={myStyles.buttonWrapper}>
                         <View style={myStyles.blockLabel}>
-                            <Icon style={myStyles.blockLabelIcon} name={'user-clock'}/>
+                            <Icon style={myStyles.blockLabelIcon} name={'user-clock'} />
                             <Text style={myStyles.blockLabelText}>Remind me:</Text>
                         </View>
                         <TouchableHighlight
-                            onPress={update({remind: resetReminder(1)})}
-                            style={[myStyles.detailButton, {backgroundColor: '#F88E6D'}]}
+                            onPress={update({ remind: resetReminder(1) })}
+                            style={[myStyles.detailButton, { backgroundColor: '#F88E6D' }]}
                         >
                             <Text style={myStyles.detailButtonText}>tomorrow</Text>
                         </TouchableHighlight>
                         <TouchableHighlight
-                            onPress={update({remind: resetReminder(3)})}
-                            style={[myStyles.detailButton, {backgroundColor: '#FFD4C6'}]}
+                            onPress={update({ remind: resetReminder(3) })}
+                            style={[myStyles.detailButton, { backgroundColor: '#FFD4C6' }]}
                         >
                             <Text style={myStyles.detailButtonText}>in 3 days</Text>
                         </TouchableHighlight>
                         <TouchableHighlight
-                            onPress={update({remind: resetReminder(7)})}
-                            style={[myStyles.detailButton, {backgroundColor: '#F6F4D6'}]}
+                            onPress={update({ remind: resetReminder(7) })}
+                            style={[myStyles.detailButton, { backgroundColor: '#F6F4D6' }]}
                         >
                             <Text style={myStyles.detailButtonText}>in 1 week</Text>
                         </TouchableHighlight>
                         <TouchableHighlight
                             onPress={this.showCustomDatePicker}
-                            style={[myStyles.detailButton, {backgroundColor: '#F6F4D6'}]}
+                            style={[myStyles.detailButton, { backgroundColor: '#F6F4D6' }]}
                         >
                             <Text style={myStyles.detailButtonText}>Add date</Text>
                         </TouchableHighlight>
                         <TouchableHighlight
-                            onPress={update({snoozed: !goal.snoozed})}
-                            style={[myStyles.detailButton, {backgroundColor: '#F2F2CC'}]}>
+                            onPress={update({ snoozed: !goal.snoozed })}
+                            style={[myStyles.detailButton, { backgroundColor: '#F2F2CC' }]}>
                             <Text style={myStyles.detailButtonText}>{!goal.snoozed ? 'Pause' : 'Un-pause'}</Text>
                         </TouchableHighlight>
-                        
+
                         <DateTimePicker
                             date={new Date()}
                             isVisible={this.state.isDatePickerVisible}
@@ -255,7 +255,7 @@ class GoalDetails extends Component<Props> {
 
 const mapStateToProps = (state) => {
     const uid = (state.login.user || {}).uid;
-    return {uid};
+    return { uid };
 };
 
 const mapDispatchToProps = (dispatch) => ({

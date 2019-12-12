@@ -1,6 +1,6 @@
 const styles = {
-    detailsContainer: {padding: 5},
-    backButton: {height: 50, backgroundColor: 'transparent', alignSelf: 'flex-end'},
+    detailsContainer: { padding: 5 },
+    backButton: { height: 50, backgroundColor: 'transparent', alignSelf: 'flex-end' },
     backButtonContentWrapper: {
         flex: 1,
         flexDirection: 'row-reverse',
@@ -10,14 +10,14 @@ const styles = {
         marginRight: 10
 
     },
-    backButtonText: {color: '#3AB3CD', fontSize: 20, marginRight: 10},
-    backButtonIcon: {fontSize: 20, marginRight: 10, color: '#3AB3CD'},
+    backButtonText: { color: '#3AB3CD', fontSize: 20, marginRight: 10 },
+    backButtonIcon: { fontSize: 20, marginRight: 10, color: '#3AB3CD' },
     scrollArea: {
         backgroundColor: 'transparent',
         padding: 30,
         alignSelf: 'stretch'
     },
-    buttonWrapper: {flex: 1, padding: 10},
+    buttonWrapper: { flex: 1, padding: 10 },
     detailButton: {
         borderWidth: 3,
         borderRadius: 6,
@@ -27,7 +27,7 @@ const styles = {
         marginBottom: 20,
         borderColor: '#E4845D'
     },
-    detailButtonText: {textAlign: 'center'},
+    detailButtonText: { textAlign: 'center' },
     blockLabel: {
         flex: 1,
         flexDirection: 'row',
@@ -37,8 +37,8 @@ const styles = {
         marginLeft: 10,
         backgroundColor: 'transparent'
     },
-    blockLabelIcon: {fontSize: 20, marginRight: 10, color: '#E4845D'},
-    blockLabelText: {fontSize: 20}
+    blockLabelIcon: { fontSize: 20, marginRight: 10, color: '#E4845D' },
+    blockLabelText: { fontSize: 20 }
 };
 
 export default styles;

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import {isValidDate} from './validators';
+import { isValidDate } from './validators';
 import * as R from 'ramda';
 
 export const daysTo = (date: typeof Date): string => {

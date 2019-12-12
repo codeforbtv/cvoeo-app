@@ -1,6 +1,6 @@
 // @flow
 
-import {isValidDate, isValidEmail, isValidPhone} from '../libs/validators';
+import { isValidDate, isValidEmail, isValidPhone } from '../libs/validators';
 
 const nonDigit = /[^\d]/g;
 
@@ -34,7 +34,7 @@ export default class User {
     }
 
     static create(args: ?Object = {}, id?: string) {
-        const _args = {...args};
+        const _args = { ...args };
         if (Boolean(id)) {
             _args.id = id;
         }

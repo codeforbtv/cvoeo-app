@@ -1,14 +1,14 @@
 // @flow
 import Dashboard from '../screens/dashboard';
-import {Animated, Easing} from 'react-native';
+import { Animated, Easing } from 'react-native';
 import GoalDetails from '../screens/goal-details';
-import {createStackNavigator} from 'react-navigation-stack';
-import {createAppContainer} from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation';
 
 const ModalNavigator = createStackNavigator(
     {
-        Dashboard: {screen: Dashboard},
-        GoalDetails: {screen: GoalDetails}
+        Dashboard: { screen: Dashboard },
+        GoalDetails: { screen: GoalDetails }
     },
     {
         headerMode: 'none',
@@ -23,8 +23,8 @@ const ModalNavigator = createStackNavigator(
                 timing: Animated.timing
             },
             screenInterpolator: sceneProps => {
-                const {layout, position, scene} = sceneProps;
-                const {index} = scene;
+                const { layout, position, scene } = sceneProps;
+                const { index } = scene;
 
                 const height = layout.initHeight;
                 const translateY = position.interpolate({
@@ -37,7 +37,7 @@ const ModalNavigator = createStackNavigator(
                     outputRange: [0, 1, 1]
                 });
 
-                return {opacity, transform: [{translateY}]};
+                return { opacity, transform: [{ translateY }] };
             }
         })
     }

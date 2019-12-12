@@ -12,7 +12,7 @@ export function getCurrentUser() {
 export function loginWithEmailPassword(email: string, password: string) {
     return (dispatch: Object => *) => {
         dataSource.loginWithEmailPassword(email, password).catch(error => {
-            dispatch({type: types.LOGIN_FAIL, error});
+            dispatch({ type: types.LOGIN_FAIL, error });
         });
     };
 }
@@ -21,7 +21,7 @@ export function loginWithEmailPassword(email: string, password: string) {
 export function resetPassword(emailAddress: string) {
     return (dispatch) => {
         dataSource.resetPassword(emailAddress)
-            .then(() => dispatch({type: types.RESET_PASSWORD_SUCCESS}))
+            .then(() => dispatch({ type: types.RESET_PASSWORD_SUCCESS }))
             .catch(error => {
                 dispatch(
                     {

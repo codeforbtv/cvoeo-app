@@ -1,5 +1,5 @@
 const initialState = {
-    loading: {initialized: false},
+    loading: { initialized: false },
     login: {
         userIsLoggedIn: false,
         user: null

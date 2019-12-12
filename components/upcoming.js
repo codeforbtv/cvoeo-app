@@ -1,14 +1,14 @@
 // @flow
 
-import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import {
     StyleSheet,
     Text,
     View,
     TouchableHighlight
 } from 'react-native';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 
@@ -21,9 +21,9 @@ import commonStyles from '../styles/common';
 const styles = StyleSheet.create(commonStyles);
 
 type Props = {
-  actions: Object,
-  navigation: Object,
-  profile: Object
+    actions: Object,
+    navigation: Object,
+    profile: Object
 };
 
 const icons = {
@@ -61,7 +61,7 @@ export class Upcoming extends Component<Props> {
                 .sort((a, b) => a.date.seconds - b.date.seconds)
                 .map((event, i) => {
 
-                    const {title, location, date} = event;
+                    const { title, location, date } = event;
                     const momentDate = moment(new Date((date.seconds) * 1000));
                     const localDate = moment(momentDate.toISOString());
                     const formattedDate = moment(localDate).format('ddd M/D/YY h:mma');
@@ -146,7 +146,7 @@ export class Upcoming extends Component<Props> {
 }
 
 
-const mapStateToProps = (state) => ({session: state.login.session, profile: state.dashboard.profile});
+const mapStateToProps = (state) => ({ session: state.login.session, profile: state.dashboard.profile });
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(actions, dispatch)
