@@ -2,7 +2,7 @@ const admin = require('firebase-admin');
 // TODO: add consts for field names in the db
 admin.initializeApp();
 const db = admin.firestore();
-let usersCollection = db.collection('users');
+let usersCollection = db.collection('testusers');
 class User {
   //TODO: add data validation to all properties
     constructor(uid) {        

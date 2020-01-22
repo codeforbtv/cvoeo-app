@@ -9,14 +9,14 @@ const {isValidEmail} = require('./models/data-validators');
 const {db} = require('./models/user');
 
 exports.helloWorld = functions.https.onRequest((request, response) => {
-	response.send("Hello from Firebase!");
+  response.send("Hello from Firebase!");
 	console.log("Attempting to access environment configuration data") //Must be configured on the firebase side using the firebase cli: https://firebase.google.com/docs/functions/config-env
 	 try {
 		 console.log(`user: ${functions.config().credentials.user} password: ${functions.config().credentials.password}`)
 	 }
 	 catch (error) {
 		 console.log(`Got the following error when trying to access credentials: ${{error}}`)
-	 }
+   }
 });
 
 /*This firebase function is for testing purposes to be able to use a file saved locally as input.
@@ -34,7 +34,8 @@ exports.pullDataFromLocalCSVFileTEST = functions.https.onRequest((request, respo
       console.log('Found ' + zipEntries.length + ' entry in the zip file');
       fileContent += csvzip.readAsText(zipEntries[0]);
 }
-  parseCSVAndSaveToFireStore (fileContent);
+  // parseClientCSVAndSaveToFireStore (fileContent);
+  parseGoalCSVAndSaveToFireStore (fileContent);
   response.send('done');
 })
 
@@ -75,19 +76,23 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
         //
         //        Name                Year       Month   Day      Hour
         //        res[1]              res[2]     res[3]  res[4]   res[5]
-        fRegEx = /(gm_clients_served_)(\d\d\d\d)-(\d?\d)-(\d?\d)-?(\d?\d)?/;
+        fRegEx_gm_clients = /(gm_clients_served_)(\d\d\d\d)-(\d?\d)-(\d?\d)-?(\d?\d)?/;
+        fRegEx_gm_goals = /(gm_goals_details_)(\d\d\d\d)-(\d?\d)-(\d?\d)-?(\d?\d)?/;
         // Applies the regex pattern to our filename and stores result in fnParts (file name parts)
-        fnParts = fRegEx.exec(fileName);
+        // fnParts = fRegEx_gm_clients.exec(fileName);
+        fnParts = fRegEx_gm_goals.exec(fileName);
         // we'll construct a new object to keep track of each files important details
         // and more importantly, to make it easy to sort/search
+        if(fnParts) {
         let newFile = {
           name: fileName,
           year: parseInt(fnParts[2]), 	// year
           month: parseInt(fnParts[3]), 	// month
           day: parseInt(fnParts[4]), 		// day
           hour: parseInt(fnParts[5]) || 0 // hour - first file of day has no hour in name so use 0 instead
-        };
+          };
         fileNames.push(newFile) // toss new object into array
+        }
       }
       // sort() is an instance of "fast-sort"
       // So to fine the newest file... sort by the year, then month, then day, then hour in a descending fashion.
@@ -147,7 +152,7 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
       sftpConnectionToCvoeo.end();
       // Finally send the response string along with the official A-OK code (200)
       console.log('Parsing file content');
-      parseCSVAndSaveToFireStore (fileContent);
+      parseClientCSVAndSaveToFireStore (fileContent);
       response.send(outString, 200);
       return true;
       })
@@ -170,7 +175,7 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
     If user does not exist, create a new user document under the 'users' collection + create new goal
   TODO: add more error handling to this function
 */
- function parseCSVAndSaveToFireStore(fileContent) {
+ function parseClientCSVAndSaveToFireStore(fileContent) {
    //*** Known issue: When parsing a csv file with multiple lines that have goal data, saving to firestore is not working properly */
   // TODO: Ideally data validation will be handles in the user class but add any validations that are needed here
    Papa.parse(fileContent, {
@@ -186,7 +191,6 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
           }          
           else {            
             let user = new User(results.data[i]['System Name ID']);
-            let goal = new Goal(user.uid);
             for (let key in results.data[i]) {
                 if(results.data[i][key] != "") {
                   switch (key) {
@@ -203,55 +207,18 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
                       break;
                     }
                   }
-                if(results.data[i]['GOAL ID']) {
-                  if (results.data[i][key] != "") {
-                    switch (key) {
-                      case 'GOAL ID':
-                        goal.goaluid = results.data[i][key];
-                        break;
-                      case 'GOAL TYPE':
-                        goal.goalType = results.data[i][key];
-                        break;
-                      case 'GOAL DUE':
-                        goal.goalDueDate = results.data[i][key];
-                        break;
-                      case 'GOAL NOTES':
-                          goal.goalNotes = results.data[i][key];
-                          break;
-                      case 'GOAL COMPLETE':
-                          goal.isGoalComplete = results.data[i][key];
-                          break;                          
-                      }
-                  }
-                }
-            }
+              }
 
-            let usersCollection = db.collection('users');   
+            let usersCollection = db.collection('testusers');            
             usersCollection.where('uid', '==', user.uid).get()
             .then(userSnapshot => {
               if (userSnapshot.empty) {
                 console.log("Did not find a matching document with uid " + user.uid);
-                user.createNewUserInFirestore();
-                if (goal.goaluid) {
-                  goal.createNewGoalInFirestore();                  
+                user.createNewUserInFirestore();                
                 }
-              }
               else {
-                console.log("Found a matching document for uid " + user.uid);
-                user.updateExistingUserInFirestore();
-                if (goal.goaluid) {
-                  usersCollection.doc(user.uid).collection('goals').where('goaluid', '==', goal.goaluid).get()
-                  .then(goalSnapshot => {
-                    if (goalSnapshot.empty) {
-                      console.log("Did not find a matching document with goal id " + goal.goaluid + " for user " + goal.useruid);
-                      goal.createNewGoalInFirestore();
-                      }
-                    else {
-                      console.log("Found a matching document for goal id " + goal.goaluid + " under document for user " + goal.useruid);
-                      goal.updateExistingGoalInFirestore();
-                      }
-                   })
-                  }
+                console.log("Found a matching document for user uid " + user.uid);
+                user.updateExistingUserInFirestore();               
                 }
               })
             .catch(err => {
@@ -262,3 +229,76 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
         }
       })
     }
+
+    function parseGoalCSVAndSaveToFireStore(fileContent) {
+      //*** Known issue: When parsing a csv file with multiple lines that have goal data, saving to firestore is not working properly */
+     // TODO: Ideally data validation will be handles in the user class but add any validations that are needed here
+      Papa.parse(fileContent, {
+       //papaparse (https://www.papaparse.com)returns 'results' which has an array 'data'.
+       // Each entry in 'data' is an object, a set of key/values that match the header at the head of the csv file.
+         header: true,
+         skipEmptyLines: true,
+         complete: function(results) {
+           console.log("Found "+ results.data.length + " lines in file content\n");
+           for (let i = 0;i<results.data.length ;i++) {
+             console.log("******************* iteration " + i + "****************************");
+             if(!results.data[i]['System Name ID']) {          
+               console.log ("Missing 'System Name ID' field in file. This field is mandatory for creating and updating data in db"); 
+             }          
+             else {
+              console.log("******************* User ID: " + results.data[i]['System Name ID'] + "****************************");
+               let user = new User(results.data[i]['System Name ID']);  
+               let goal = new Goal(results.data[i]['System Name ID']);
+               for (let key in results.data[i]) {
+                  if (results.data[i][key] != "") {
+                    switch (key) {
+                      case 'Goal':
+                        goal.goaluid = results.data[i][key];
+                        break;
+                      case 'Goal Category':
+                        goal.goalCategory = results.data[i][key];
+                        break;
+                      case 'Date':
+                        goal.goalDate = results.data[i][key];
+                        break;
+                      case 'Next Steps':
+                          goal.goalNextSteps = results.data[i][key];
+                          break;
+                      case 'Progress':
+                          goal.goalProgress = results.data[i][key];
+                          break;                          
+                      }
+                  }
+               }
+   
+               let usersCollection = db.collection('testusers');            
+               usersCollection.where('uid', '==', user.uid).get()
+               .then(userSnapshot => {
+                 if (userSnapshot.empty) {
+                   console.log("Did not find a matching document with uid " + user.uid);
+                   user.createNewUserInFirestore();
+                   goal.createNewGoalInFirestore();                  
+                 }
+                 else {
+                   console.log("Found a matching document for user uid " + user.uid);
+                   usersCollection.doc(user.uid).collection('goals').where('goaluid', '==', goal.goaluid).get()
+                   .then(goalSnapshot => {
+                     if (goalSnapshot.empty) {
+                         console.log("Did not find a matching document with goal id " + goal.goaluid + " for user " + goal.useruid);
+                         goal.createNewGoalInFirestore();
+                      }
+                      else {
+                         console.log("Found a matching document for goal id " + goal.goaluid + " under document for user " + goal.useruid);
+                         goal.updateExistingGoalInFirestore();
+                      }
+                    })
+                  }
+                })
+               .catch(err => {
+                 console.log('Error getting documents', err);
+               });
+               }
+             }
+           }
+         })
+       }
