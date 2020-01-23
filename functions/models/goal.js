@@ -1,6 +1,5 @@
 const {db} = require('./user');
 let usersCollection = db.collection('testusers');
-let userDoc;
 class Goal {
     //TODO: add data validation to all properties
       constructor(useruid) {
@@ -17,7 +16,6 @@ class Goal {
           this.isGoalComplete = false;
           this.goalNextSteps = '';
           this.created = Date.now();
-          userDoc = usersCollection.doc(this.useruid);
       }
 
       printAllFieldsToConsole() {
@@ -27,14 +25,15 @@ class Goal {
             "Goal category: " + this.goalCategory + "\n" +
             "Goal date: " + this.goalDate + "\n" +
             "Goal progress: " + this.goalProgress + "\n" +
-            "Goal complete?: " + this.isGoalComplete + "\n" +
+            "Goal omplete?: " + this.isGoalComplete + "\n" +
             "Goal next steps: " + this.goalNextSteps + "\n")
         }
 
       createNewGoalInFirestore() {        
-        console.log("Creating a new goal " + this.goaluid + "for user " + this.useruid + " with the following data:\n");
+        console.log("Creating a new goal " + this.goaluid + " for user " + this.useruid + " with the following data:\n");
         this.printAllFieldsToConsole();
-        userDoc.collection('goals').doc(this.goaluid).set({
+        let currentUserDoc = usersCollection.doc(this.useruid);
+        currentUserDoc.collection('goals').doc(this.goaluid).set({
             created: this.created,
             goaluid: this.goaluid,
             useruid: this.useruid,
@@ -47,9 +46,10 @@ class Goal {
         }
         //TODO inspect value of the field 'progress' and update 'isGoalComplete' to True if progress = 100%
       updateExistingGoalInFirestore () {
-        let goalDoc = userDoc.collection('goals').doc(this.goaluid);
         console.log("Updating goal " + this.goaluid + "for user " + this.useruid + " with the following data:\n");
         this.printAllFieldsToConsole();
+        let currentUserDoc = usersCollection.doc(this.uid);
+        let goalDoc = currentUserDoc.collection('goals').doc(this.goaluid);
         if (this.goalCategory) {   
           goalDoc.update({goalCategory: this.goalCategory});
         }
