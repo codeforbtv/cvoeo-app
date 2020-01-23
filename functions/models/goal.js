@@ -38,7 +38,7 @@ class Goal {
             goaluid: this.goaluid,
             useruid: this.useruid,
             goalCategory: this.goalCategory,
-            goalDue: this.goalDate,
+            goalDate: this.goalDate,
             goalProgress: this.goalProgress,
             isGoalComplete: this.isGoalComplete,
             goalNextSteps: this.goalNextSteps
@@ -48,13 +48,13 @@ class Goal {
       updateExistingGoalInFirestore () {
         console.log("Updating goal " + this.goaluid + "for user " + this.useruid + " with the following data:\n");
         this.printAllFieldsToConsole();
-        let currentUserDoc = usersCollection.doc(this.uid);
+        let currentUserDoc = usersCollection.doc(this.useruid);
         let goalDoc = currentUserDoc.collection('goals').doc(this.goaluid);
         if (this.goalCategory) {   
           goalDoc.update({goalCategory: this.goalCategory});
         }
         if (this.goalDate) {  
-          goalDoc.update({goalDue: this.goalDate});
+          goalDoc.update({goalDate: this.goalDate});
         }
         if (this.goalProgress) {       
           goalDoc.update({goalProgress: this.goalProgress});
