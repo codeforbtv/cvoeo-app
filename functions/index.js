@@ -26,16 +26,27 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 exports.pullDataFromLocalCSVFileTEST = functions.https.onRequest((request, response) => {
   let fileContent="";
   let pathToFile="";
-  pathToFile = request.body.pathToFile
+  let clientOrGoalCSV = "";
+  pathToFile = request.body.pathToFile;
+  clientOrGoalCSV = request.body.clientOrGoalCSV;
   console.log('Extracting data from the following file: ' + JSON.stringify(pathToFile));
   let csvzip = new AdmZip(pathToFile);
   let zipEntries = csvzip.getEntries();
   if (zipEntries.length > 0) {
       console.log('Found ' + zipEntries.length + ' entry in the zip file');
       fileContent += csvzip.readAsText(zipEntries[0]);
-}
-  // parseClientCSVAndSaveToFireStore (fileContent);
-  parseGoalCSVAndSaveToFireStore (fileContent);
+      }
+  switch (clientOrGoalCSV) {
+    case 'client':
+      parseClientCSVAndSaveToFireStore (fileContent);
+      break;
+    case 'goal':
+      parseGoalCSVAndSaveToFireStore (fileContent);
+      break;
+    default:
+      throw ("Must provide argument <client|goal>");
+    
+  }      
   response.send('done');
 })
 
@@ -43,9 +54,14 @@ exports.pullDataFromLocalCSVFileTEST = functions.https.onRequest((request, respo
    gets the most recent zipped CSV file and extracts the content.
   // TODO: look into tracking the name of the last parsed file and pulling all new files that were 
   added to the server since then
+  Must pass in an argument stating which csv file to parse (client/goal): 
+  curl -X POST <path to firebase fuunction> -H "Content-Type:application/json"  -d '{"
+   clientOrGoalCSV:"<client|goal>"}'
 */
 exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
   // TODO: add more error handlng to this function
+   let clientOrGoalCSV = "";
+   clientOrGoalCSV = request.body.clientOrGoalCSV;
 	 const sftpConnectionToCvoeo = new Client();
    let outString = "";
    let fileContent = "";
@@ -76,11 +92,21 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
         //
         //        Name                Year       Month   Day      Hour
         //        res[1]              res[2]     res[3]  res[4]   res[5]
-        fRegEx_gm_clients = /(gm_clients_served_)(\d\d\d\d)-(\d?\d)-(\d?\d)-?(\d?\d)?/;
-        fRegEx_gm_goals = /(gm_goals_details_)(\d\d\d\d)-(\d?\d)-(\d?\d)-?(\d?\d)?/;
+
         // Applies the regex pattern to our filename and stores result in fnParts (file name parts)
-        // fnParts = fRegEx_gm_clients.exec(fileName);
-        fnParts = fRegEx_gm_goals.exec(fileName);
+        switch (clientOrGoalCSV) {
+          case 'client':
+            fRegEx_gm_clients = /(gm_clients_served_)(\d\d\d\d)-(\d?\d)-(\d?\d)-?(\d?\d)?/;
+            fnParts = fRegEx_gm_clients.exec(fileName);
+            break;
+          case 'goal':
+            fRegEx_gm_goals = /(gm_goals_details_)(\d\d\d\d)-(\d?\d)-(\d?\d)-?(\d?\d)?/;        
+            fnParts = fRegEx_gm_goals.exec(fileName);
+            break;
+          default:
+            throw ("Must provide argument <client|goal>");
+        }
+                
         // we'll construct a new object to keep track of each files important details
         // and more importantly, to make it easy to sort/search
         if(fnParts) {
@@ -152,7 +178,16 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
       sftpConnectionToCvoeo.end();
       // Finally send the response string along with the official A-OK code (200)
       console.log('Parsing file content');
-      parseClientCSVAndSaveToFireStore (fileContent);
+      switch (clientOrGoalCSV) {
+        case 'client':
+          parseClientCSVAndSaveToFireStore (fileContent);
+          break;
+        case 'goal':
+          parseGoalCSVAndSaveToFireStore (fileContent);
+          break;
+        default:
+          throw ("Must provide argument <client|goal>");
+      }      
       response.send(outString, 200);
       return true;
       })
@@ -176,7 +211,6 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
   TODO: add more error handling to this function
 */
  function parseClientCSVAndSaveToFireStore(fileContent) {
-   //*** Known issue: When parsing a csv file with multiple lines that have goal data, saving to firestore is not working properly */
   // TODO: Ideally data validation will be handles in the user class but add any validations that are needed here
    Papa.parse(fileContent, {
     //papaparse (https://www.papaparse.com)returns 'results' which has an array 'data'.
@@ -241,12 +275,10 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
          complete: function(results) {
            console.log("Found "+ results.data.length + " lines in file content\n");
            for (let i = 0;i<results.data.length ;i++) {
-             console.log("******************* iteration " + i + "****************************");
              if(!results.data[i]['System Name ID']) {          
                console.log ("Missing 'System Name ID' field in file. This field is mandatory for creating and updating data in db"); 
              }          
              else {
-              console.log("******************* User ID: " + results.data[i]['System Name ID'] + "****************************");
                let user = new User(results.data[i]['System Name ID']);  
                let goal = new Goal(results.data[i]['System Name ID']);
                for (let key in results.data[i]) {
@@ -275,7 +307,7 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
                usersCollection.where('uid', '==', user.uid).get()
                .then(userSnapshot => {
                  if (userSnapshot.empty) {
-                   console.log("Did not find a matching document with uid " + user.uid);
+                  console.log("Did not find a matching document with uid " + user.uid);
                    user.createNewUserInFirestore();
                    goal.createNewGoalInFirestore();                  
                  }
