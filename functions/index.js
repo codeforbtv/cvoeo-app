@@ -7,6 +7,7 @@ const User = require('./models/user');
 const Goal = require('./models/goal');
 const {isValidEmail} = require('./models/data-validators');
 const {db} = require('./models/user');
+var admin = require('firebase-admin');
 
 exports.helloWorld = functions.https.onRequest((request, response) => {
 	response.send("Hello from Firebase!");
@@ -17,6 +18,49 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 	 catch (error) {
 		 console.log(`Got the following error when trying to access credentials: ${{error}}`)
 	 }
+});
+
+/**
+ * WIP: Create a new user
+ * 
+ * Since the use of this app should be restricted to existing CVOEO clients, users 
+ * cannot create their own account - the app does that for them. This is the second 
+ * step in creating an account for users:
+ *  1) MoMM pulls csv data from OutcomeTracker and identifies new ReachUp clients
+ *  2) MoMM creates a new user in Firebase with the csv data
+ *  3) The new user opens the app for the first time and clicks "register"
+ *  4) The "register" behavior is actually the "forgot password" behavior; it walks
+ *     the user through resetting the password for the firebase account we've created
+ * 
+    curl -X POST \
+    http://localhost:5001/cvoeo-45350/us-central1/createAccount \
+    -H 'Content-Type: application/json' \
+    -d '{
+      "email": "micahm@gmail.com"
+    }'
+ */
+exports.createAccount = functions.https.onRequest((request, response) => {
+  console.info(`Let's try creating an account for ${request.body.email}!`);
+  
+  // see: https://firebase.google.com/docs/auth/admin/manage-users#create_a_user
+  admin.auth().createUser({
+    email: request.body.email,
+    emailVerified: false,
+    phoneNumber: '+11234567890',
+    password: 'secretPassword',
+    displayName: 'John Doe',
+    photoURL: 'http://www.example.com/12345678/photo.png',
+    disabled: false
+  })
+    .then(function(userRecord) {
+      // See the UserRecord reference doc for the contents of userRecord.
+      console.log('Successfully created new user:', userRecord.email);
+      response.send({ status: 200, data: { userRecord }});
+    })
+    .catch(function(error) {
+      console.log('Error creating new user:', error);
+      response.send({ status: 500, error: error });
+    }); 
 });
 
 /*This firebase function is for testing purposes to be able to use a file saved locally as input.
