@@ -20,6 +20,7 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 });
 
 /*This firebase function is for testing purposes to be able to use a file saved locally as input.
+ * @param request.body.clientOrGoalCSV {string} Either 'client' or 'goal', to correspond with the submitted csv
  To run this function, have a firebase server set locally then run the following command: 
  curl -X POST <local path to firebase fuunction> -H "Content-Type:application/json"  -d '{"pathToFile":"<path to local file>"}'
 */
