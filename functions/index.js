@@ -45,7 +45,10 @@ exports.pullDataFromLocalCSVFileTEST = functions.https.onRequest((request, respo
       parseGoalCSVAndSaveToFireStore (fileContent);
       break;
     default:
-      throw ("Must provide argument <client|goal>");
+      response
+        .type('application/json')
+        .status(409)
+        .send({status:409, message: "Missing required param clientOrGoalCSV of either 'client ' or 'goal'" });
     
   }      
   response.send('done');
