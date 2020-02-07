@@ -34,7 +34,7 @@ exports.pullDataFromLocalCSVFileTEST = functions.https.onRequest((request, respo
     response
         .type('application/json')
         .status(409)
-        .send({status:409, message: "Missing required params: clientOrGoalCSV must be 'client' or 'goal';pathToFile must have the path to the csv file being used" });
+        .send({status:409, message: "Missing required params: clientOrGoalCSV must be 'client' or 'goal';pathToFile must have the path to the csv file being used"});
   }
   else {
     try {
@@ -51,27 +51,27 @@ exports.pullDataFromLocalCSVFileTEST = functions.https.onRequest((request, respo
         response
           .type('application/json')
           .status(200)
-          .send({status:200, message: "Completed parsing CSV" });
+          .send({status:200, message: "Completed parsing CSV"});
         break;
       case 'goal':
         parseGoalCSVAndSaveToFireStore (fileContent);
         response
           .type('application/json')
           .status(200)
-          .send({status:200, message: "Completed parsing CSV" });
+          .send({status:200, message: "Completed parsing CSV"});
         break;
       default:
         response
               .type('application/json')
               .status(500)
-              .send({status:500, message: "Unexpected Failure" });
+              .send({status:500, message: "Unexpected Failure"});
       } 
     }
     catch (err) {
       response
         .type('application/json')
         .status(500)
-        .send({status:500, message: err });
+        .send({status:500, message: err});
     }
   }
 })
@@ -92,7 +92,7 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
     response
         .type('application/json')
         .status(409)
-        .send({status:409, message: "Missing required param: clientOrGoalCSV must be 'client' or 'goal'" });
+        .send({status:409, message: "Missing required param: clientOrGoalCSV must be 'client' or 'goal'"});
     }
     else {
       const sftpConnectionToCvoeo = new Client();
@@ -140,7 +140,7 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
                 response
                   .type('application/json')
                   .status(500)
-                  .send({status:500, message: "Unexpected Failure" });
+                  .send({status:500, message: "Unexpected Failure"});
               }                
             // we'll construct a new object to keep track of each files important details
             // and more importantly, to make it easy to sort/search
@@ -212,21 +212,21 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
               response
               .type('application/json')
               .status(200)
-              .send({status:200, message: "Completed parsing CSV" });
+              .send({status:200, message: "Completed parsing CSV"});
               break;
             case 'goal':
               parseGoalCSVAndSaveToFireStore (fileContent);
               response
               .type('application/json')
               .status(200)
-              .send({status:200, message: "Completed parsing CSV" });
+              .send({status:200, message: "Completed parsing CSV"});
               break;
             default:
               console.log ("Unexpected Failure");
               response
               .type('application/json')
               .status(500)
-              .send({status:500, message: "Unexpected Failure" });
+              .send({status:500, message: "Unexpected Failure"});
             }      
           })
           // Error handler ... which just spits out the error message.
@@ -238,7 +238,7 @@ exports.pullDataFromSftp= functions.https.onRequest((request, response) => {
             response
               .type('application/json')
               .status(500)
-              .send({status:500, message: err });
+              .send({status:500, message: err});
             });
       }
  });
