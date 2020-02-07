@@ -25,8 +25,6 @@ class User {
         "email: " + this.email + "\n")
     }
     createNewUserInFirestore() {
-        console.log("Creating a new document with uid " + this.uid + " with the following data:\n");
-        this.printAllFieldsToConsole();
         let currentUserDoc = usersCollection.doc(this.uid);
         currentUserDoc.set({
             created: this.dateCreated,
@@ -38,8 +36,6 @@ class User {
     }
 
     updateExistingUserInFirestore () {
-      console.log("Updating uid " + this.uid + " with the following:\n");
-      this.printAllFieldsToConsole();
       let currentUserDoc = usersCollection.doc(this.uid);
       if (this.firstName) {   
         currentUserDoc.update({displayName: this.firstName});

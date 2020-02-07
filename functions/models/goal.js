@@ -30,8 +30,6 @@ class Goal {
         }
 
       createNewGoalInFirestore() {        
-        console.log("Creating a new goal " + this.goaluid + " for user " + this.useruid + " with the following data:\n");
-        this.printAllFieldsToConsole();
         let currentUserDoc = usersCollection.doc(this.useruid);
         currentUserDoc.collection('goals').doc(this.goaluid).set({
             created: this.created,
@@ -46,8 +44,6 @@ class Goal {
         }
         //TODO inspect value of the field 'progress' and update 'isGoalComplete' to True if progress = 100%
       updateExistingGoalInFirestore () {
-        console.log("Updating goal " + this.goaluid + "for user " + this.useruid + " with the following data:\n");
-        this.printAllFieldsToConsole();
         let currentUserDoc = usersCollection.doc(this.useruid);
         let goalDoc = currentUserDoc.collection('goals').doc(this.goaluid);
         if (this.goalCategory) {   
