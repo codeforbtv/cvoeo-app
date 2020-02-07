@@ -1,6 +1,5 @@
 const {db} = require('./user');
-let usersCollection = db.collection('users');
-let userDoc;
+let usersCollection = db.collection('testusers');
 class Goal {
     //TODO: add data validation to all properties
       constructor(useruid) {
@@ -11,54 +10,57 @@ class Goal {
           }
           this.goaluid = '';
           this.useruid = useruid;//unique id of the user which this goal corresponds to
-          this.goalType = '';
-          this.goalDueDate = '';
-          this.goalNotes = '';
-          this.isGoalComplete = '';
+          this.goalCategory = '';
+          this.goalDate = '';
+          this.goalProgress = '';
+          this.isGoalComplete = false;
+          this.goalNextSteps = '';
           this.created = Date.now();
-          userDoc = usersCollection.doc(this.useruid);
       }
 
       printAllFieldsToConsole() {
         console.log (
             "User uid: " + this.useruid + "\n" +
             "Goal uid: " + this.goaluid + "\n" +
-            "Goal type: " + this.goalType + "\n" +
-            "Goal due date: " + this.goalDueDate + "\n" +
-            "Goal notes: " + this.goalNotes + "\n" +
-            "Goal Complete?: " + this.isGoalComplete + "\n")
+            "Goal category: " + this.goalCategory + "\n" +
+            "Goal date: " + this.goalDate + "\n" +
+            "Goal progress: " + this.goalProgress + "\n" +
+            "Goal omplete?: " + this.isGoalComplete + "\n" +
+            "Goal next steps: " + this.goalNextSteps + "\n")
         }
 
       createNewGoalInFirestore() {        
-        console.log("Creating a new goal for user " + this.useruid + " with the following data:\n");
-        this.printAllFieldsToConsole();
-        userDoc.collection('goals').doc(this.goaluid).set({
+        let currentUserDoc = usersCollection.doc(this.useruid);
+        currentUserDoc.collection('goals').doc(this.goaluid).set({
             created: this.created,
             goaluid: this.goaluid,
             useruid: this.useruid,
-            goalType: this.goalType,
-            goalDue: this.goalDueDate,
-            goalNotes: this.goalNotes,
-            isGoalComplete: this.isGoalComplete
+            goalCategory: this.goalCategory,
+            goalDate: this.goalDate,
+            goalProgress: this.goalProgress,
+            isGoalComplete: this.isGoalComplete,
+            goalNextSteps: this.goalNextSteps
           });
         }
-
+        //TODO inspect value of the field 'progress' and update 'isGoalComplete' to True if progress = 100%
       updateExistingGoalInFirestore () {
-        let goalDoc = userDoc.collection('goals').doc(this.goaluid);
-        console.log("Updating goal id " + this.goaluid + " with the following:\n");
-        this.printAllFieldsToConsole();
-        if (this.goalType) {   
-          goalDoc.update({goalType: this.goalType});
+        let currentUserDoc = usersCollection.doc(this.useruid);
+        let goalDoc = currentUserDoc.collection('goals').doc(this.goaluid);
+        if (this.goalCategory) {   
+          goalDoc.update({goalCategory: this.goalCategory});
         }
-        if (this.goalDueDate) {  
-          goalDoc.update({goalDue: this.goalDueDate});
+        if (this.goalDate) {  
+          goalDoc.update({goalDate: this.goalDate});
         }
-        if (this.goalNotes) {       
-          goalDoc.update({goalNotes: this.goalNotes});
+        if (this.goalProgress) {       
+          goalDoc.update({goalProgress: this.goalProgress});
         }
         if (this.isGoalComplete) {       
           goalDoc.update({isGoalComplete: this.isGoalComplete});
           }
+        if (this.goalNextSteps) {       
+          goalDoc.update({goalNextSteps: this.goalNextSteps});
+          }        
       }
   }
   module.exports = Goal;

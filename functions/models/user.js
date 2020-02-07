@@ -2,7 +2,7 @@ const admin = require('firebase-admin');
 // TODO: add consts for field names in the db
 admin.initializeApp();
 const db = admin.firestore();
-let usersCollection = db.collection('users');
+let usersCollection = db.collection('testusers');
 class User {
   //TODO: add data validation to all properties
     constructor(uid) {        
@@ -25,9 +25,8 @@ class User {
         "email: " + this.email + "\n")
     }
     createNewUserInFirestore() {
-        console.log("Creating a new document with uid " + this.uid + " with the following data:\n");
-        this.printAllFieldsToConsole();
-        usersCollection.doc(this.uid).set({
+        let currentUserDoc = usersCollection.doc(this.uid);
+        currentUserDoc.set({
             created: this.dateCreated,
             uid: this.uid,
             displayName: this.firstName,
@@ -37,16 +36,15 @@ class User {
     }
 
     updateExistingUserInFirestore () {
-      console.log("Updating uid " + this.uid + " with the following:\n");
-      this.printAllFieldsToConsole();
+      let currentUserDoc = usersCollection.doc(this.uid);
       if (this.firstName) {   
-        usersCollection.doc(this.uid).update({displayName: this.firstName});
+        currentUserDoc.update({displayName: this.firstName});
       }
       if (this.lastName) {  
-        usersCollection.doc(this.uid).update({lastName: this.lastName});
+        currentUserDoc.update({lastName: this.lastName});
       }
       if (this.email) {       
-        usersCollection.doc(this.uid).update({email: this.email});
+        currentUserDoc.update({email: this.email});
       }
     }
 }
