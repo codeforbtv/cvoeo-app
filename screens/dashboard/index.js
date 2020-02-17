@@ -284,7 +284,8 @@ class Dashboard extends Component<Props> {
                             goal={goal} key={goal.id}
                             message={[goal.title]}
                             visibility={goal.submittedForReview && !goal.congratulationsViewed}
-                            updateGoal={updateGoal(goal)} />))}
+                            updateGoal={updateGoal(goal)}
+                            displayName={profile.displayName} />))}
                 </ScrollView>
             </Container>
         );

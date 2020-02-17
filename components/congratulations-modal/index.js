@@ -12,7 +12,7 @@ import myStyles from './styles';
 
 const styles = StyleSheet.create(myStyles);
 
-const CongratulationsModal = ({visibility, message, updateGoal}) => (
+const CongratulationsModal = ({visibility, message, updateGoal, displayName}) => (
     <View>
         <View style={styles.container}>
             <Modal
@@ -29,6 +29,7 @@ const CongratulationsModal = ({visibility, message, updateGoal}) => (
                         resizeMode='contain'
                     />
                     <Text style={styles.header}>Congratulations!</Text>
+                    <Text style={styles.header}>{`${displayName}!`}</Text>
                     <Text style={styles.goalText}>{message}</Text>
                     <View style={styles.footer}>
                         <View style={styles.line} />
