@@ -25,7 +25,7 @@
     "firebase": "^5.8.1",
     "firebase-admin": "^7.0.0",
     "firebase-functions": "^2.2.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "native-base": "^2.13.4",
     "node-stream-zip": "^1.8.0",
     "ramda": "^0.26.1",
